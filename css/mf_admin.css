@@ -1,0 +1,25 @@
+/* Messages boxes 
+ * Thanks to: http://www.mattvarone.com/web-design/message-box-with-css/
+ * */
+.message-box { text-align: center; padding: 5px; color:#545454; width:90%;  margin:5px auto; }
+.clean { background-color: #efefef; border: 2px solid #dedede; }
+.info  { background-color: #f7fafd; border: 2px solid #b5d3ff; }
+.ok    { background-color: #d7f7c4; border: 2px solid #82cb2f; }
+.alert { background-color: #fef5be; border: 2px solid #fdd425; }
+.errors { background-color: #ffcdd1; border: 2px solid #e10c0c; }
+
+/** Add Posty Type **/
+#add_mf_posttype {
+  width: 40%;
+}
+
+/** form post type  **/
+.mf_label_checkbox input[type="checkbox"] { width: auto; }
+.mf_label_checkbox input{ width: auto; }
+.mf_label_checkbox label{ padding-left: 10px;}
+.mf_form p { color: #666; font-size: 12px; font-style: italic; font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; margin: 2px 0 5px 10px; }
+.mf_form label {color: #222; text-shadow: white 0 1px 0; padding: 2px; font-size: 12px;font-weight: normal;}
+div.mf_form_right { float: left; clear: right; overflow: hidden; margin: 0; width: 50%; padding: 10px; }
+div.mf_form_right div { padding-left: 10px; }
+div.options_label label{ width: 130px; float: left; }
+div.options_label input{ width: 200px;}
