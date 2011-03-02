@@ -75,6 +75,9 @@ class mf_custom_taxonomy extends mf_admin{
   public function save_custom_taxonomy(){
     global $mf_domain;
 
+    //checking the nonce
+    check_admin_referer('form_custom_taxonomy_mf_custom_taxonomy');
+
     if(isset($_POST['mf_custom_taxonomy'])){
       //check custom_taxonomy_id
       $mf = $_POST['mf_custom_taxonomy'];
@@ -140,6 +143,9 @@ class mf_custom_taxonomy extends mf_admin{
   public function delete_custom_taxonomy(){
     global $wpdb;
 
+    //checking the nonce
+    check_admin_referer('delete_custom_taxonomy_mf_custom_taxonomy');
+
     if( isset($_GET['custom_taxonomy_id']) ){
       $id = (int)$_GET['custom_taxonomy_id'];
 
@@ -172,6 +178,11 @@ class mf_custom_taxonomy extends mf_admin{
     ?>
      <form id="addCustomTaxonomy" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=save_custom_taxonomy" class="validate">
        
+      <?php
+        //nonce 
+        wp_nonce_field('form_custom_taxonomy_mf_custom_taxonomy');
+      ?>
+
     <div class="alignleft fixed" id="add_mf_custom_taxonomy">
 	<!-- core -->
 	<?php foreach($data['core'] as $core): ?>
@@ -271,6 +282,7 @@ class mf_custom_taxonomy extends mf_admin{
 
 
   public function fields_form(){
+    global $mf_domain;
 
     $fields = array(
       'core' => array(

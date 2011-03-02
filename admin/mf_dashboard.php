@@ -56,7 +56,11 @@ class mf_dashboard extends mf_admin {
               <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type_id=<?php echo $pt['id']; ?>">Edit Post Type</a>
             </span> | 
             <span class="delete">
-              <a href="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type_id=<?php echo $pt['id']; ?>">Delete</a>
+              <?php //nonce
+                $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type_id={$pt['id']}";
+                $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
+              ?>
+              <a href="<?php print $link;?>">Delete</a>
             </span>
           </td>
         </tr>
@@ -98,7 +102,11 @@ class mf_dashboard extends mf_admin {
               <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=edit_custom_taxonomy&custom_taxonomy_id=<?php echo $tax['id']; ?>">Edit Custom Taxonomy</a>
             </span> | 
             <span class="delete">
-              <a href="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=delete_custom_taxonomy&custom_taxonomy_id=<?php echo $tax['id']; ?>">Delete</a>
+              <?php 
+                $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=delete_custom_taxonomy&custom_taxonomy_id={$tax['id']}";
+                $link = wp_nonce_url($link,"delete_custom_taxonomy_mf_custom_taxonomy");
+              ?>
+              <a href="<?php print($link);?>">Delete</a>
             </span>
           </td>
         </tr>

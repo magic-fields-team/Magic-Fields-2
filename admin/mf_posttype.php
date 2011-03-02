@@ -22,6 +22,7 @@ class mf_posttype extends mf_admin {
   }
 
   public function fields_form() {
+    global $mf_domain;
     
     $data = array(
       'core' => array(
@@ -324,7 +325,11 @@ class mf_posttype extends mf_admin {
     print '</div>';
     ?>
      <form id="addPostType" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=save_post_type" class="validate">
-       
+      
+      <!-- Nonces -->
+      <?php wp_nonce_field('form_post_type_posttype');?>
+      <!-- /Nonces  -->
+
     <div class="alignleft fixed" id="add_mf_posttype">
 	<!-- core -->
 	<?php foreach($data['core'] as $core): ?>
@@ -378,7 +383,7 @@ class mf_posttype extends mf_admin {
           <?php } ?>
         </div>
         <!-- / taxonomies -->
-
+      
         <!-- Submit -->
         <p class="submit">
           <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
@@ -444,6 +449,10 @@ class mf_posttype extends mf_admin {
    */
   public function save_post_type () {
     global $mf_domain;
+
+    //checking the nonce
+    check_admin_referer('form_post_type_posttype');
+
     //saving the posttype
     if(isset($_POST['mf_posttype'])){
       //check posttype_id
@@ -525,6 +534,9 @@ class mf_posttype extends mf_admin {
    */
   public function delete_post_type(){
     global $wpdb;
+
+    //checking the nonce
+    check_admin_referer('delete_post_type_mf_posttype');
 
     if( isset($_GET['post_type_id']) ){
       $id = (int)$_GET['post_type_id'];
