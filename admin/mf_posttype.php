@@ -40,8 +40,19 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Type', $mf_domain ),
 	  'name' => 'mf_posttype[core][type]',
 	  'value' => '',
-	  'description' => __( 'The type must have less than 20 characters.', $mf_domain ),
-	  'class' => "{validate:{required:true,messages:{required:'".__('This Field is required',$mf_domain)."'}}}",
+	  'description' => __( 'The type must have less than 20 characters and only are accepted lowercases letters and undescores.', $mf_domain ),
+	  'class' => "{
+      validate:{
+        required:true,
+        maxlength:20,
+        lowercase:true,
+        messages:{
+          lowercase:'".__('Only  are accepted lowercase characters,numbers or underscores')."',
+          required:'".__('This Field is required',$mf_domain)."',
+          maxlength:'".__('This Field must have less than 20 characters')."'
+        }
+      }
+    }",
 	  'div_class' => 'form-required'
 	),
 	'label' => array(
