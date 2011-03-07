@@ -51,9 +51,10 @@ class mf_admin {
     $description = $data['description'];
     $size = ($max)? sprintf('value-size="%s"',$max) : '' ;
     $class = (isset($data['class']))? sprintf('class="%s"',$data['class']) : '';
+    $rel = (isset($data['rel'])) ? sprintf('rel="%s"',$data['rel']): '';
     ?>
     <label for="<?php echo $id; ?>"><?php echo $label; ?></label>
-    <input name="<?php echo $name; ?>" id="<?php echo $id; ?>" type="text" <?php echo $size; ?> <?php echo $value; ?> <?php echo $class; ?> >
+    <input name="<?php echo $name; ?>" id="<?php echo $id; ?>" type="text" <?php echo $size; ?> <?php echo $value; ?> <?php echo $class; ?> <?php echo $rel; ?> >
     <p><?php echo $description; ?></p>
     <?php
   }

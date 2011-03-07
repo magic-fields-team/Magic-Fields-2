@@ -198,7 +198,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Name', $mf_domain ),
 	  'name' => 'mf_posttype[label][name]',
 	  'value' => __('Posts',$mf_domain),
-	  'description' => __( 'General name for the post type, usually plural.', $mf_domain )
+	  'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
+    'rel' => '%s' 
 	),
 	'singular_name' => array(
 	  'id' => 'posttype-label-singular-name',
@@ -206,7 +207,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Singular name', $mf_domain ),
 	  'name' => 'mf_posttype[label][singular_name]',
 	  'value' => __('Post',$mf_domain),
-	  'description' => __( 'Name for one object of this post type. Defaults to value of name.', $mf_domain )
+	  'description' => __( 'Name for one object of this post type. Defaults to value of name.', $mf_domain ),
+    'rel' => '%s' //@todo inflection
 	),
 	'add_new' => array(
 	  'id' => 'posttype-label-add-new',
@@ -214,7 +216,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Add new', $mf_domain ),
 	  'name' => 'mf_posttype[label][add_new]',
 	  'value' => __('Add New',$mf_domain),
-	  'description' => __( 'General name for the post type, usually plural.', $mf_domain )
+	  'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
+    'rel' => 'Add %s'
 	),
 	'add_new_item' => array(
 	  'id' => 'posttype-label-add-new-item',
@@ -222,7 +225,8 @@ class mf_posttype extends mf_admin {
 	  'label' =>  __( 'Add new item', $mf_domain ),
 	  'name' => 'mf_posttype[label][add_new_item]',
 	  'value' => __('Add New Post',$mf_domain),
-	  'description' => __( 'The add new item text.', $mf_domain )
+	  'description' => __( 'The add new item text.', $mf_domain ),
+    'rel' => 'Add New %s'
 	),
 	'edit_item' => array(
 	  'id' => 'posttype-label-edit-item',
@@ -230,7 +234,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Edit item', $mf_domain ),
 	  'name' => 'mf_posttype[label][edit_item]',
 	  'value' => __('Edit Post',$mf_domain),
-	  'description' => __( 'General name for the post type, usually plural.', $mf_domain )
+	  'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
+    'rel' => 'Edit %s'
 	),
 	'new_item' => array(
 	  'id' => 'posttype-label-new-item',
@@ -238,7 +243,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'New item', $mf_domain ),
 	  'name' => 'mf_posttype[label][new_item]',
 	  'value' => __('New Post',$mf_domain),
-	  'description' => __( 'The new item text.', $mf_domain )
+	  'description' => __( 'The new item text.', $mf_domain ),
+    'rel' => 'New %s'
 	),
 	'view_item' => array(
 	  'id' => 'posttype-label-view-item',
@@ -246,7 +252,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'View item', $mf_domain ),
 	  'name' => 'mf_posttype[label][view_item]',
 	  'value' => __('View Post',$mf_domain),
-	  'description' => __( 'The view item text.', $mf_domain )
+	  'description' => __( 'The view item text.', $mf_domain ),
+    'rel'   => 'View %s'
 	),
 	'search_items' => array(
 	  'id' => 'posttype-label-search-items',
@@ -254,15 +261,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Search items', $mf_domain ),
 	  'name' => 'mf_posttype[label][search_items]',
 	  'value' => __('Search Posts',$mf_domain),
-	  'description' => __( 'The search items text.', $mf_domain )
-	),
-	'search_items' => array(
-	  'id' => 'posttype-label-not-found',
-	  'type' => 'text',
-	  'label' => __( 'Search items', $mf_domain ),
-	  'name' => 'mf_posttype[label][search_items]',
-	  'value' => __('No posts found',$mf_domain),
-	  'description' => __( 'The not found text.', $mf_domain )
+	  'description' => __( 'The search items text.', $mf_domain ),
+    'rel' =>  'No %s found'
 	),
 	'not_found_in_trash' => array(
 	  'id' => 'posttype-label-not-found-in-trash',
@@ -270,7 +270,8 @@ class mf_posttype extends mf_admin {
 	  'label' => __( 'Not found in trash', $mf_domain ),
 	  'name' => 'mf_posttype[label][not_found_in_trash]',
 	  'value' => __('No posts found in Trash',$mf_domain),
-	  'description' => __( 'the not found in trash text.', $mf_domain )
+	  'description' => __( 'the not found in trash text.', $mf_domain ),
+    'rel' =>  'No %s found in Trash'
 	)
       )
     );
