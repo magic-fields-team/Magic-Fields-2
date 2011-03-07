@@ -163,6 +163,12 @@ function mf_init_post_type(){
       }
     }
     
+    if( isset($pt['taxonomy']) ){
+      foreach($pt['taxonomy'] as $k => $v){
+         $pt_option['taxonomies'][] = $k;  
+      }
+    }
+    
     if($pt_option['rewrite'] && $pt_option['rewrite_slug'])
       $pt_option['rewrite'] = array( 'slug' => $pt_option['rewrite_slug'] );
         
