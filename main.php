@@ -108,46 +108,6 @@ if( is_admin() ) {
     }
   }
   
-  //hook into the init action and call mf_init_taxonomies when it fires
-  add_action( 'init', 'mf_init_taxonomies', 0 );
-  function mf_init_taxonomies(){
-    require_once( MF_PATH.'/admin/mf_admin.php' );
-    $taxonomies = mf_admin::get_custom_taxonomies();
-    foreach($taxonomies as $tax){
-      $tax = json_decode($tax['arguments'],true);
-      $tax_name = $tax['core']['name'];
-      $tax_option = $tax['option'];
-      $tax_option['labels'] = $tax['label'];
-      $tax_in = $tax['post_types'];
-
-      if($tax_option['rewrite'] && $tax_option['rewrite_slug'])
-        $tax_option['rewrite'] = array( 'slug' => $tax_option['rewrite_slug'] );
-
-      register_taxonomy($tax_name,$tax_in, $tax_option);
-    }
-  }
-  
-  //custom taxonomy load
-  add_action( 'init', 'mf_init_post_type', 0 );
-  function mf_init_post_type(){
-    require_once( MF_PATH.'/admin/mf_admin.php' );
-    $post_types = mf_admin::get_post_types();
-    foreach($post_types as $pt){
-      $pt = json_decode($pt['arguments'],true);
-      $pt_name = $pt['core']['type'];
-      $pt_option = $pt['option'];
-      $pt_option['labels'] = $pt['label'];
-
-      if( isset($pt['support']) ){
-        foreach($pt['support'] as $k => $v){
-          $pt_option['supports'][] = $k;          
-        }
-      }
-
-      register_post_type($pt_name,$pt_option);
-    }
-  }
-  
   //Including javascripts files
   add_action( 'init', 'mf_add_js');
   function mf_add_js() {
@@ -162,6 +122,60 @@ if( is_admin() ) {
       }
     }
   }
+}
+
+//hook into the init action and call mf_init_taxonomies when it fires
+add_action( 'init', 'mf_init_taxonomies', 0 );
+function mf_init_taxonomies(){
+  require_once( MF_PATH.'/admin/mf_admin.php' );
+  $taxonomies = mf_admin::get_custom_taxonomies();
+  foreach($taxonomies as $tax){
+    $tax = json_decode($tax['arguments'],true);
+    $tax_name = $tax['core']['name'];
+    $tax_option = $tax['option'];
+    $tax_option['labels'] = $tax['label'];
+    $tax_in = $tax['post_types'];
+
+    if($tax_option['rewrite'] && $tax_option['rewrite_slug'])
+      $tax_option['rewrite'] = array( 'slug' => $tax_option['rewrite_slug'] );
+
+    register_taxonomy($tax_name,$tax_in, $tax_option);
+  }
+}
+  
+//custom taxonomy load
+add_action( 'init', 'mf_init_post_type', 0 );
+function mf_init_post_type(){
+  require_once( MF_PATH.'/admin/mf_admin.php' );
+  $post_types = mf_admin::get_post_types();
+  foreach($post_types as $pt){ 
+    $pt = json_decode($pt['arguments'],true);
+
+    $pt_name = $pt['core']['type'];
+    $pt_option = $pt['option'];
+    $pt_option['query_var'] = ($pt_option['query_var']) ? true : false;
+
+    $pt_option['labels'] = $pt['label'];
+
+    if( isset($pt['support']) ){
+      foreach($pt['support'] as $k => $v){
+        $pt_option['supports'][] = $k;          
+      }
+    }
+    
+    if( isset($pt['taxonomy']) ){
+      foreach($pt['taxonomy'] as $k => $v){
+         $pt_option['taxonomies'][] = $k;  
+      }
+    }
+    
+    if($pt_option['rewrite'] && $pt_option['rewrite_slug'])
+      $pt_option['rewrite'] = array( 'slug' => $pt_option['rewrite_slug'] );
+        
+    unset($pt_option['rewrite_slug']);
+    register_post_type($pt_name,$pt_option);
+  }
+}
   
   /** 
   * aux function 
@@ -174,4 +188,4 @@ if( is_admin() ) {
   	}
   }
   
-}
+
