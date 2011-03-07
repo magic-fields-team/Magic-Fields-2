@@ -47,8 +47,6 @@ function __autoload( $name ) {
   if( file_exists( MF_PATH.'/admin/'.$name.'.php' ) ) {
     require_once( MF_PATH.'/admin/'.$name.'.php' );
   }
-
-  //pr($name);
 }
 
 
@@ -62,11 +60,6 @@ if( is_admin() ) {
   // CSS Files
   wp_register_style( 'mf_admin_css',MF_BASENAME.'css/mf_admin.css' );
   wp_enqueue_style( 'mf_admin_css' );  
-
-  //Javascript Files
-  wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js',array( 'jquery' ) );
-  wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js',array( 'jquery' ) );
-  wp_enqueue_script( 'mf_admin',MF_BASENAME.'js/mf_admin.js',array( 'jquery.validate', 'jquery.metadata', 'jquery' ) );
 
   // Settings Page
   add_action( 'admin_menu', 'mf_menu' );
@@ -153,10 +146,22 @@ if( is_admin() ) {
 
       register_post_type($pt_name,$pt_option);
     }
-    
-      
   }
   
+  //Including javascripts files
+  add_action( 'init', 'mf_add_js');
+  function mf_add_js() {
+    if( is_admin() ) { //this scripts only will be added on the admin area
+      wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js', array( 'jquery' ) );
+      wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js', array( 'jquery' ) );
+      wp_enqueue_script( 'mf_admin',MF_BASENAME.'js/mf_admin.js', array( 'jquery.validate', 'jquery.metadata', 'jquery' ) );
+
+      //and this scripts only will be added on the post types section
+      if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_posttype" ) {
+        wp_enqueue_script( 'mf_posttype', MF_BASENAME.'js/mf_posttypes.js', array('mf_admin') );
+      }
+    }
+  }
   
   /** 
   * aux function 

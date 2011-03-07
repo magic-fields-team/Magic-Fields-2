@@ -25,6 +25,14 @@ class mf_posttype extends mf_admin {
     global $mf_domain;
     
     $data = array(
+      'suggest_labels'  => array(
+        'id'          =>  'suggest-labels',
+        'type'        =>  'checkbox',
+        'label'       =>  'Suggest labels',
+        'name'        =>  'suggest-labels',
+        'value'       =>  1,
+        'description' => __( 'Make suggestions for the labels using the label of the post type', $mf_domain )
+      ),
       'core' => array(
 	'id' => array(
 	  'id' => 'posttype-id',
@@ -415,6 +423,10 @@ class mf_posttype extends mf_admin {
       </div>
       
       <div class="options_label" style="display: none">
+        <fieldset>
+          <?php $this->mf_form_checkbox($data['suggest_labels']);?>
+        </fieldset>
+
           <fieldset>
             <legend><?php _e( 'Label Options', $mf_domain ) ?></legend>
 	    <!-- labels -->
