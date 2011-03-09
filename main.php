@@ -153,9 +153,11 @@ function mf_init_post_type(){
 
     $pt_name = $pt['core']['type'];
     $pt_option = $pt['option'];
+    
+    $pt_option['show_in_menu'] = ($pt_option['show_in_menu']) ? true : false;
     $pt_option['query_var'] = ($pt_option['query_var']) ? true : false;
-
     $pt_option['labels'] = $pt['label'];
+
 
     if( isset($pt['support']) ){
       foreach($pt['support'] as $k => $v){
@@ -165,7 +167,7 @@ function mf_init_post_type(){
     
     if( isset($pt['taxonomy']) ){
       foreach($pt['taxonomy'] as $k => $v){
-         $pt_option['taxonomies'][] = $k;  
+        $pt_option['taxonomies'][] = $k;  
       }
     }
     
@@ -177,15 +179,13 @@ function mf_init_post_type(){
   }
 }
   
-  /** 
-  * aux function 
-  **/
-  if (!function_exists('pr')) {
-  	function pr($data){
-  		echo "<pre>";
-  		print_r($data);
-  		echo "</pre>";
-  	}
+/** 
+ * aux function 
+ **/
+if (!function_exists('pr')) {
+  function pr($data){
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
   }
-  
-
+}
