@@ -346,7 +346,7 @@ class mf_custom_taxonomy extends mf_admin{
           'type' => 'checkbox',
           'label' => __( 'Public', $mf_domain ),
           'name' => 'mf_custom_taxonomy[option][public]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Should this taxonomy be exposed in the admin UI.', $mf_domain )
         ),
         'show_in_nav_menus' => array(
@@ -354,7 +354,7 @@ class mf_custom_taxonomy extends mf_admin{
           'type' => 'checkbox',
           'label' => __( 'Show in nav menus', $mf_domain ),
           'name' => 'mf_custom_taxonomy[option][show_in_nav_menus]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'true makes this taxonomy available for selection in navigation menus.', $mf_domain )
         ),
         'show_ui' => array(
@@ -362,7 +362,7 @@ class mf_custom_taxonomy extends mf_admin{
           'type' => 'checkbox',
           'label' => __( 'Show UI', $mf_domain ),
           'name' => 'mf_custom_taxonomy[option][show_ui]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Whether to generate a default UI for managing this taxonomy.', $mf_domain )
         ),
 
@@ -379,7 +379,7 @@ class mf_custom_taxonomy extends mf_admin{
           'type' => 'checkbox',
           'label' => __( 'Hierarchical', $mf_domain ),
           'name' => 'mf_custom_taxonomy[option][hierarchical]',
-          'value' => '',
+          'value' => 1,
           'description' => __( 'Is this taxonomy hierarchical (have descendants) like categories or not hierarchical like tags.', $mf_domain )
         ),
         'update_count_callback' => array(
@@ -411,7 +411,7 @@ class mf_custom_taxonomy extends mf_admin{
           'type' => 'checkbox',
           'label' =>  __( 'Query var', $mf_domain ),
           'name' => 'mf_custom_taxonomy[option][query_var]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'False to prevent queries, or string to customize query var. Default will use $taxonomy as query var.', $mf_domain )
         )
       ),
@@ -541,7 +541,7 @@ class mf_custom_taxonomy extends mf_admin{
           'type' => 'text',
           'label' => __( 'Menu name', $mf_domain ),
           'name' => 'mf_custom_taxonomy[label][menu_name]',
-          'value' => __('',$mf_domain),
+          'value' => __('Categories',$mf_domain),
           'description' => __( 'The menu name text. This string is the name to give menu items. Defaults to value of name.', $mf_domain )
         )
       )

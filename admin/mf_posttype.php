@@ -91,7 +91,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Public', $mf_domain ),
           'name' => 'mf_posttype[option][public]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Meta argument used to define default values for publicly_queriable, show_ui, show_in_nav_menus and exclude_from_search.', $mf_domain )
         ),
         'publicly_queryable' => array(
@@ -99,7 +99,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Publicly queryable', $mf_domain ),
           'name' => 'mf_posttype[option][publicly_queryable]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Whether post_type queries can be performed from the front end.', $mf_domain )
         ),
         'exclude_from_search' => array(
@@ -115,7 +115,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Show UI', $mf_domain ),
           'name' => 'mf_posttype[option][show_ui]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Whether to generate a default UI for managing this post type. Note that _built-in post types, such as post and page, are intentionally set to false.', $mf_domain )
         ),
         'show_in_menu' =>array(
@@ -123,7 +123,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Show in menu', $mf_domain ),
           'name' => 'mf_posttype[option][show_in_menu]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Whether to show the post type in the admin menu and where to show that menu. Note that show_ui must be true.', $mf_domain )
         ),
         'menu_position' => array(
@@ -139,15 +139,15 @@ class mf_posttype extends mf_admin {
           'type' => 'text',
           'label' => __( 'Capability type', $mf_domain ),
           'name' => 'mf_posttype[option][capability_type]',
-          'value' => '',
-          'description' => __( 'some here', $mf_domain )
+          'value' => 'post',
+          'description' => __( 'Capability type (post,page)', $mf_domain )
         ),
         'hierarchical' => array(
           'id' => 'posttype-hierarchical',
           'type' => 'checkbox',
           'label' => __( 'Hierarchical', $mf_domain ),
           'name' => 'mf_posttype[option][hierarchical]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Rewrite permalinks with this format. False to prevent rewrite.', $mf_domain )
         ),
         'rewrite' => array(
@@ -171,7 +171,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' =>  __( 'Query var', $mf_domain ),
           'name' => 'mf_posttype[option][query_var]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'False to prevent queries, or string value of the query var to use for this post type.', $mf_domain )
         ),
         'can_export' => array(
@@ -179,7 +179,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Can export', $mf_domain ),
           'name' => 'mf_posttype[option][can_export]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Can this post_type be exported.', $mf_domain )
         ),
         'show_in_nav_menus' => array(
@@ -187,7 +187,7 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Show in nav menus', $mf_domain ),
           'name' => 'mf_posttype[option][show_in_nav_menus]',
-          'value' => 0,
+          'value' => 1,
           'description' => __( 'Whether post_type is available for selection in navigation menus.', $mf_domain )
         )
       ),
@@ -376,8 +376,8 @@ class mf_posttype extends mf_admin {
 	  <?php
 	  $taxonomies=get_taxonomies(array( 'public'   => true ),'objects');
 	  ?>
-	  <?php foreach($taxonomies as $tax){ ?>
-	    <?php if($tax->name != 'nav_menu'){ ?>
+            <?php foreach($taxonomies as $tax){?>
+      <?php if( !in_array($tax->name,array('nav_menu','post_format') ) ){ ?>
 	      <?php
 		$check = '';
 		if(in_array($tax->name,$data['posttype_taxonomy'])){
