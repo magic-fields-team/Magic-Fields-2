@@ -50,7 +50,7 @@ class mf_dashboard extends mf_admin {
           <td><?php echo $pt['description']; ?></td>
           <td>
             <span class="edit">
-              <a href="#<?php echo $pt['id']; ?>">Edit Fields/Groups</a>
+              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_new_field&post_type_id=<?php print $pt['id'];?>">Edit Fields/Groups</a>
             </span> | 
             <span class="edit">
               <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type_id=<?php echo $pt['id']; ?>">Edit Post Type</a>

@@ -1,0 +1,13 @@
+/* 
+
+  All rules in this stylesheet must have a parent class the same as the
+  base file name of this stylesheet, or they will be applied globally
+  to any elements in the site. For example all rules in
+  mft_visual_editor.css would cascade under "mft_visual_editor"
+
+*/
+
+
+.mf_textbox {
+
+}
