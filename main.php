@@ -122,12 +122,6 @@ if( is_admin() ) {
       }
     }
   }
-
-
-  //Loading Custom Fields
-  //$mf_custom_fields = new mf_custom_fields();
-  //$mf_custom_fields->init();
-
 }
 
 //Register Post Types and Custom Taxonomies

@@ -42,6 +42,28 @@ class mf_dashboard extends mf_admin {
         </tr>
       </tfoot>
       <tbody>
+        <tr class="alternate iedit">
+          <td> - </td>
+          <td> Post </td>
+          <td> Wordpress Post type </td>
+          <td>  
+            <span class="edit">
+              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=post">Edit Fields/Groups</a>
+            </span>
+          </td>
+        </tr>
+        <tr class="alternate iedit">
+          <td> - </td>
+          <td> Pages </td>
+          <td> Wordpress Post type </td>
+          <td>  
+            <span class="edit">
+              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=page">Edit Fields/Groups</a>
+            </span>  
+          </td>
+        
+        </tr>
+
         <?php if($posttypes): ?>
           <?php foreach($posttypes as $pt): ?>
         <tr class="alternate iedit">
@@ -50,7 +72,7 @@ class mf_dashboard extends mf_admin {
           <td><?php echo $pt['description']; ?></td>
           <td>
             <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_new_field&post_type_id=<?php print $pt['id'];?>">Edit Fields/Groups</a>
+              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt['type'];?>">Edit Fields/Groups</a>
             </span> | 
             <span class="edit">
               <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type_id=<?php echo $pt['id']; ?>">Edit Post Type</a>

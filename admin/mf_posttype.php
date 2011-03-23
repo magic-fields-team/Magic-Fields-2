@@ -288,7 +288,7 @@ class mf_posttype extends mf_admin {
       $this->mf_redirect(null,null,array('message' => 'success'));
     }
 
-    $post_type = $this->get_post_type($_GET['post_type_id']);
+    $post_type = $this->get_post_type((int)$_GET['post_type_id']);
 
     if( !$post_type ){
       $this->mf_redirect(null,null,array('message' => 'error'));
@@ -527,14 +527,23 @@ class mf_posttype extends mf_admin {
   }
 
   /**
-   * get a specific post type
+   * get a specific post type using the post_type_id or the post_type_name
+   *
+   * @param mixed  post_type, can be a integer or a string
+   * @return array
    */
-  public function get_post_type($post_type_id){
+  public function get_post_type($post_type){
     global $wpdb;
 
-    $query = sprintf('SELECT * FROM %s WHERE id = %s',MF_TABLE_POSTTYPES,$post_type_id);
+    if(is_int($post_type)) {    
+      $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_POSTTYPES." WHERE id = %d", array( $post_type ) );
+    }else{
+      $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_POSTTYPES." WHERE type = %s", array( $post_type ) );
+    }
+
     $post_type = $wpdb->get_row( $query, ARRAY_A );
     if($post_type){
+      $post_type_id = $post_type['id'];
       $post_type = json_decode($post_type['arguments'],true);
       $post_type['core']['id'] = $post_type_id;
       return $post_type;
