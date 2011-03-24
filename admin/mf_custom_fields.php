@@ -32,11 +32,14 @@ class mf_custom_fields {
         <label><?php _e('Type of Custom Field', $mf_domain);?></label>
         <select>
           <?php foreach($custom_fields as $custom_field):?>
+          <option></option>
           <option><?php print $custom_field['name']; ?></option>
           <?php endforeach;?>
         </select>
         <p>[textbox]  - label</p>
         <p>[textbox]  - name </p>
+        <p>[textbox]  - help text </p>
+        <p>[textbox]  - order </p>
         <p>[Checkbox] - Is required</p>
         <p>[checkbox] - Is duplicated</p>
       </div>

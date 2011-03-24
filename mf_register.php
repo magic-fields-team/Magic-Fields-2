@@ -48,7 +48,7 @@ class mf_register{
       unset($option['rewrite_slug']);
       register_post_type($name,$option);
     }
-    add_action('admin_menu', array( &$this, 'mc_admin_actions' ) );
+    
   }
 
   public function mf_register_custom_taxonomies(){
