@@ -29,6 +29,30 @@ class mf_admin {
     exit;
   }
 
+  public function mf_form_select($data) {
+    $id         = $data['id'];
+    $label      = $data['label'];
+    $name       = $data['name'];
+    $options    = $data['options'];
+    $value      = $data['value'];
+    $add_empty  = $data['add_empty'];
+    ?>
+    <label for="<?php echo $id; ?>" ><?php echo $label; ?></label>
+    <select name="<?php echo $name; ?>" id="<?php echo $id;?>">
+      <?php if($add_empty):?>
+        <option value=""></option>
+      <?php endif;?>
+      <?php if(!empty($options)):?>
+        <?php foreach($options as $key => $field_name):
+          $selected = (!empty($value) && $value == $key) ? "selected=selected" : "";
+        ?>
+          <option value="<?php print $key;?>" <?php print $selected; ?>><?php echo $field_name;?></option>
+        <?php endforeach;?> 
+      <?php endif;?>
+    </select>
+    <?php
+  }
+
   public function mf_form_checkbox($data){
     $id = $data['id'];
     $label = $data['label'];

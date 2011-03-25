@@ -323,8 +323,8 @@ class mf_posttype extends mf_admin {
   }
 
   function form_post_type($data){
-    global $mf_domain;
-    global $supports;
+    global $mf_domain, $supports;
+
     print '<div class="wrap">';
     if( !$data['core']['id']['value'] ):
       print '<h2>'.__( 'Add Post Type', $mf_domain ).'</h2>';
