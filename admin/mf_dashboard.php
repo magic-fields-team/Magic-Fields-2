@@ -16,7 +16,7 @@ class mf_dashboard extends mf_admin {
   function main() {
     global $mf_domain;
     
-    $posttypes = $this->get_post_types();
+    $posttypes = $this->mf_get_post_types();
     $custom_taxonomies = $this->get_custom_taxonomies();
     
     print '<div class="wrap">';
@@ -27,7 +27,6 @@ class mf_dashboard extends mf_admin {
     <table class="widefat fixed" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="id" class="manage-column column-title" width="5%"><?php _e( 'id',$mf_domain); ?></th>
           <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
           <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'description',$mf_domain); ?></th>
           <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Actions',$mf_domain); ?></th>
@@ -35,51 +34,26 @@ class mf_dashboard extends mf_admin {
       </thead>
       <tfoot>
         <tr>
-          <th scope="col" id="id" class="manage-column column-title" width="5%"><?php _e( 'id',$mf_domain); ?></th>
           <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
           <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'description',$mf_domain); ?></th>
           <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Actions',$mf_domain); ?></th>
         </tr>
       </tfoot>
       <tbody>
+        <?php foreach($posttypes as $pt): ?>
         <tr class="alternate iedit">
-          <td> - </td>
-          <td> Post </td>
-          <td> Wordpress Post type </td>
-          <td>  
-            <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=post">Edit Fields/Groups</a>
-            </span>
-          </td>
-        </tr>
-        <tr class="alternate iedit">
-          <td> - </td>
-          <td> Pages </td>
-          <td> Wordpress Post type </td>
-          <td>  
-            <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=page">Edit Fields/Groups</a>
-            </span>  
-          </td>
-        
-        </tr>
-
-        <?php if($posttypes): ?>
-          <?php foreach($posttypes as $pt): ?>
-        <tr class="alternate iedit">
-          <td><?php echo $pt['id']; ?></td>
-          <td><?php echo $pt['name']; ?></td>
-          <td><?php echo $pt['description']; ?></td>
+          <td><?php echo $pt->label; ?></td>
+          <td><?php echo $pt->description; ?></td>
           <td>
             <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt['type'];?>">Edit Fields/Groups</a>
+              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a>
             </span> | 
             <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type_id=<?php echo $pt['id']; ?>">Edit Post Type</a>
+              <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=<?php echo $pt->name; ?>">Edit Post Type</a>
             </span> | 
             <span class="delete">
               <?php //nonce
-                $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type_id={$pt['id']}";
+                $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type={$pt->name}";
                 $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
               ?>
               <a href="<?php print $link;?>">Delete</a>
@@ -87,7 +61,6 @@ class mf_dashboard extends mf_admin {
           </td>
         </tr>
           <?php endforeach; ?>
-        <?php endif; ?>
       </tbody>
     </table>
     <?php

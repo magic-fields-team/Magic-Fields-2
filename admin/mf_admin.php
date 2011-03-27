@@ -94,13 +94,28 @@ class mf_admin {
 
   /**
    * return all post types
+   *
+   *  This function is a wrapper of  wordpress's get_post_types function 
+   *  here be  filter  a non-related post types of magic fields
+   * 
+   *  @return array 
    */
-  public function get_post_types(){
+  public function mf_get_post_types( $args = array('public' => true), $output = 'object', $operator = 'and' ){
     global $wpdb;
     
-    $query = sprintf('SELECT * FROM %s ORDER BY id',MF_TABLE_POSTTYPES);
-    $posttypes = $wpdb->get_results( $query, ARRAY_A );
-    return $posttypes;
+    $post_types = get_post_types( $args, $output, $operator );
+
+    foreach ( $post_types as $key => $type ) {
+      if( $output == 'names' ) {
+        if( $type == 'attachment' ) {
+          unset($post_types[$key]);
+        }
+      } else if ($output == 'object' ) {
+        unset($post_types['attachment']);
+      }
+    }
+
+    return $post_types;
   }
 
    /**

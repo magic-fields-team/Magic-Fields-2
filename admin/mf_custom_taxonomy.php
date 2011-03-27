@@ -201,7 +201,7 @@ class mf_custom_taxonomy extends mf_admin{
         <div class="form-field mf_label_checkbox mf_form ">
           <?php _e( 'Post types:', $mf_domain ) ?>
           <?php
-          $post_types=get_post_types(array( 'public'   => true ),'objects'); 
+          $post_types= $this->mf_get_post_types(); 
           ?>
           <?php foreach($post_types as $pt){ ?>
             <?php if($pt->name != 'attachment'){ ?>

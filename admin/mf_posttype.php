@@ -284,11 +284,11 @@ class mf_posttype extends mf_admin {
    */
   public function edit_post_type() {
 
-    if(!isset($_GET['post_type_id']) ){
+    if(!isset($_GET['post_type']) ){
       $this->mf_redirect(null,null,array('message' => 'success'));
     }
 
-    $post_type = $this->get_post_type((int)$_GET['post_type_id']);
+    $post_type = $this->get_post_type($_GET['post_type']);
 
     if( !$post_type ){
       $this->mf_redirect(null,null,array('message' => 'error'));
