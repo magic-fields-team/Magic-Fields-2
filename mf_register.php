@@ -58,8 +58,8 @@ class mf_register{
       $tax = json_decode($tax['arguments'],true);
       $name = $tax['core']['name'];
       $option = $tax['option'];
-      
-      $option['show_in_menu'] = ($option['show_in_menu']) ? true : false;
+
+      $option['show_in_nav_menus'] = ($option['show_in_nav_menus']) ? true : false;
       $option['query_var'] = ($option['query_var']) ? true : false;
 
 
