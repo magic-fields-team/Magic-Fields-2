@@ -127,12 +127,27 @@ class mf_custom_fields extends mf_admin {
 
      <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_field&mf_action=save_custom_field" class="validate">
       <div class="alignleft fixed" id="mf_add_custom_field">
-        <?php $this->mf_form_select($data['core']['type']);?>
-        <?php $this->mf_form_text($data['core']['label']);?>
-        <?php $this->mf_form_text($data['core']['name']);?>
-        <?php $this->mf_form_text($data['core']['description']);?>
-        <?php $this->mf_form_checkbox($data['core']['required']);?>
-        <?php $this->mf_form_checkbox($data['core']['duplicated']);?>
+        <?php foreach( $data['core'] as $core ):?>
+          <?php if( $core['type'] == 'hidden' ): ?>
+	          <?php $this->mf_form_hidden($core); ?>
+          <?php elseif( $core['type'] == 'text' ):?>
+	          <div class="form-field mf_form <?php echo $core['div_class']; ?>">
+              <?php $this->mf_form_text($core); ?>
+            </div>
+          <?php elseif( $core['type'] == "select" ):?>
+            <div class="form-field mf_form <?php echo $core['div_class']; ?>">
+              <?php $this->mf_form_select($core); ?>
+            </div>
+          <?php elseif( $core['type'] == "checkbox" ):?>
+            <fieldset>
+              <?php $this->mf_form_checkbox($core);?>
+            </fieldset>
+          <?php endif;?> 
+        <?php endforeach;?>
+      	<p class="submit">
+      	  <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
+      	  <input type="submit" class="button" name="submit" id="submit" value="Save Custom Field">
+      	</p>
       </div>
       <div class="widefat mf_form_right">
         <p>By default on this box will be displayed a information about custom fields, after the  custom field be selected, this box will be displayed some extra options of the field (if required) or a information about the selected field</p>

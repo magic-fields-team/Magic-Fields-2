@@ -27,38 +27,47 @@ class mf_dashboard extends mf_admin {
     <table class="widefat fixed" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'description',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Actions',$mf_domain); ?></th>
+          <th scope="col" id="title" class="manage-column column-title" width="30%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Type',$mf_domain); ?></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Description',$mf_domain); ?></th>
         </tr> 
       </thead>
       <tfoot>
         <tr>
-          <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'description',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Actions',$mf_domain); ?></th>
+          <th scope="col" id="title" class="manage-column column-title" width="30%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Type',$mf_domain); ?></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Description',$mf_domain); ?></th>
         </tr>
       </tfoot>
       <tbody>
-        <?php foreach($posttypes as $pt): ?>
-        <tr class="alternate iedit">
-          <td><?php echo $pt->label; ?></td>
-          <td><?php echo $pt->description; ?></td>
+        <?php 
+          $counter = 0;
+          foreach($posttypes as  $pt): 
+          $alternate = ($counter % 2 ) ? "alternate" : "";
+          $counter++;
+        ?>
+
+        <tr class="<?php print $alternate;?> iedit">
           <td>
-            <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a>
-            </span> | 
-            <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=<?php echo $pt->name; ?>">Edit Post Type</a>
-            </span> | 
-            <span class="delete">
-              <?php //nonce
-                $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type={$pt->name}";
-                $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
-              ?>
-              <a href="<?php print $link;?>">Delete</a>
-            </span>
+            <strong><?php echo $pt->label; ?></strong>
+            <div class="row-actions">
+              <span class="edit">
+                <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a> |
+              </span> 
+              <span class="edit">
+                <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=<?php echo $pt->name; ?>">Edit Post Type</a> |
+              </span>
+              <span class="delete">
+                <?php //nonce
+                  $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type={$pt->name}";
+                  $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
+                ?> 
+                <a href="<?php print $link;?>">Delete</a> 
+              </span>
+            </div>
           </td>
+          <td><?php echo $pt->name; ?></td>
+          <td><?php echo $pt->description; ?></td>
         </tr>
           <?php endforeach; ?>
       </tbody>
@@ -86,23 +95,32 @@ class mf_dashboard extends mf_admin {
         </tr>
       </tfoot>
       <tbody>
-        <?php if($custom_taxonomies): ?>
-          <?php foreach($custom_taxonomies as $tax): ?>
-        <tr class="alternate iedit">
+        <?php if($custom_taxonomies):?>
+          <?php 
+            $counter = 0;
+            foreach($custom_taxonomies as $tax): 
+             $alternate = ($counter % 2 ) ? "alternate" : "";
+             $counter++;
+          ?>
+        <tr class="<?php print $alternate;?> iedit">
           <td><?php echo $tax['id']; ?></td>
-          <td><?php echo $tax['name']; ?></td>
+          <td>
+            <?php echo $tax['name']; ?>
+            <div class="row-actions">
+              <span class="edit"> 
+                <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=edit_custom_taxonomy&custom_taxonomy_id=<?php echo $tax['id']; ?>">Edit Custom Taxonomy</a> |
+              </span>
+              <span class="delete">
+                <?php 
+                  $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=delete_custom_taxonomy&custom_taxonomy_id={$tax['id']}";
+                  $link = wp_nonce_url($link,"delete_custom_taxonomy_mf_custom_taxonomy");
+                ?>
+                <a href="<?php print($link);?>">Delete</a>
+              </span>
+            </div>
+          </td>
           <td><?php echo $tax['description']; ?></td>
           <td>
-            <span class="edit">
-              <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=edit_custom_taxonomy&custom_taxonomy_id=<?php echo $tax['id']; ?>">Edit Custom Taxonomy</a>
-            </span> | 
-            <span class="delete">
-              <?php 
-                $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=delete_custom_taxonomy&custom_taxonomy_id={$tax['id']}";
-                $link = wp_nonce_url($link,"delete_custom_taxonomy_mf_custom_taxonomy");
-              ?>
-              <a href="<?php print($link);?>">Delete</a>
-            </span>
           </td>
         </tr>
           <?php endforeach; ?>
