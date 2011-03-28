@@ -28,8 +28,9 @@ License: GPL2
 /**
  * i18n
  */ 
-global $mf_domain;
-$mf_domain = 'magic_fields';	
+global $mf_domain,$mf_pt_register;
+$mf_domain = 'magic_fields';
+$mf_pt_register = array();
 
 /**
  * Constants
@@ -127,7 +128,13 @@ if( is_admin() ) {
   add_action('wp_ajax_load_field_type', 'load_field_type_option');
 
   function load_field_type_option(){
-  	pr($_POST);
+  	if( isset($_POST['field_type']) && ($_POST['field_type'] != NULL) ){
+  	  $name = sprintf('%s_field',$_POST['field_type']);
+  	  $path_field = sprintf('%s/field_types/%s/%s.php',MF_PATH,$name,$name);
+      require_once( $path_field );
+      $mf_field = new $name();
+      $mf_field->get_options();
+	  }
   	die;
   }
   

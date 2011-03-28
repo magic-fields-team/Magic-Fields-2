@@ -14,6 +14,8 @@ class mf_register{
 
   // register post type
   public function mf_register_post_types(){
+    
+    global $mf_pt_register;
 
     $post_types = $this->_get_post_types();
 
@@ -46,6 +48,7 @@ class mf_register{
 
       
       unset($option['rewrite_slug']);
+      array_push($mf_pt_register,$name);
       register_post_type($name,$option);
     }
     

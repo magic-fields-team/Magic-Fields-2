@@ -291,35 +291,36 @@ class mf_posttype extends mf_admin {
     $post_type = $this->get_post_type($_GET['post_type']);
 
     if( !$post_type ){
-      $this->mf_redirect(null,null,array('message' => 'error'));
-    }
+      $this->mf_flash('error',null,null);
+    }else{
 
-    $data = $this->fields_form();
-    $post_type_support = array();
-    if( isset($post_type['support']) ){
-      foreach($post_type['support'] as $k => $v){
-        array_push($post_type_support,$k);
+      $data = $this->fields_form();
+      $post_type_support = array();
+      if( isset($post_type['support']) ){
+        foreach($post_type['support'] as $k => $v){
+          array_push($post_type_support,$k);
+        }
+        $data['posttype_support'] = $post_type_support;
       }
-      $data['posttype_support'] = $post_type_support;
-    }
 
-    $post_type_taxonomy = array();
-    if( isset($post_type['taxonomy']) ){
-      foreach($post_type['taxonomy'] as $k => $v){
-        array_push($post_type_taxonomy,$k);
+      $post_type_taxonomy = array();
+      if( isset($post_type['taxonomy']) ){
+        foreach($post_type['taxonomy'] as $k => $v){
+          array_push($post_type_taxonomy,$k);
+        }
+        $data['posttype_taxonomy'] = $post_type_taxonomy;
       }
-      $data['posttype_taxonomy'] = $post_type_taxonomy;
-    }
-    // update fields
-    $perm = array('core','option','label');
-    foreach($post_type as $key => $value){
-      if( in_array($key,$perm) ){
-        foreach($value as $id => $val){
-          $data[$key][$id]['value'] = $val;
+      // update fields
+      $perm = array('core','option','label');
+      foreach($post_type as $key => $value){
+        if( in_array($key,$perm) ){
+          foreach($value as $id => $val){
+            $data[$key][$id]['value'] = $val;
+          }
         }
       }
+      $this->form_post_type($data);
     }
-    $this->form_post_type($data);
   }
 
   function form_post_type($data){

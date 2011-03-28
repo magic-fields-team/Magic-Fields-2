@@ -14,7 +14,7 @@ class mf_dashboard extends mf_admin {
   }
 
   function main() {
-    global $mf_domain;
+    global $mf_domain,$mf_pt_register;
     
     $posttypes = $this->mf_get_post_types();
     $custom_taxonomies = $this->get_custom_taxonomies();
@@ -52,9 +52,10 @@ class mf_dashboard extends mf_admin {
             <strong><?php echo $pt->label; ?></strong>
             <div class="row-actions">
               <span class="edit">
-                <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a> |
-              </span> 
-              <span class="edit">
+                <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a> 
+              </span>
+              <?php if(in_array($pt->name,$mf_pt_register)): ?>
+              |<span class="edit">
                 <a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=<?php echo $pt->name; ?>">Edit Post Type</a> |
               </span>
               <span class="delete">
@@ -63,6 +64,7 @@ class mf_dashboard extends mf_admin {
                   $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
                 ?> 
                 <a href="<?php print $link;?>">Delete</a> 
+                 <?php endif; ?>
               </span>
             </div>
           </td>

@@ -5,10 +5,8 @@
 class mf_admin {
 
   public $name = 'mf_admin';
-  /**
-   * is a wrapper of wp_safe_redirect 
-   */
-  function mf_redirect( $section = 'mf_dashboard', $action = 'main', $vars = array( ) ) {
+  
+  function _get_url(  $section = 'mf_dashboard', $action = 'main', $vars = array( ) ){
     $url = home_url();
 
     //the admin area of Magic Fields always should pass through the dispatcher:
@@ -25,8 +23,35 @@ class mf_admin {
         $url .= '&'.$param.'='.$value;
       }
     }
+    
+    return $url;
+  }
+  
+  /**
+   * is a wrapper of wp_safe_redirect 
+   */
+  function mf_redirect( $section = 'mf_dashboard', $action = 'main', $vars = array( ) ) {
+    
+    $url = $this->_get_url(  $section , $action , $vars );
     wp_safe_redirect($url);
     exit;
+  }
+  
+  function mf_flash($message = 'Return dashboard', $section = 'mf_dashboard', $action = 'main', $vars = array( )){
+    $url = $this->_get_url(  $section , $action , $vars );
+    
+    printf('<div class="wrap"><div id="message" class="error below-h2"><p><a href="%s">%s</a></p></div> </div>',$url,$message);
+    
+    //
+    if(!WP_DEBUG){
+      printf('<script type="text/javascript">
+        function js_mf_redirect(){
+           window.location = "%s";
+        }
+        setTimeout(js_mf_redirect,5000);
+        </script>',$url);
+    }
+    
   }
 
   public function mf_form_select($data) {
