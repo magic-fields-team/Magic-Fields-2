@@ -122,6 +122,15 @@ if( is_admin() ) {
       }
     }
   }
+  
+  //catch call ajax for new field
+  add_action('wp_ajax_load_field_type', 'load_field_type_option');
+
+  function load_field_type_option(){
+  	pr($_POST);
+  	die;
+  }
+  
 }
 
 //Register Post Types and Custom Taxonomies

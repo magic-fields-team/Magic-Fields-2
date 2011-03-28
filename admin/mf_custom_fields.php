@@ -153,6 +153,25 @@ class mf_custom_fields extends mf_admin {
         <p>By default on this box will be displayed a information about custom fields, after the  custom field be selected, this box will be displayed some extra options of the field (if required) or a information about the selected field</p>
       </div>
     </div>
+    <script type="text/javascript">
+      jQuery(document).ready(function($) {
+        $('#customfield-type').change( function(){
+          type = $(this).val();
+          if(type != ''){
+            jQuery.post(
+               ajaxurl,
+               {
+                  'action':'load_field_type',
+                  'field_type': type
+               },
+               function(response){
+                  //alert('The server responded: ' + response);
+               }
+            );
+          }
+        });
+      });
+    </script>
   <?php
   }
 }
