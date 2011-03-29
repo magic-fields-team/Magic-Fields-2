@@ -29,6 +29,11 @@ class mf_custom_fields extends mf_admin {
     ?>  
     <?php
   }
+  
+  function save_custom_field(){
+    pr($_POST);
+    die;
+  }
 
   /**
    * Get the list of custom fields
@@ -60,8 +65,8 @@ class mf_custom_fields extends mf_admin {
         'type'  => array(
           'type'        =>  'select',
           'id'          =>  'customfield-type',
-          'label'       =>  'Type of Custom Field',
-          'name'        =>  'type',
+          'label'       =>  __('Type of Custom Field',$mf_domain),
+          'name'        =>  'mf_field[core][type]',
           'default'     =>  '',
           'options'      =>  $custom_fields,
           'description' =>  __( 'Select the type of custom field', $mf_domain ),
@@ -71,8 +76,8 @@ class mf_custom_fields extends mf_admin {
         'label'  => array(
           'type'        =>  'text',
           'id'          =>  'customfield-label',
-          'label'       =>  'Label',
-          'name'        =>  'label',
+          'label'       =>  __('Label',$mf_domain),
+          'name'        =>  'mf_field[core][label]',
           'description' =>  __( 'The label of the field', $mf_domain),
           'div_class'   =>  'form-required',
           'value'       =>  ''
@@ -81,33 +86,33 @@ class mf_custom_fields extends mf_admin {
         'name'  => array(
           'type'        =>  'text',
           'id'          =>  'customfield-name',
-          'label'       =>  'Name',
-          'name'        =>  'name',
+          'label'       =>  __('Name',$mf_domain),
+          'name'        =>  'mf_field[core][name]',
           'description' =>  __( 'The name only accept letters and numbers (lowercar)', $mf_domain),
           'div_class'   =>  'form-required',
           'value'       =>  ''
         ),
         'description' =>  array(
           'type'        =>  'text',
-          'label'       =>  'Description', 
-          'name'        =>  'description',
+          'label'       =>  __('Description',$mf_domain), 
+          'name'        =>  'mf_field[core][description]',
           'description' =>  __( 'Tell to the user about what is the field', $mf_domain ),
           'value'       =>  '',
           'id'          => 'customfield-description'
         ),
         'required'    =>  array(
           'type'        =>  'checkbox',
-          'label'       =>  'required',
-          'name'        =>  'required',
+          'label'       =>  __('required',$mf_domain),
+          'name'        =>  'mf_field[core][required]',
           'description' =>  __( 'this field is required', $mf_domain ),
           'id'          =>  'customfield-required',
           'value'       =>  0
         ),
         'duplicated'  =>  array(
           'type'        =>  'checkbox',
-          'label'       =>  'Can be duplicated',
-          'name'        =>  'duplicate',
-          'description' =>  '',
+          'label'       =>  __('Can be duplicated',$mf_domain),
+          'name'        =>  'mf_field[core][duplicate]',
+          'description' =>  __('this field is duplicable?',$mf_domain),
           'value'       =>  0,
           'id'          =>  'customfield-duplicated',
 
@@ -125,7 +130,7 @@ class mf_custom_fields extends mf_admin {
       <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
 
 
-     <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_field&mf_action=save_custom_field" class="validate">
+     <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate">
       <div class="alignleft fixed" id="mf_add_custom_field">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
@@ -140,7 +145,9 @@ class mf_custom_fields extends mf_admin {
             </div>
           <?php elseif( $core['type'] == "checkbox" ):?>
             <fieldset>
+              <div class="form-field mf_form <?php echo $core['div_class']; ?>">
               <?php $this->mf_form_checkbox($core);?>
+              </div>
             </fieldset>
           <?php endif;?> 
         <?php endforeach;?>
@@ -150,7 +157,10 @@ class mf_custom_fields extends mf_admin {
       	</p>
       </div>
       <div class="widefat mf_form_right">
-        <p>By default on this box will be displayed a information about custom fields, after the  custom field be selected, this box will be displayed some extra options of the field (if required) or a information about the selected field</p>
+        <h4>Options of field</h4>
+        <div  id="options_field">
+          <p>By default on this box will be displayed a information about custom fields, after the  custom field be selected, this box will be displayed some extra options of the field (if required) or a information about the selected field</p>
+        </div>
       </div>
     </div>
     <script type="text/javascript">
@@ -165,7 +175,7 @@ class mf_custom_fields extends mf_admin {
                   'field_type': type
                },
                function(response){
-                  //alert('The server responded: ' + response);
+                 $("#options_field").empty().append(response);
                }
             );
           }
