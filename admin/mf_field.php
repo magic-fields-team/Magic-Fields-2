@@ -57,11 +57,17 @@ class mf_field {
 
     if(isset($this->options['option'])){
       foreach($this->options['option'] as $option){
-        ?>
-        <div class="form-field mf_form <?php echo $option['div_class']; ?>">
-        <?php echo $option['name']; ?>
-        <div>
-        <?php
+        printf('<div class="form-field mf_form %s">',$option['div_class']);
+        if($option['type'] == 'text'){
+          mf_form_text($option);
+        }elseif($option['type'] == 'select'){
+          mf_form_select($option);
+        }elseif( $option['type'] == 'checkbox' ){
+          mf_form_checkbox($option);
+        }elseif( $option['type'] == 'textarea' ){
+          mf_form_textarea($option);
+        }
+        printf('</div>');
       }
     }
   }
@@ -71,26 +77,47 @@ class mf_field {
     
     $data = array(
       'option'  => array(
-        'type'  => array(
-          'type'        =>  'text',
-          'id'          =>  'uno',
-          'label'       =>  'opcion 1',
-          'name'        =>  'uno',
-          'default'     =>  '',
-          'description' =>  __( 'aqui una descripcion', $mf_domain ),
-          'value'       =>  '',
-          'div_class'    => 'clase1',
-          'class'       => 'vemos1'
+        'text_option'  => array(
+          'type'        => 'text',
+          'id'          => 'text_id',
+          'label'       => __('label for text(input)',$mf_domain),
+          'name'        => 'mf_field[option][text_option]',
+          'description' => __( 'aqui una descripcion', $mf_domain ),
+          'value'       => 'default value',
+          'div_class'   => 'class_text',
+          'class'       => 'div_class_text'
         ),
-        'description' =>  array(
-          'type'        =>  'text',
-          'label'       =>  'Description', 
-          'name'        =>  'description',
-          'description' =>  __( 'Tell to the user about what is the field', $mf_domain ),
-          'value'       =>  '',
-          'id'          => 'customfield-description',
-          'div_class'    => 'clase2',
-          'class'       => 'veamos2'
+        'checkbox_option' => array(
+          'type'        => 'checkbox',
+          'id'          => 'checkbox_id',
+          'label'       => __('label for checkbox',$mf_domain),
+          'name'        => 'mf_field[option][checkbox_option]',
+          'value'       => 1,
+          'description' => __('One description for checkbox',$mf_domain),
+          'class'       => 'class_checkbox',
+          'div_class'   => 'div_class_checkbox'
+        ),
+        'select_option' =>  array(
+          'type'        => 'select',
+          'id'          => 'select_id',
+          'label'       =>  __('label for select', $mf_domain), 
+          'name'        =>  'mf_field[option][select_option]',
+          'value'       => '',
+          'description' =>  __( 'description for select', $mf_domain ),
+          'options'     => array('one','two','more'),
+          'add_empty'   => true,
+          'div_class'   => 'class_select',
+          'class'       => 'div_class_select'
+        ),
+        'textarea_option' =>  array(
+          'type'        => 'textarea',
+          'id'          => 'textarea_id',
+          'label'       =>  __('Label for textarea', $mf_domain), 
+          'name'        =>  'mf_field[option][textarea_option]',
+          'value'       => 'uno value',
+          'description' =>  __( 'description for textarea', $mf_domain ),
+          'div_class'   => 'class_textarea',
+          'class'       => 'div_class_textarea'
         )
       )
     );

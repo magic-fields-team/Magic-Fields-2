@@ -17,7 +17,7 @@ class textbox_field extends mf_field {
     $this->description = __("Simple Textbox input",$mf_domain);
   }
   
-  public function _options(){
+  public function _options1(){
     global $mf_domain;
     
     $data = array(

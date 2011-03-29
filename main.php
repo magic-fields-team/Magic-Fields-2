@@ -58,6 +58,9 @@ register_activation_hook( __FILE__, array('mf_install', 'install' ) );
 
 
 if( is_admin() ) {
+  //add common function
+  require_once(MF_PATH.'/mf_common.php');
+
   // CSS Files
   wp_register_style( 'mf_admin_css',MF_BASENAME.'css/mf_admin.css' );
   wp_enqueue_style( 'mf_admin_css' );  
