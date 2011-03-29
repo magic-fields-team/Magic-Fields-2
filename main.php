@@ -48,6 +48,11 @@ function __autoload( $name ) {
   if( file_exists( MF_PATH.'/admin/'.$name.'.php' ) ) {
     require_once( MF_PATH.'/admin/'.$name.'.php' );
   }
+
+  //field types
+  if( file_exists( MF_PATH.'/field_types/'.$name.'/'.$name.'.php' ) ) {
+    require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php'); 
+  }
 }
 
 
@@ -133,8 +138,6 @@ if( is_admin() ) {
   function load_field_type_option(){
   	if( isset($_POST['field_type']) && ($_POST['field_type'] != NULL) ){
   	  $name = sprintf('%s_field',$_POST['field_type']);
-  	  $path_field = sprintf('%s/field_types/%s/%s.php',MF_PATH,$name,$name);
-      require_once( $path_field );
       $mf_field = new $name();
       $mf_field->get_options();
 	  }
