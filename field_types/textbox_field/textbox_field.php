@@ -1,6 +1,4 @@
 <?php
-require_once( MF_PATH.'/admin/mf_field.php' );
-
 // initialisation
 global $mf_domain;
 
