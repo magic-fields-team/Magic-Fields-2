@@ -36,11 +36,21 @@ class mf_admin {
     wp_safe_redirect($url);
     exit;
   }
-  
-  function mf_flash($message = 'Return dashboard', $section = 'mf_dashboard', $action = 'main', $vars = array( )){
+
+  /**
+   * Display a friendly message of error
+   *
+   * @param string message the messages to will be displayed
+   * @param string section the section where the user will be send it 
+   * @param string action  the action where the user will be send it
+   * @param string vars  
+   * @param string the css class to will be added into the message (e.j  'error','info','ok','alert')
+   */
+
+  function mf_flash($message = 'Return dashboard', $section = 'mf_dashboard', $action = 'main', $vars = array( ), $type = 'error' ){
     $url = $this->_get_url(  $section , $action , $vars );
     
-    printf('<div class="wrap"><div id="message" class="error below-h2"><p><a href="%s">%s</a></p></div> </div>',$url,$message);
+    printf(' <div class="wrap"><div id="message" class="%s below-h2"><p><a href="%s">%s</a></p></div> </div>', $type, $url, $message );
     
     //
     if(!WP_DEBUG){
@@ -52,6 +62,7 @@ class mf_admin {
         </script>',$url);
     }
     
+    die;
   }
 
   public function mf_form_select($data) {
