@@ -11,11 +11,31 @@ class mf_custom_fields extends mf_admin {
 
     $pt = new mf_posttype();
     $post_type = $pt->get_post_type($_GET['post_type']);
+    if(!$post_type){
+      $post_type['core']['label'] = $_GET['post_type'];
+      $post_type['core']['type'] = $_GET['post_type'];
+    }
 
     print '<div class="wrap">';
     print '<h2>'.$post_type['core']['label'].'</h2>';
-    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a></h3>';
+    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a></h3>';
     print '</div>';
+
+    //list cusmtom field of post type
+   
+    $fields = $this->get_custom_fields_post_type($post_type['core']['type']);
+    //    pr($fields);
+    ?>
+     <table class="widefat fixed" cellspacing="0">
+      <thead>
+        <tr>
+          <th scope="col" id="label" class="manage-column column-title" width="30%">label</th>
+          <th scope="col" id="type" class="manage-column column-title" width="30%">type</th>
+          <th scope="col" id="decription" class="manage-column column-title" width="30%">description</th>
+        </tr>
+      </thead>
+     </table>
+   <?php
   }
 
   /** 
@@ -31,8 +51,48 @@ class mf_custom_fields extends mf_admin {
   }
   
   function save_custom_field(){
-    pr($_POST);
-    die;
+
+    //save custom field
+    $mf = $_POST['mf_field'];
+    if($mf['core']['id']){
+      //update
+    
+    }else{
+      //insert
+      $this->new_custom_field($mf);
+    }
+    $this->mf_redirect(null,null,array('message' => 'success'));
+  }
+
+  public function new_custom_field($data){
+    global $wpdb;
+
+    if( !isset($data['option']) ) $data['option'] = array();
+   
+    $sql = sprintf(
+      "INSERT INTO %s ".
+      "(name,label,description,post_type,type,requiered_field,duplicated,options) ".
+      "VALUES ('%s','%s','%s','%s','%s',%s,%s,'%s')",
+      MF_TABLE_CUSTOM_FIELDS,
+      $data['core']['name'],
+      $data['core']['label'],
+      $data['core']['description'],
+      $data['core']['post_type'],
+      $data['core']['type'],
+      $data['core']['required_field'],
+      $data['core']['duplicate'],
+      json_encode($data['option'])
+    );
+    
+    $wpdb->query($sql);
+  }
+
+  public function get_custom_fields_post_type($post_type){
+    GLOBAL $wpdb;
+    $query = sprintf("SELECT * FROM %s WHERE post_type = '%s'", MF_TABLE_CUSTOM_FIELDS,$post_type);
+    $fields = $wpdb->get_results($query, ARRAY_A);
+    return $fields;
+    
   }
 
   /**
@@ -59,9 +119,22 @@ class mf_custom_fields extends mf_admin {
     global $mf_domain;
 
     $custom_fields = $this->get_custom_fields_name();
-
+    $post_type = ($_GET['post_type'])? $_GET['post_type'] : '';
+    $id = ($_GET['custom_field_id'])? $_GET['custom_field_id']: '';
     $data = array(
       'core'  => array(
+        'post_type' => array(
+          'type' => 'hidden',
+          'id'   => 'customfield-post_type',
+          'name' => 'mf_field[core][post_type]',
+          'value' => $post_type
+        ),
+        'id' => array(
+          'type' => 'hidden',
+          'id'   => 'customfield_id',
+          'name'  => 'mf_field[core][id]',
+          'value' => $custom_field_id
+        ),
         'type'  => array(
           'type'        =>  'select',
           'id'          =>  'customfield-type',
@@ -100,10 +173,10 @@ class mf_custom_fields extends mf_admin {
           'value'       =>  '',
           'id'          => 'customfield-description'
         ),
-        'required'    =>  array(
+        'required_field'    =>  array(
           'type'        =>  'checkbox',
           'label'       =>  __('required',$mf_domain),
-          'name'        =>  'mf_field[core][required]',
+          'name'        =>  'mf_field[core][required_field]',
           'description' =>  __( 'this field is required', $mf_domain ),
           'id'          =>  'customfield-required',
           'value'       =>  0
@@ -163,6 +236,7 @@ class mf_custom_fields extends mf_admin {
         </div>
       </div>
     </div>
+</form>
     <script type="text/javascript">
       jQuery(document).ready(function($) {
         $('#customfield-type').change( function(){

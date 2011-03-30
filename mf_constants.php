@@ -17,4 +17,5 @@ $supports = array(
 
 define('MF_TABLE_POSTTYPES', $wpdb->prefix . 'mf_posttypes');
 define('MF_TABLE_CUSTOM_TAXONOMY', $wpdb->prefix . 'mf_custom_taxonomy');
+define('MF_TABLE_CUSTOM_FIELDS',$wpdb->prefix . 'mf_custom_fields');
 
