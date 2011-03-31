@@ -165,4 +165,27 @@ class mf_admin {
     return $custom_taxonomies;
   }
 
+  /**
+   * return all gruops of post type
+   */
+  public function get_groups_by_post_type($post_type){
+    global $wpdb;
+
+    $query = sprintf("SELECT * FROM %s WHERE post_type = '%s' ",MF_TABLE_CUSTOM_GROUPS,$post_type);
+    $groups = $wpdb->get_results( $query, ARRAY_A);
+    return $groups;
+
+  }
+
+  /**
+   * retun a group
+   */
+  public function get_group($group_id){
+    global $wpdb;
+
+    $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_CUSTOM_GROUPS." WHERE id = %d", array( $group_id ) );
+    $group = $wpdb->get_row( $query, ARRAY_A);
+    return $group;
+  }
+  
 }

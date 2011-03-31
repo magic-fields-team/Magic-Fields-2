@@ -18,14 +18,24 @@ class mf_custom_fields extends mf_admin {
 
     print '<div class="wrap">';
     print '<h2>'.$post_type['core']['label'].'</h2>';
-    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a></h3>';
+    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a>';
+     print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
     print '</div>';
 
     //list cusmtom field of post type
-   
-    $fields = $this->get_custom_fields_post_type($post_type['core']['type']);
-    //    pr($fields);
+    $groups = $this->get_groups_by_post_type($post_type['core']['type']);
+    foreach( $groups as $group):
+    $name = $group['label'];
+    if($name != 'Magic Fields'){
+      $name = sprintf('<a class="edit-group-h2" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=edit_group&custom_group_id=%s">%s</a>',$group['id'],$name);
+      $name .= sprintf('<span class="mf_add_group_field">(<a href="#">create field</a>)</span>');
+      $delete_link = 'admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=delete_custom_group&custom_group_id='.$group['id'];
+      $delete_link = wp_nonce_url($delete_link,'delete_custom_group');
+      $name .= sprintf('<span class="mf_delete_group delete">(<a href="%s">delete group</a>)</span>',$delete_link);
+    }
     ?>
+      <h3><?php echo $name; ?></h3>
+     <div>
      <table class="widefat fixed" cellspacing="0">
       <thead>
         <tr>
@@ -34,8 +44,18 @@ class mf_custom_fields extends mf_admin {
           <th scope="col" id="decription" class="manage-column column-title" width="30%">description</th>
         </tr>
       </thead>
+      <tfoot>
+         <tr>
+          <th scope="col" id="label" class="manage-column column-title" width="30%">label</th>
+          <th scope="col" id="type" class="manage-column column-title" width="30%">type</th>
+          <th scope="col" id="decription" class="manage-column column-title" width="30%">description</th>
+        </tr>
+      </tfood>
      </table>
+     </div>
+      <br />
    <?php
+      endforeach;
   }
 
   /** 
@@ -120,7 +140,7 @@ class mf_custom_fields extends mf_admin {
 
     $custom_fields = $this->get_custom_fields_name();
     $post_type = ($_GET['post_type'])? $_GET['post_type'] : '';
-    $id = ($_GET['custom_field_id'])? $_GET['custom_field_id']: '';
+    $custom_field_id = isset($_GET['custom_field_id'])? $_GET['custom_field_id']: '';
     $data = array(
       'core'  => array(
         'post_type' => array(

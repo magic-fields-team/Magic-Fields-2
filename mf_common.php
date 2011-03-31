@@ -35,11 +35,13 @@ function mf_form_checkbox($data){
     $name = $data['name'];
     $check = ($data['value'])? 'checked="checked"' : '' ;
     $description = $data['description'];
+    $extra = isset($data['extra'])? sprintf('<p><small>%s/small></p>',$data['extra']) :'';
   ?>
     <label for="<?php echo $id; ?>" ><?php echo $label; ?></label>
     <input name="<?php echo $name; ?>" id="<?php echo $id; ?>_" type="hidden" value="0">
     <input name="<?php echo $name; ?>" id="<?php echo $id; ?>" type="checkbox" value="1" <?php echo $check; ?> >
-    <p><?php echo $description; ?></p>
+     <p><?php echo $description; ?></p>
+     <?php echo $extra; ?>
     <?php
   }
 

@@ -58,5 +58,20 @@ class mf_install {
       require_once(ABSPATH.'wp-admin/includes/upgrade.php');
       dbDelta($sql);
     }
+
+    // Table custom groups
+    if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_GROUPS}'") != MF_TABLE_CUSTOM_GROUPS) {
+      $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_GROUPS. " (
+        id int(19) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        name varchar(255) NOT NULL,
+        label varchar(255) NOT NULL,
+        post_type varchar(255) NOT NULL,
+        duplicated tinyint(1) DEFAULT 0,
+        expanded tinyint(1) DEFAULT 0
+      );";
+
+      require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+      dbDelta($sql);
+    }
   }
 }
