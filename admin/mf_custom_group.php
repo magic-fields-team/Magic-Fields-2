@@ -153,7 +153,7 @@ class mf_custom_group extends mf_admin {
           'label'       =>  __('Name',$mf_domain),
           'name'        =>  'mf_group[core][name]',
           'description' =>  __( 'The name only accept letters and numbers (lowercar)', $mf_domain),
-          'class'       => '',
+          'class'       => "{ validate:{ required:true, maxlength:150, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 150 characters' )."' }}}",
           'div_class'   =>  'form-required',
           'value'       =>  ''
         ),
@@ -163,6 +163,7 @@ class mf_custom_group extends mf_admin {
           'label'       =>  __('Label',$mf_domain),
           'name'        =>  'mf_group[core][label]',
           'description' =>  __( 'The label of the group', $mf_domain),
+          'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
           'div_class'   =>  'form-required',
           'value'       =>  ''
         ),
@@ -196,7 +197,7 @@ class mf_custom_group extends mf_admin {
       <h2><?php _e('Create Custom Group', $mf_domain);?></h2>
 
 
-     <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate">
+     <form id="addCustomGroup" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate">
       <div class="alignleft fixed" id="mf_add_custom_group">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>

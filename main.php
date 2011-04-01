@@ -129,6 +129,7 @@ if( is_admin() ) {
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_posttype" ) {
         wp_enqueue_script( 'mf_posttype', MF_BASENAME.'js/mf_posttypes.js', array('mf_admin') );
       }
+      
     }
   }
   

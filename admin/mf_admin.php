@@ -171,10 +171,9 @@ class mf_admin {
   public function get_groups_by_post_type($post_type){
     global $wpdb;
 
-    $query = sprintf("SELECT * FROM %s WHERE post_type = '%s' ",MF_TABLE_CUSTOM_GROUPS,$post_type);
+    $query = sprintf("SELECT * FROM %s WHERE post_type = '%s' ORDER BY id",MF_TABLE_CUSTOM_GROUPS,$post_type);
     $groups = $wpdb->get_results( $query, ARRAY_A);
     return $groups;
-
   }
 
   /**
@@ -187,5 +186,60 @@ class mf_admin {
     $group = $wpdb->get_row( $query, ARRAY_A);
     return $group;
   }
-  
+
+  /**
+   * Return id of default group for post type 
+   */
+  public function get_default_custom_group($post_type){
+    global $wpdb;
+    
+    $query = sprintf("SELECT id FROM %s WHERE name = '__default' AND post_type = '%s' ",MF_TABLE_CUSTOM_GROUPS,$post_type);
+    $group = $wpdb->get_col($query);
+
+    //exists default group?
+    if(!$group){
+      $wpdb->insert(
+        MF_TABLE_CUSTOM_GROUPS,
+        array(
+          'name' => '__default',
+          'label' => 'Magic Fields',
+          'post_type' => $post_type
+        ),
+        array(
+          '%s', 
+          '%s',
+          '%s'
+        )
+      );
+      $custom_group_id = $wpdb->insert_id;
+    }else{
+      $custom_group_id = $group[0];
+    }
+ 
+    return $custom_group_id;
+
+  }
+
+   /**
+   * return all fields of group
+   */
+  public function get_custom_fields_by_group($id){
+    global $wpdb;
+
+    $query = sprintf("SELECT * FROM %s WHERE custom_group_id = '%s' ORDER BY id",MF_TABLE_CUSTOM_FIELDS,$id);
+    $fields = $wpdb->get_results( $query, ARRAY_A);
+    return $fields;
+  }
+
+  /**
+   * retun a group
+   */
+  public function get_custom_field($custom_field_id){
+    global $wpdb;
+
+    $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE id = %d", array( $custom_field_id ) );
+    $field = $wpdb->get_row( $query, ARRAY_A);
+    return $field;
+  }
+
 }

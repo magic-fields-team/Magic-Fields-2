@@ -6,4 +6,6 @@ jQuery(document).ready(function($) {
 
   $('#addPostType').validate({meta:"validate"});
   $('#addCustomTaxonomy').validate({meta:"validate"});
+  $('#addCustomGroup').validate({meta:"validate"});
+  $('#addCustomField').validate({meta:"validate"});
 });
