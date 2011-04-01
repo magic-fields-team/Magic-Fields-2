@@ -1,7 +1,7 @@
 /* Messages boxes 
  * Thanks to: http://www.mattvarone.com/web-design/message-box-with-css/
  * */
-.message-box { text-align: center; padding: 5px; color:#545454; width:90%;  margin:5px auto; }
+.message-box { text-align: center; padding: 5px; color:#545454; width:90%;  margin:5px auto; font-weight:bold;}
 .clean { background-color: #efefef; border: 2px solid #dedede; }
 .info  { background-color: #f7fafd; border: 2px solid #b5d3ff; }
 .ok    { background-color: #d7f7c4; border: 2px solid #82cb2f; }

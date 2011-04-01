@@ -22,6 +22,18 @@ class mf_custom_fields extends mf_admin {
      print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
     //list cusmtom field of post type
     $groups = $this->get_groups_by_post_type($post_type['core']['type']);
+
+    if( empty( $groups ) ) : 
+    ?>
+      <div class="message-box info">
+        <p>
+          This post type haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a> or
+          you can create a group <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type=<?php print $post_type['core']['type'];?>">here</a>
+        </p>
+      </div>
+    <?php 
+    endif; 
+
     foreach( $groups as $group):
     $name = $group['label'];
     if($name != 'Magic Fields'){
@@ -29,7 +41,8 @@ class mf_custom_fields extends mf_admin {
       $name .= sprintf('<span class="mf_add_group_field">(<a href="#">create field</a>)</span>');
       $delete_link = 'admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=delete_custom_group&custom_group_id='.$group['id'];
       $delete_link = wp_nonce_url($delete_link,'delete_custom_group');
-      $name .= sprintf('<span class="mf_delete_group delete">(<a href="%s">delete group</a>)</span>',$delete_link);
+      $delete_msg  = __( "This action can't be undone, are you sure?", $mf_domain );
+      $name .= sprintf( '<span class="mf_delete_group delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
     }
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
@@ -66,6 +79,12 @@ class mf_custom_fields extends mf_admin {
       </tbody>  
      </table>
      </div>
+     <?php else:?>
+      <div class="message-box info">
+        <p>
+          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a>
+        </p>
+      </div>
      <?php endif; ?>
       <br />
    <?php

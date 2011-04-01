@@ -8,4 +8,21 @@ jQuery(document).ready(function($) {
   $('#addCustomTaxonomy').validate({meta:"validate"});
   $('#addCustomGroup').validate({meta:"validate"});
   $('#addCustomField').validate({meta:"validate"});
+
+
+  //Confirm for display a confirm box 
+  $('.mf_confirm').click(function() {
+    message = $(this).attr('alt');     
+
+    return confirm_message(message);
+  });
 });
+
+confirm_message = function(message) {
+
+  if( confirm( message ) ){
+    return true;
+  } else {
+    return false;
+  }
+}

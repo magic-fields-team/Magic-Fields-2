@@ -63,7 +63,7 @@ class mf_dashboard extends mf_admin {
                   $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type={$pt->name}";
                   $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
                 ?> 
-                <a href="<?php print $link;?>">Delete</a> 
+                <a class="mf_confirm" alt="<?php _e("This action can't be undone, are you sure?", $mf_domain )?>"  href="<?php print $link;?>">Delete</a> 
                  <?php endif; ?>
               </span>
             </div>
@@ -78,7 +78,16 @@ class mf_dashboard extends mf_admin {
 
     print '<h3>'.__(' Custom Taxonomy',$mf_domain).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy" class="add-new-h2 button">'.__( 'Add new Custom Taxonomy', $mf_domain ).'</a></h3>';
     print '</div>';
+
+    if( empty( $custom_taxonomies ) ) :
     ?>
+      <div class="message-box info">
+      <p>
+        ooh, you do  haven't created any Custom Taxonomy,  try creating one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy">here</a>
+      </p>
+      </div>
+
+    <?php else: ?>
     <table class="widefat fixed" cellspacing="0">
       <thead>
         <tr>
@@ -117,7 +126,7 @@ class mf_dashboard extends mf_admin {
                   $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=delete_custom_taxonomy&custom_taxonomy_id={$tax['id']}";
                   $link = wp_nonce_url($link,"delete_custom_taxonomy_mf_custom_taxonomy");
                 ?>
-                <a href="<?php print($link);?>">Delete</a>
+                <a href="<?php print($link);?>" class="mf_confirm" alt="<?php _e("This action can't be undone, are you sure?", $mf_domain );?>">Delete</a>
               </span>
             </div>
           </td>
@@ -129,8 +138,8 @@ class mf_dashboard extends mf_admin {
         <?php endif; ?>
       </tbody>
     </table>
-
     <?php
+    endif;
 
   }
 
