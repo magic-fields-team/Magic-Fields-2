@@ -9,9 +9,10 @@ function mf_form_select($data) {
   $value      = $data['value'];
   $add_empty  = $data['add_empty'];
   $description = $data['description'];
+  $class       = (isset($data['class']))? sprintf('class="%s"',$data['class']) : '';
   ?>
     <label for="<?php echo $id; ?>" ><?php echo $label; ?></label>
-    <select name="<?php echo $name; ?>" id="<?php echo $id;?>">
+      <select name="<?php echo $name; ?>" id="<?php echo $id;?>" <?php echo $class; ?>>
       <?php if($add_empty):?>
         <option value=""></option>
       <?php endif;?>
