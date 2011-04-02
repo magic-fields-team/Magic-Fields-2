@@ -1,6 +1,60 @@
-<?php 
+<?php
 
 class mf_custom_fields extends mf_admin {
+
+  public $allow_multiple = TRUE;
+  public $has_properties = TRUE;
+  public $description = '';
+  public $options = array();
+
+
+  public function __construct() {
+    $this->_update_description();
+    $this->_update_options();
+  }
+
+  public function _update_description(){
+    global $mf_domain;
+    $this->description = __("Base field",$mf_domain);
+  }
+
+  public function _update_options(){
+    $this->options = $this->_options();
+  }
+
+  public function get_options($options = NULL){
+    if($this->has_properties){
+      //aqui deberiamos saber si el campos ya esta en el sistema y pedir los datos actuales
+      // por el momento solo renderamos el formulario sin datos
+      if($options){
+        foreach($options as $k => $v){
+          @$this->options['option'][$k]['value'] = $v;
+        }
+      }
+      $this->form_options();
+    }
+
+    return false;
+  }
+
+  public function form_options(){
+
+    if(isset($this->options['option'])){
+      foreach($this->options['option'] as $option){
+        printf('<div class="form-field mf_form %s">',$option['div_class']);
+        if($option['type'] == 'text'){
+          mf_form_text($option);
+        }elseif($option['type'] == 'select'){
+          mf_form_select($option);
+        }elseif( $option['type'] == 'checkbox' ){
+          mf_form_checkbox($option);
+        }elseif( $option['type'] == 'textarea' ){
+          mf_form_textarea($option);
+        }
+        printf('</div>');
+      }
+    }
+  }
 
   /**
    * this is the page where is displayed the list of fields of a certain custom field
@@ -23,16 +77,16 @@ class mf_custom_fields extends mf_admin {
     //list cusmtom field of post type
     $groups = $this->get_groups_by_post_type($post_type['core']['type']);
 
-    if( empty( $groups ) ) : 
+    if( empty( $groups ) ) :
     ?>
       <div class="message-box info">
         <p>
-          This post type haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a> or
+          This post type haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a> or
           you can create a group <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type=<?php print $post_type['core']['type'];?>">here</a>
         </p>
       </div>
-    <?php 
-    endif; 
+    <?php
+    endif;
 
     foreach( $groups as $group):
     $name = $group['label'];
@@ -76,13 +130,13 @@ class mf_custom_fields extends mf_admin {
          <td><span class="delete"><a href="#">X <?php _e('Delete',$mf_domain)?></a></span></td>
         </tr>
        <?php endforeach; ?>
-      </tbody>  
+      </tbody>
      </table>
      </div>
      <?php else:?>
       <div class="message-box info">
         <p>
-          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a>
+          This group haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a>
         </p>
       </div>
      <?php endif; ?>
@@ -92,7 +146,7 @@ class mf_custom_fields extends mf_admin {
     print '</div>';
   }
 
-  /** 
+  /**
    *  Page for add a new custom field
    */
   function add_field() {
@@ -100,11 +154,11 @@ class mf_custom_fields extends mf_admin {
 
     $data = $this->fields_form();
     $this->form_custom_field($data);
-    ?>  
+    ?>
     <?php
   }
 
-   /** 
+   /**
    *  Page for edit a custom field
    */
   function edit_field() {
@@ -112,10 +166,10 @@ class mf_custom_fields extends mf_admin {
 
     //check param custom_field_id
 
-    
+
     $data = $this->fields_form();
     $field = $this->get_custom_field($_GET['custom_field_id']);
-    
+
     //check if exist field
     if(!$field){
       $this->mf_flash('error',null,null);
@@ -126,19 +180,20 @@ class mf_custom_fields extends mf_admin {
           $data['core'][$k]['value'] = $v;
         }
       }
+      $data['option'] = json_decode($field['options']);
     }
     $this->form_custom_field($data);
-    ?>  
+    ?>
     <?php
   }
-  
+
   function save_custom_field(){
 
     //save custom field
     $mf = $_POST['mf_field'];
     if($mf['core']['id']){
       //update
-    
+      $this->update_custom_field($mf);
     }else{
       //insert
       $this->new_custom_field($mf);
@@ -150,13 +205,13 @@ class mf_custom_fields extends mf_admin {
     global $wpdb;
 
     if( !isset($data['option']) ) $data['option'] = array();
-   
+
     //check group
     if(!$data['core']['custom_group_id']){
       $custom_group_id = $this->get_default_custom_group($data['core']['post_type']);
       $data['core']['custom_group_id'] = $custom_group_id;
     }
-    
+
     $sql = sprintf(
       "INSERT INTO %s ".
       "(name,label,description,post_type,custom_group_id,type,requiered_field,duplicated,options) ".
@@ -168,20 +223,54 @@ class mf_custom_fields extends mf_admin {
       $data['core']['post_type'],
       $data['core']['custom_group_id'],
       $data['core']['type'],
-      $data['core']['required_field'],
+      $data['core']['requiered_field'],
       $data['core']['duplicate'],
       json_encode($data['option'])
     );
-    
+
     $wpdb->query($sql);
   }
+
+  /**
+   * Update a custom field
+   */
+  public function update_custom_field($data){
+    global $wpdb;
+
+    if( !isset($data['option']) ) $data['option'] = array();
+
+    //check group
+    if(!$data['core']['custom_group_id']){
+      $custom_group_id = $this->get_default_custom_group($data['core']['post_type']);
+      $data['core']['custom_group_id'] = $custom_group_id;
+    }
+
+    $sql = sprintf(
+     "UPDATE %s ".
+     "SET name = '%s', label = '%s', description = '%s',type = '%s', requiered_field = %d, ".
+     "duplicated = %d, options = '%s' ".
+     "WHERE id = %d",
+     MF_TABLE_CUSTOM_FIELDS,
+     $data['core']['name'],
+     $data['core']['label'],
+     $data['core']['description'],
+     $data['core']['type'],
+     $data['core']['requiered_field'],
+     $data['core']['duplicate'],
+     json_encode($data['option']),
+     $data['core']['id']
+    );
+    $wpdb->query($sql);
+  }
+
+
 
   public function get_custom_fields_post_type($post_type){
     GLOBAL $wpdb;
     $query = sprintf("SELECT * FROM %s WHERE post_type = '%s'", MF_TABLE_CUSTOM_FIELDS,$post_type);
     $fields = $wpdb->get_results($query, ARRAY_A);
     return $fields;
-    
+
   }
 
   /**
@@ -191,13 +280,13 @@ class mf_custom_fields extends mf_admin {
    */
   function get_custom_fields_name () {
     $path = MF_PATH.'/field_types/*';
-    $folders = glob($path,GLOB_ONLYDIR); 
-    
+    $folders = glob($path,GLOB_ONLYDIR);
+
     $fields = array();
 
     foreach($folders as $folder) {
       $name = preg_match('/\/([\w\_]+)\_field$/i',$folder,$name_match);
-      $fields[$name_match[1]] = $name_match[1];
+      $fields[$name_match[1]] = preg_replace('/_/',' ',$name_match[1]);
     }
 
     return $fields;
@@ -212,7 +301,7 @@ class mf_custom_fields extends mf_admin {
     $custom_field_id = isset($_GET['custom_field_id'])? $_GET['custom_field_id']: '';
     $custom_group_id = isset($_GET['custom_group_id'])? $_GET['custom_group_id']: '';
     $data = array(
-      'core'  => array(        
+      'core'  => array(
         'id' => array(
           'type' => 'hidden',
           'id'   => 'customfield_id',
@@ -267,7 +356,7 @@ class mf_custom_fields extends mf_admin {
         ),
         'description' =>  array(
           'type'        =>  'text',
-          'label'       =>  __('Description',$mf_domain), 
+          'label'       =>  __('Help text',$mf_domain),
           'name'        =>  'mf_field[core][description]',
           'description' =>  __( 'Tell to the user about what is the field', $mf_domain ),
           'value'       =>  '',
@@ -312,9 +401,9 @@ class mf_custom_fields extends mf_admin {
       <div class="alignleft fixed" id="mf_add_custom_field">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
-	          <?php mf_form_hidden($core); ?>
+                  <?php mf_form_hidden($core); ?>
           <?php elseif( $core['type'] == 'text' ):?>
-	          <div class="form-field mf_form <?php echo $core['div_class']; ?>">
+                  <div class="form-field mf_form <?php echo $core['div_class']; ?>">
               <?php mf_form_text($core); ?>
             </div>
           <?php elseif( $core['type'] == "select" ):?>
@@ -327,19 +416,27 @@ class mf_custom_fields extends mf_admin {
               <?php mf_form_checkbox($core);?>
               </div>
             </fieldset>
-          <?php endif;?> 
+          <?php endif;?>
         <?php endforeach;?>
-      	<p class="submit">
-      	  <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
-      	  <input type="submit" class="button" name="submit" id="submit" value="Save Custom Field">
-      	</p>
+        <p class="submit">
+          <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
+          <input type="submit" class="button" name="submit" id="submit" value="Save Custom Field">
+        </p>
       </div>
       <div class="widefat mf_form_right">
         <h4>Options of field</h4>
-        <div  id="options_field_legend">
+        <?php $legend_class = ($data['core']['id']['value'])? sprintf('style="display:none;"') : ''; ?>
+        <div  id="options_field_legend" <?php echo $legend_class; ?> >
           <p>By default on this box will be displayed a information about custom fields, after the  custom field be selected, this box will be displayed some extra options of the field (if required) or a information about the selected field</p>
         </div>
-        <div id="options_field"></div>
+        <div id="options_field">
+           <?php
+           if( $data['core']['id']['value'] ){
+             $name = sprintf('%s_field',$data['core']['type']['value']);
+             $mf_field = new $name();
+             $mf_field->get_options($data['option']);
+           } ?>
+        </div>
       </div>
     </div>
 </form>
@@ -363,9 +460,69 @@ class mf_custom_fields extends mf_admin {
             $("#options_field_legend").show();
             $("#options_field").empty();
           }
+          <?php if($data['core']['id']['value']){
+
+              }
+
+          ?>
+
         });
       });
     </script>
   <?php
   }
+
+  public function _options(){
+    global $mf_domain;
+
+    $data = array(
+      'option'  => array(
+        'text_option'  => array(
+          'type'        => 'text',
+          'id'          => 'text_id',
+          'label'       => __('label for text(input)',$mf_domain),
+          'name'        => 'mf_field[option][text_option]',
+          'description' => __( 'aqui una descripcion', $mf_domain ),
+          'value'       => 'default value',
+          'div_class'   => 'class_text',
+        'class'       => 'div_class_text'
+        ),
+        'checkbox_option' => array(
+          'type'        => 'checkbox',
+          'id'          => 'checkbox_id',
+          'label'       => __('label for checkbox',$mf_domain),
+          'name'        => 'mf_field[option][checkbox_option]',
+          'value'       => 1,
+          'description' => __('One description for checkbox',$mf_domain),
+          'class'       => 'class_checkbox',
+        'div_class'   => 'div_class_checkbox'
+        ),
+        'select_option' =>  array(
+          'type'        => 'select',
+          'id'          => 'select_id',
+          'label'       =>  __('label for select', $mf_domain),
+          'name'        =>  'mf_field[option][select_option]',
+          'value'       => '',
+          'description' =>  __( 'description for select', $mf_domain ),
+          'options'     => array('one','two','more'),
+          'add_empty'   => true,
+          'div_class'   => 'class_select',
+        'class'       => 'div_class_select'
+        ),
+        'textarea_option' =>  array(
+          'type'        => 'textarea',
+          'id'          => 'textarea_id',
+          'label'       =>  __('Label for textarea', $mf_domain),
+          'name'        =>  'mf_field[option][textarea_option]',
+          'value'       => 'uno value',
+          'description' =>  __( 'description for textarea', $mf_domain ),
+          'div_class'   => 'class_textarea',
+        'class'       => 'div_class_textarea'
+        )
+      )
+    );
+
+    return $data;
+  }
+
 }

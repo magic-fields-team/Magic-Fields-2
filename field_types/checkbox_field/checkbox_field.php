@@ -5,7 +5,7 @@ global $mf_domain;
 
 // class with static properties encapsulating functions for the field type
 
-class checkbox_field extends mf_field {
+class checkbox_field extends mf_custom_fields {
 
   public $allow_multiple = TRUE;
   public $has_properties = TRUE;
@@ -15,7 +15,7 @@ class checkbox_field extends mf_field {
     $this->description = __("Simple checkbox input",$mf_domain);
   }
   
-  public function _options1(){
+  public function _options2(){
     global $mf_domain;
     
     $data = array(
@@ -23,8 +23,8 @@ class checkbox_field extends mf_field {
         'type'  => array(
           'type'        =>  'text',
           'id'          =>  'uno',
-          'label'       =>  'opcion 1',
-          'name'        =>  'uno',
+          'label'       =>  'Campo de',
+          'name'        =>  'mf_field[option][uno]',
           'default'     =>  '',
           'description' =>  __( 'aqui una descripcion', $mf_domain ),
           'value'       =>  '',

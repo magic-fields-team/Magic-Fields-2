@@ -5,7 +5,7 @@ global $mf_domain;
 
 // class with static properties encapsulating functions for the field type
 
-class dropdown_field extends mf_field {
+class dropdown_field extends mf_custom_fields {
 
   public $allow_multiple = TRUE;
   public $has_properties = TRUE;

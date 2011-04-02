@@ -4,7 +4,7 @@ global $mf_domain;
 
 // initialisation
 
-class multiline_field extends mf_field {
+class multiline_field extends mf_custom_fields {
 
   public static $allow_multiple = TRUE;
   public static $has_properties = TRUE;

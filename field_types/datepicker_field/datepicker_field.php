@@ -5,7 +5,7 @@ global $mf_domain;
 
 // class with static properties encapsulating functions for the field type
 
-class datepicker_field extends mf_field {
+class datepicker_field extends mf_custom_field {
 
   public $allow_multiple = TRUE;
   public $has_properties = TRUE;
@@ -23,8 +23,8 @@ class datepicker_field extends mf_field {
         'type'  => array(
           'type'        =>  'text',
           'id'          =>  'uno',
-          'label'       =>  'opcion 1',
-          'name'        =>  'uno',
+          'label'       =>  'opcion color picker',
+          'name'        =>  'mf_field[option][uno]',
           'default'     =>  '',
           'description' =>  __( 'aqui una descripcion', $mf_domain ),
           'value'       =>  '',

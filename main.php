@@ -137,12 +137,12 @@ if( is_admin() ) {
   add_action('wp_ajax_load_field_type', 'load_field_type_option');
 
   function load_field_type_option(){
-  	if( isset($_POST['field_type']) && ($_POST['field_type'] != NULL) ){
-  	  $name = sprintf('%s_field',$_POST['field_type']);
+    if( isset($_POST['field_type']) && ($_POST['field_type'] != NULL) ){
+      $name = sprintf('%s_field',$_POST['field_type']);
       $mf_field = new $name();
       $mf_field->get_options();
-	  }
-  	die;
+    }
+    die;
   }
   
 }
