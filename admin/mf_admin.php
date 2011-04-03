@@ -226,7 +226,7 @@ class mf_admin {
   public function get_custom_fields_by_group($id){
     global $wpdb;
 
-    $query = sprintf("SELECT * FROM %s WHERE custom_group_id = '%s' ORDER BY id",MF_TABLE_CUSTOM_FIELDS,$id);
+    $query = sprintf("SELECT * FROM %s WHERE custom_group_id = '%s' ORDER BY display_order",MF_TABLE_CUSTOM_FIELDS,$id);
     $fields = $wpdb->get_results( $query, ARRAY_A);
     return $fields;
   }

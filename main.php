@@ -129,13 +129,18 @@ if( is_admin() ) {
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_posttype" ) {
         wp_enqueue_script( 'mf_posttype', MF_BASENAME.'js/mf_posttypes.js', array('mf_admin') );
       }
-      
+    
+      //Adding the files for the sort feature of the custom fields
+      if( ( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == 'mf_custom_fields' ) &&
+          ( !empty( $_GET['mf_action'] ) && $_GET['mf_action'] == 'fields_list' ) ) {
+        wp_enqueue_script( 'mf_sortable_fields', MF_BASENAME.'js/mf_posttypes_sortable.js', array( 'jquery-ui-sortable' ) );
+  
+      }
     }
   }
   
   //catch call ajax for new field
-  add_action('wp_ajax_load_field_type', 'load_field_type_option');
-
+  add_action( 'wp_ajax_load_field_type', 'load_field_type_option' );
   function load_field_type_option(){
     if( isset($_POST['field_type']) && ($_POST['field_type'] != NULL) ){
       $name = sprintf('%s_field',$_POST['field_type']);
@@ -144,7 +149,23 @@ if( is_admin() ) {
     }
     die;
   }
-  
+
+  //catch call ajax for sorter the fields
+  add_action( 'wp_ajax_mf_sort_fields', 'mf_sort_fields' );
+  function mf_sort_fields() {
+    if ( !empty( $_POST['order'] ) && !empty( $_POST['group_id'] ) ) {
+      $order = $_POST['order'];
+      $order = split(',',$order);
+      array_walk( $order, create_function( '&$v,$k', '$v =  str_replace("order_","",$v);' ));
+    
+      if( $thing =  mf_custom_fields::save_order_field( $_POST['group_id'], $order ) ) {
+        print "1";
+        die;
+      }
+      print "0"; //error!
+    }
+    die;
+  }
 }
 
 //Register Post Types and Custom Taxonomies

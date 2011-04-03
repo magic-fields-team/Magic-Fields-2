@@ -73,7 +73,7 @@ class mf_custom_fields extends mf_admin {
     print '<div class="wrap">';
     print '<h2>'.$post_type['core']['label'].'</h2>';
     print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a>';
-     print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
+    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
     //list cusmtom field of post type
     $groups = $this->get_groups_by_post_type($post_type['core']['type']);
 
@@ -87,7 +87,6 @@ class mf_custom_fields extends mf_admin {
       </div>
     <?php
     endif;
-
     foreach( $groups as $group):
     $name = $group['label'];
     if($name != 'Magic Fields'){
@@ -101,33 +100,39 @@ class mf_custom_fields extends mf_admin {
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
     ?>
-      <h3><?php echo $name; ?></h3>
+      <h3><?php echo $name; ?></h3><div class="mf-ajax-loading" id="mf-ajax-loading-<?php echo $group['id'];?>"></div>
       <?php if($fields): ?>
      <div>
-     <table class="widefat fixed" cellspacing="0">
+      <input type="hidden" name="mf_order_fields" id="mf_order_fields" />
+     <table class="widefat fixed" id="mf_sortable" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="label" class="manage-column column-title" width="30%"><?php _e('Label',$mf_domain); ?></th>
-          <th scope="col" id="name" class="manage-column column-title" width="30%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
-          <th scope="col" id="type" class="manage-column column-title" width="30%"><?php _e('Type',$mf_domain); ?></th>
-          <th scope="col" id="actions" class="manage-column column-title" width="30%"><?php _e('Actions',$mf_domain); ?></th>
+          <th scope="col" id="order" class="manage-column column-title" width="10%"><?php _e( 'Order', $mf_domain ); ?></th>
+          <th scope="col" id="label" class="manage-column column-title" width="25%"><?php _e('Label',$mf_domain); ?></th>
+          <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
+          <th scope="col" id="type" class="manage-column column-title" width="20%"><?php _e('Type',$mf_domain); ?></th>
+          <th scope="col" id="actions" class="manage-column column-title" width="20%"><?php _e('Actions',$mf_domain); ?></th>
         </tr>
       </thead>
       <tfoot>
          <tr>
-          <th scope="col" id="label" class="manage-column column-title" width="30%"><?php _e('Label',$mf_domain); ?></th>
-          <th scope="col" id="name" class="manage-column column-title" width="30%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
-          <th scope="col" id="type" class="manage-column column-title" width="30%"><?php _e('Type',$mf_domain); ?></th>
-          <th scope="col" id="actions" class="manage-column column-title" width="30%"><?php _e('Actions',$mf_domain); ?></th>
+          <th scope="col" id="order" class="manage-column column-title" width="10%"><?php _e( 'Order', $mf_domain ); ?></th>
+          <th scope="col" id="label" class="manage-column column-title" width="10%"><?php _e('Label',$mf_domain); ?></th>
+          <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
+          <th scope="col" id="type" class="manage-column column-title" width="25%"><?php _e('Type',$mf_domain); ?></th>
+          <th scope="col" id="actions" class="manage-column column-title" width="20%"><?php _e('Actions',$mf_domain); ?></th>
         </tr>
       </tfood>
-      <tbody>
-      <?php foreach($fields as $field):?>
-        <tr>
-         <td><a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a></td>
-         <td><?php echo $field['name'];?> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
-         <td><?php echo $field['type'];?></td>
-         <td><span class="delete"><a href="#">X <?php _e('Delete',$mf_domain)?></a></span></td>
+      <tbody rel="group-<?php print $group['id']; ?>" >
+      <?php foreach($fields as $field): ?>
+        <tr id="order_<?php echo $field['id']; ?>">
+          <td>
+            <img class="mf-order-icon" src="<?php echo MF_BASENAME ?>images/arrows_up_down.gif" />
+          </td>
+          <td><a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a></td>
+          <td><?php echo $field['name'];?> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
+          <td><?php echo $field['type'];?></td>
+          <td><span class="delete"><a href="#">X <?php _e('Delete',$mf_domain)?></a></span></td>
         </tr>
        <?php endforeach; ?>
       </tbody>
@@ -525,4 +530,26 @@ class mf_custom_fields extends mf_admin {
     return $data;
   }
 
+  public static function save_order_field( $group_id, $order ) {
+    global $wpdb;
+
+    if( !is_numeric($group_id) ) {
+      return false;
+    }
+
+    foreach( $order as $key => $value ) {
+      $update = $wpdb->update( 
+        MF_TABLE_CUSTOM_FIELDS, 
+        array( 'display_order' => $key ), 
+        array( 'custom_group_id' => $group_id, 'id' => $value ),
+        array( '%d' ),
+        array( '%d', '%d' )
+      );
+
+      if( $update  === false ) {
+        return $update;
+      } 
+    }
+    return true;
+  }
 }

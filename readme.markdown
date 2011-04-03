@@ -14,3 +14,5 @@ This new version of Magic Fields is not usable for the moment.
 * http://bassistance.de  for his awesome [Jquery Validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/,"jQuery Validate")
 
 * John Resig  for his [jQuery metadata Plugin](https://github.com/jquery/jquery-metadata,'jQuery metadata')
+
+* Paul Armstrong because we use a few of his [bwpx icons](http://paularmstrongdesigns.com/projects/bwpx-icns/) !

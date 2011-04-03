@@ -23,3 +23,9 @@ div.mf_form_right { float: left; clear: right; overflow: hidden; margin: 0; widt
 div.mf_form_right div { padding-left: 10px; }
 div.options_label label{ width: 130px; float: left; }
 div.options_label input{ width: 200px;}
+
+/** Sortable Post Type **/
+.mf-order-icon { cursor:move; }
+.mf-sortable-placeholder { height: 1.2em; line-height:1.2em; display:table-row } 
+.ui-sortable-helper  { border: 1px solid #DFDFDF; background: #FFF; }
+.mf-ajax-loading { width: 16px; height: 16px; background-image:url('../images/ajax-loader.gif'); display:none; } 
