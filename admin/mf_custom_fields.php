@@ -91,10 +91,15 @@ class mf_custom_fields extends mf_admin {
     $name = $group['label'];
     if($name != 'Magic Fields'){
       $name = sprintf('<a class="edit-group-h2" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=edit_group&custom_group_id=%s">%s</a>',$group['id'],$name);
-      $name .= sprintf('<span class="mf_add_group_field">(<a href="#">create field</a>)</span>');
+
+      $add = sprintf('admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s&custom_group_id=%s',$post_type['core']['type'],$group['id']);
+
+      $name .= sprintf('<span class="mf_add_group_field">(<a href="%s">create field</a>)</span>',$add);
+
       $delete_link = 'admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=delete_custom_group&custom_group_id='.$group['id'];
       $delete_link = wp_nonce_url($delete_link,'delete_custom_group');
       $delete_msg  = __( "This action can't be undone, are you sure?", $mf_domain );
+
       $name .= sprintf( '<span class="mf_delete_group delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
     }
     //return all fields for group
@@ -156,7 +161,7 @@ class mf_custom_fields extends mf_admin {
    */
   function add_field() {
     global $mf_domain;
-
+    
     $data = $this->fields_form();
     $this->form_custom_field($data);
     ?>
