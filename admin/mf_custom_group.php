@@ -25,7 +25,7 @@ class mf_custom_group extends mf_admin {
     
     //check exist group
     if(!$group){
-       $this->mf_flash('error',null,null);
+       $this->mf_flash('error');
     }else{
       //set the values
       foreach($group as $k => $v){

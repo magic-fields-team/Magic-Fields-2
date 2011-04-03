@@ -41,14 +41,14 @@ class mf_admin {
    * Display a friendly message of error
    *
    * @param string message the messages to will be displayed
-   * @param string section the section where the user will be send it 
-   * @param string action  the action where the user will be send it
-   * @param string vars  
+   * @param mixed  can be a array or a string  
    * @param string the css class to will be added into the message (e.j  'error','info','ok','alert')
    */
 
-  function mf_flash($message = 'Return dashboard', $section = 'mf_dashboard', $action = 'main', $vars = array( ), $type = 'error' ){
-    $url = $this->_get_url(  $section , $action , $vars );
+  function mf_flash( $message = 'Return dashoard', $url = array('section' => 'mf_dashboard', 'action' => 'main', 'vars' => ''), $type = 'error') { 
+    if( is_array($url) ) {
+      $url = $this->_get_url(  $url['section'] , $url['action'] , $url['vars'] );
+    } 
     
     printf(' <div class="wrap"><div id="message" class="%s below-h2"><p><a href="%s">%s</a></p></div> </div>', $type, $url, $message );
     

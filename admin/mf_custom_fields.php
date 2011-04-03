@@ -177,7 +177,7 @@ class mf_custom_fields extends mf_admin {
 
     //check if exist field
     if(!$field){
-      $this->mf_flash('error',null,null);
+      $this->mf_flash('error');
     }else{
       $no_set = array('options','active','display_order');
       foreach($field as $k => $v){
