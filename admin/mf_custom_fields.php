@@ -137,7 +137,12 @@ class mf_custom_fields extends mf_admin {
           <td><a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a></td>
           <td><?php echo $field['name'];?> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
           <td><?php echo $field['type'];?></td>
-          <td><span class="delete"><a href="#">X <?php _e('Delete',$mf_domain)?></a></span></td>
+          <?php
+            $delete_link = "admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=delete_custom_field&custom_field_id={$field['id']}&init=true";
+            $delete_link = wp_nonce_url($delete_link,'delete_custom_field');
+            $delete_msg = __('This action can\'t be undone, are you sure?', $mf_domain);
+          ?>
+          <td><span class="delete"><a class="mf_confirm" alt="<?php print $delete_msg; ?>" href="<?php print $delete_link;?>">X <?php _e('Delete',$mf_domain)?></a></span></td>
         </tr>
        <?php endforeach; ?>
       </tbody>
@@ -556,5 +561,34 @@ class mf_custom_fields extends mf_admin {
       } 
     }
     return true;
+  }
+
+  /**
+   * Delete Custom Field
+   */
+  function delete_custom_field() {
+    global $wpdb;
+
+    //checking the nonce
+    check_admin_referer('delete_custom_field');
+
+    if(  isset($_GET['custom_field_id']) ) {
+      $id = (int)$_GET['custom_field_id'];
+
+      if( is_int($id) ){
+        $sql = "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE id = ".$id;
+        $wpdb->query($sql);
+        //@todo: Supongo que eventualmente vamos a tener que borrar todas las referencias a post_meta que haya en los posts ya creados 
+      }
+    }
+
+    //ToDo: poner mensaje de que se borro correctamente
+    wp_safe_redirect(
+      add_query_arg(
+        'field_deleted',
+        'true',
+        wp_get_referer()
+      )
+    );
   }
 }
