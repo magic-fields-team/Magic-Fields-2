@@ -536,12 +536,8 @@ class mf_posttype extends mf_admin {
    */
   public function get_post_type($post_type){
     global $wpdb;
-
-    if(is_int($post_type)) {
-      $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_POSTTYPES." WHERE id = %d", array( $post_type ) );
-    }else{
-      $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_POSTTYPES." WHERE type = %s", array( $post_type ) );
-    }
+    
+    $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_POSTTYPES." WHERE type = %s", array( $post_type ) );
 
     $post_type = $wpdb->get_row( $query, ARRAY_A );
     if($post_type){

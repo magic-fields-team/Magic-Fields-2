@@ -63,26 +63,21 @@ class mf_custom_fields extends mf_admin {
   function fields_list() {
     global $mf_domain;
 
-    $pt = new mf_posttype();
-    $post_type = $pt->get_post_type($_GET['post_type']);
-    if(!$post_type){
-      $post_type['core']['label'] = $_GET['post_type'];
-      $post_type['core']['type'] = $_GET['post_type'];
-    }
+    $post_type =  get_post_type_object($_GET['post_type']);
 
     print '<div class="wrap">';
-    print '<h2>'.$post_type['core']['label'].'</h2>';
-    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a>';
-    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type['core']['type'].'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
+    print '<h2>'.$post_type->label.'</h2>';
+    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type->name.'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a>';
+    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type->name.'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
     //list cusmtom field of post type
-    $groups = $this->get_groups_by_post_type($post_type['core']['type']);
+    $groups = $this->get_groups_by_post_type($post_type->name);
 
     if( empty( $groups ) ) :
     ?>
       <div class="message-box info">
         <p>
-          This post type haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a> or
-          you can create a group <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type=<?php print $post_type['core']['type'];?>">here</a>
+          This post type haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a> or
+          you can create a group <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type=<?php print $post_type->name;?>">here</a>
         </p>
       </div>
     <?php
@@ -92,7 +87,7 @@ class mf_custom_fields extends mf_admin {
     if($name != 'Magic Fields'){
       $name = sprintf('<a class="edit-group-h2" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=edit_group&custom_group_id=%s">%s</a>',$group['id'],$name);
 
-      $add = sprintf('admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s&custom_group_id=%s',$post_type['core']['type'],$group['id']);
+      $add = sprintf('admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s&custom_group_id=%s',$post_type->name,$group['id']);
 
       $name .= sprintf('<span class="mf_add_group_field">(<a href="%s">create field</a>)</span>',$add);
 
@@ -151,7 +146,7 @@ class mf_custom_fields extends mf_admin {
      <?php else:?>
       <div class="message-box info">
         <p>
-          This group haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type['core']['type'];?>">here</a>
+          This group haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a>
         </p>
       </div>
      <?php endif; ?>
