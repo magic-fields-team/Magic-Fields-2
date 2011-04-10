@@ -9,12 +9,10 @@ class mf_register{
   function __construct(){
     add_action('init', array( &$this, 'mf_register_custom_taxonomies' ) );
     add_action('init', array( &$this, 'mf_register_post_types' ) );
-    //add_action('init', array( &$this, 'mf_register_custom_taxonomies' ) );
   }
 
   // register post type
   public function mf_register_post_types(){
-    
     global $mf_pt_register;
 
     $post_types = $this->_get_post_types();

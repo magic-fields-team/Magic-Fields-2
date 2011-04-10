@@ -8,7 +8,7 @@ global $mf_domain;
 class textbox_field extends mf_custom_fields {
 
   public $allow_multiple = TRUE;
-  public $has_properties = TRUE;
+  public $has_properties = FALSE;
   
   public function _update_description(){
     global $mf_domain;

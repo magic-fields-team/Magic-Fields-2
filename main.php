@@ -179,6 +179,9 @@ if( is_admin() ) {
 //Register Post Types and Custom Taxonomies
 $mf_register = new mf_register();
 
+//Adding metaboxes, and hooks for save the data when is created a new post
+$mf_post = new mf_post();
+
 /** 
  * aux function 
  **/

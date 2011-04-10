@@ -531,6 +531,7 @@ class mf_posttype extends mf_admin {
    * get a specific post type using the post_type_id or the post_type_name
    *
    * @param mixed  post_type, can be a integer or a string
+   * @todo get_post_type fails when the post type is "page" or "post'
    * @return array
    */
   public function get_post_type($post_type){

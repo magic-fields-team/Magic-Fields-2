@@ -540,6 +540,9 @@ class mf_custom_fields extends mf_admin {
     return $data;
   }
 
+  /**
+   * Save the order of the custom fields
+   */
   public static function save_order_field( $group_id, $order ) {
     global $wpdb;
 
@@ -562,6 +565,20 @@ class mf_custom_fields extends mf_admin {
     }
     return true;
   }
+
+  /** 
+   * Return True if the post type has at least one custom field
+   * 
+   * return @bool
+   **/
+  public static function has_fields($post_type_name) {
+    global $wpdb;
+
+    $sql = $wpdb->prepare("SELECT COUNT(1) FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE post_type = %s",$post_type_name);
+  
+    return $wpdb->get_var( $sql ) > 0;
+  }
+
 
   /**
    * Delete Custom Field

@@ -15,8 +15,8 @@ $supports = array(
     'page_attributes'
 );
 
-define('MF_TABLE_POSTTYPES', $wpdb->prefix . 'mf_posttypes');
-define('MF_TABLE_CUSTOM_TAXONOMY', $wpdb->prefix . 'mf_custom_taxonomy');
-define('MF_TABLE_CUSTOM_FIELDS',$wpdb->prefix . 'mf_custom_fields');
-define('MF_TABLE_CUSTOM_GROUPS',$wpdb->prefix . 'mf_custom_groups');
-
+define( 'MF_TABLE_POSTTYPES', $wpdb->prefix . 'mf_posttypes' );
+define( 'MF_TABLE_CUSTOM_TAXONOMY', $wpdb->prefix . 'mf_custom_taxonomy' );
+define( 'MF_TABLE_CUSTOM_FIELDS',$wpdb->prefix . 'mf_custom_fields' );
+define( 'MF_TABLE_CUSTOM_GROUPS',$wpdb->prefix . 'mf_custom_groups' );
+define( 'MF_TABLE_POST_META', $wpdb->prefix.'mf_post_meta' );

@@ -6,6 +6,8 @@ class mf_install {
 
   function install () {
     global $wpdb;
+
+    require_once(ABSPATH.'wp-admin/includes/upgrade.php');
   
     $table_name = $wpdb->prefix."mf_posttypes";
     
@@ -20,7 +22,6 @@ class mf_install {
         active tinyint(1) DEFAULT 1
       );";
 
-      require_once(ABSPATH.'wp-admin/includes/upgrade.php');
       dbDelta($sql);
     }
 
@@ -35,7 +36,6 @@ class mf_install {
         active tinyint(1) DEFAULT 1
       );";
 
-      require_once(ABSPATH.'wp-admin/includes/upgrade.php');
       dbDelta($sql);
     }
     
@@ -56,7 +56,6 @@ class mf_install {
         options text
       );";
 
-      require_once(ABSPATH.'wp-admin/includes/upgrade.php');
       dbDelta($sql);
     }
 
@@ -71,7 +70,20 @@ class mf_install {
         expanded tinyint(1) DEFAULT 0
       );";
 
-      require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+      dbDelta($sql);
+    }
+
+    // Table MF Post Meta
+    if( $wpdb->get_var("SHOW tables LIKE '{MF_TABLE_POST_META}'") != MF_TABLE_POST_META ) {
+      $sql = "CREATE TABLE ".MF_TABLE_POST_META." ( 
+        meta_id INT NOT NULL, 
+        field_id INT NOT NULL, 
+        field_count INT NOT NULL,  
+        group_id INT NOT NULL, 
+        group_count  INT NOT NULL, 
+        post_id INT NOT NULL
+      );";
+
       dbDelta($sql);
     }
   }
