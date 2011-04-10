@@ -83,6 +83,14 @@ if( is_admin() ) {
     add_menu_page('Magic Fields','Magic Fields','activate_plugins','mf_dispatcher','mf_dispatcher',MF_BASENAME.'/images/wand-hat.png');
   }
 
+  //Adding metaboxes into the  pages for create posts 
+  //Also adding code for save this data
+  add_action( 'add_meta_boxes', 'mf_add_meta_boxes');
+  function mf_add_meta_boxes() {
+     
+  }
+
+
   /**
    * Magic Fields dispatcher
    */ 
@@ -169,8 +177,7 @@ if( is_admin() ) {
 }
 
 //Register Post Types and Custom Taxonomies
-require_once(MF_PATH.'/mf_register.php');
-
+$mf_register = new mf_register();
 
 /** 
  * aux function 
@@ -182,3 +189,4 @@ if (!function_exists('pr')) {
     echo "</pre>";
   }
 }
+

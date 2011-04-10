@@ -103,6 +103,4 @@ class mf_register{
     $custom_taxonomies = $wpdb->get_results( $query, ARRAY_A );
     return $custom_taxonomies;
   }
-
 }
-$mf_register = new mf_register();

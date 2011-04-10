@@ -344,10 +344,10 @@ class mf_posttype extends mf_admin {
 	<!-- core -->
 	<?php foreach($data['core'] as $core): ?>
 	<?php if($core['type'] == 'hidden'): ?>
-	  <?php $this->mf_form_hidden($core); ?>
+	  <?php mf_form_hidden($core); ?>
 	<?php elseif($core['type'] == 'text'): ?>
 	  <div class="form-field mf_form <?php echo $core['div_class']; ?>">
-	    <?php $this->mf_form_text($core); ?>
+	    <?php mf_form_text($core); ?>
 	  </div>
 	<?php endif; ?>
 	<?php endforeach; ?>
@@ -413,9 +413,9 @@ class mf_posttype extends mf_admin {
 	    <div class="form-field mf_label_checkbox mf_form">
 	      <?php
 		if($option['type'] == 'text'){
-		  $this->mf_form_text($option);
+		  mf_form_text($option);
 		}elseif($option['type'] == 'checkbox'){
-		  $this->mf_form_checkbox($option);
+		  mf_form_checkbox($option);
 		}
 	      ?>
 	    </div>
@@ -426,7 +426,7 @@ class mf_posttype extends mf_admin {
 
       <div class="options_label" style="display: none">
 	<fieldset>
-	  <?php $this->mf_form_checkbox($data['suggest_labels']);?>
+	  <?php mf_form_checkbox($data['suggest_labels']);?>
 	</fieldset>
 
 	  <fieldset>
@@ -434,7 +434,7 @@ class mf_posttype extends mf_admin {
 	    <!-- labels -->
 	    <?php foreach($data['label'] as $label){ ?>
 	    <div class="form-field mf_label_checkbox mf_form">
-	      <?php $this->mf_form_text($label); ?>
+	      <?php mf_form_text($label); ?>
 	    </div>
 	  <?php } ?>
 	  <!-- / labels -->
