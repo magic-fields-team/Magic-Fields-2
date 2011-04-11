@@ -14,13 +14,14 @@ class mf_install {
     //checking if the table is already installed
     if($wpdb->get_var("SHOW tables LIKE '{$table_name}'") != $table_name) {
       $sql = "CREATE TABLE ".$table_name. " (
-        id mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
         type varchar(20) NOT NULL,
         name varchar(50) NOT NULL,
         description text,
         arguments text,
-        active tinyint(1) DEFAULT 1
-      );";
+        active tinyint(1) DEFAULT 1,
+        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+      ";
 
       dbDelta($sql);
     }
@@ -28,13 +29,14 @@ class mf_install {
     // Table custom taxonomy
     if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_TAXONOMY}'") != MF_TABLE_CUSTOM_TAXONOMY) {
       $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_TAXONOMY. " (
-        id mediumint(9) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
         type varchar(20) NOT NULL,
         name varchar(50) NOT NULL,
         description text,
         arguments text,
-        active tinyint(1) DEFAULT 1
-      );";
+        active tinyint(1) DEFAULT 1,
+        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+      ";
 
       dbDelta($sql);
     }
@@ -42,7 +44,7 @@ class mf_install {
     // Table custom fields
     if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_FIELDS}'") != MF_TABLE_CUSTOM_FIELDS) {
       $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_FIELDS. " (
-        id int(19) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        id int(19) NOT NULL AUTO_INCREMENT,
         name varchar(150) NOT NULL,
         label varchar(150) NOT NULL,
         description text,
@@ -53,8 +55,9 @@ class mf_install {
         display_order mediumint(9) DEFAULT 0, 
         duplicated tinyint(1),
         active tinyint(1) DEFAULT 1,
-        options text
-      );";
+        options text,
+        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+      ";
 
       dbDelta($sql);
     }
@@ -62,13 +65,14 @@ class mf_install {
     // Table custom groups
     if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_GROUPS}'") != MF_TABLE_CUSTOM_GROUPS) {
       $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_GROUPS. " (
-        id int(19) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        id integer NOT NULL AUTO_INCREMENT,
         name varchar(255) NOT NULL,
         label varchar(255) NOT NULL,
         post_type varchar(255) NOT NULL,
         duplicated tinyint(1) DEFAULT 0,
-        expanded tinyint(1) DEFAULT 0
-      );";
+        expanded tinyint(1) DEFAULT 0,
+        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+      ";
 
       dbDelta($sql);
     }
