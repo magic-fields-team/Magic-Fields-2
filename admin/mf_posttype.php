@@ -558,16 +558,25 @@ class mf_posttype extends mf_admin {
     //checking the nonce
     check_admin_referer('delete_post_type_mf_posttype');
 
-    if( isset($_GET['post_type_id']) ){
-      $id = (int)$_GET['post_type_id'];
+    if( isset($_GET['post_type']) ){
+      $post_type = $_GET['post_type'];
 
-      if( is_int($id) ){
+      if( $post_type ){
         $sql = sprintf(
           "DELETE FROM " . MF_TABLE_POSTTYPES .
-          " WHERE id = %d",
-          $id
+          " WHERE type = '%s'",
+          $post_type
         );
         $wpdb->query($sql);
+        
+        //delete all groups of post_type
+        $sql_fields = sprintf("DELETE FROM %s WHERE post_type = '%s'",MF_TABLE_CUSTOM_GROUPS,$post_type);
+        $wpdb->query($sql_fields);
+        
+        //delete field of post_type
+        $sql_fields = sprintf("DELETE FROM %s WHERE post_type = '%s'",MF_TABLE_CUSTOM_FIELDS,$post_type);
+        $wpdb->query($sql_fields);
+        
         $this->mf_redirect(null,null,array('message' => 'success'));
       }
     }

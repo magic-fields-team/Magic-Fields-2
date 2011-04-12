@@ -50,7 +50,9 @@ class mf_custom_group extends mf_admin {
         $group = $this->get_group($id);
         $sql = sprintf("DELETE FROM %s WHERE id = %s",MF_TABLE_CUSTOM_GROUPS,$id);
         $wpdb->query($sql);
-        //ToDo: deberiamos borrar tambien todos los custom fields del campo y los datos que ya fueron guardados
+        
+        $sql_fields = sprintf("DELETE FROM %s WHERE custom_group_id = %s",MF_TABLE_CUSTOM_FIELDS,$id);
+        $wpdb->query($sql_fields);
 
         //ToDo: poner mensaje de que se borro correctamente
         $this->mf_redirect('mf_custom_fields','fields_list',array('message' => 'success','post_type' => $group['post_type']));
