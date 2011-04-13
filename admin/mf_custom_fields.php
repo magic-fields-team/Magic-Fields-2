@@ -591,7 +591,6 @@ class mf_custom_fields extends mf_admin {
       if( is_int($id) ){
         $sql = "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE id = ".$id;
         $wpdb->query($sql);
-        //@todo: Supongo que eventualmente vamos a tener que borrar todas las referencias a post_meta que haya en los posts ya creados 
       }
     }
 

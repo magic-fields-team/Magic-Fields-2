@@ -32,15 +32,17 @@ class mf_post extends mf_admin {
 
       //creating the metaboxes
       foreach( $groups as $group ) {
-        add_meta_box( 
-          'mf_'.$group['id'],
-          $group['label'],
-          array( &$this, 'mf_metabox_content' ),
-          $post_type,
-          'normal',
-          'default',
-          array( 'group_info' => $group)
-        );
+        if( $this->group_has_fields($group['id'] ) ) {
+          add_meta_box( 
+            'mf_'.$group['id'],
+            $group['label'],
+            array( &$this, 'mf_metabox_content' ),
+            $post_type,
+            'normal',
+            'default',
+            array( 'group_info' => $group)
+          );
+        }
       }
     }
   }
@@ -48,7 +50,39 @@ class mf_post extends mf_admin {
   /**
    * Fill a metabox with custom fields
    */
-  function mf_metabox_content( $post, $metabox) {
+  function mf_metabox_content( $post, $metabox ) {
+    //Getting the custom fields for this metabox
+    $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
+    //default markup
+    ?>
+    <div class="mf_group group-<?php print $metabox['args']['group_info']['name'];?>" > 
+      <div class="mf-group-count">1 items</div> 
+      <!-- grupos se puede repetir --> 
+      <div class="mf_group mf_duplicate_group" id="mf_group_<?php print $metabox['args']['group_info']['id']; ?>_1"> 
+        <div class="inside" > 
+          <!-- campos del grupo (por cada campo) --> 
+          <?php foreach( $custom_fields as $field ):?>
+            <!-- si el campo se puede duplicar deberia estar esto N veces --> 
+            <div class="mf-field  mf-field-ui <?php print $field['name'];?>" id="row_<?php print $field['id']; ?>_1_1_ui"> 
+              <label><span><?php print $field['label'];?></span><small><?php print $field['description']; ?></small></label> 
+                <div> 
+                  <span> html para el campo, con los name y cosas que ya usamos </span>
+                </div> 
+                <?php if( $field['duplicated'] ) :?>
+                  <div class="buttons"> 
+                    <a href="javascript:void(0);">Add Another</a> <a href="javascript:void(0);">Remove</a> 
+                  </div> 
+                <?php endif;?> 
+            </div> 
+            <!-- fin del campo duplicado --> 
+          <?php endforeach;?> 
+          <!-- fin del campo --> 
+        </div> 
+      </div> 
+      <!-- fin del grupo --> 
+    </div>
+  <?php
+    pr($custom_fields);
     pr($metabox);
   }
 }

@@ -81,7 +81,6 @@ class mf_register{
 
   /**                                                                         
    * return all post types                                                    
-   * @todo this function is duplicated? 
    */
   private function _get_post_types(){
     global $wpdb;

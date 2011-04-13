@@ -36,5 +36,12 @@ class textbox_field extends mf_custom_fields {
     
     return $data;
   }
-  
+
+
+  /**
+   * Create Post Output
+   */
+  public function admin_post_output() {
+     
+  }
 }

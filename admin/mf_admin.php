@@ -157,6 +157,21 @@ class mf_admin {
 
   }
 
+  /** 
+   * Return True if the group has at least one custom field
+   * 
+   * return @bool
+   **/
+  public static function group_has_fields($group_id) {
+    global $wpdb;
+
+    $sql = $wpdb->prepare("SELECT COUNT(1) FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE custom_group_id = %d",$group_id);
+  
+    return $wpdb->get_var( $sql ) > 0;
+  }
+
+
+
    /**
    * return all fields of group
    */
@@ -169,7 +184,7 @@ class mf_admin {
   }
 
   /**
-   * retun a group
+   * return a group
    */
   public function get_custom_field($custom_field_id){
     global $wpdb;
