@@ -139,7 +139,7 @@ class mf_custom_group extends mf_admin {
       'core'  => array(
         'id' => array(
           'type' => 'hidden',
-          'id'   => 'id',
+          'id'   => 'custom_group_id',
           'name'  => 'mf_group[core][id]',
           'value' => $id
         ),
@@ -196,6 +196,7 @@ class mf_custom_group extends mf_admin {
     global $mf_domain;
     ?>
     <div class="wrap">
+      <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
       <h2><?php _e('Create Custom Group', $mf_domain);?></h2>
 
 
@@ -234,5 +235,21 @@ class mf_custom_group extends mf_admin {
     </div>
 </form>
   <?php
+  }
+  
+  public function check_group($name,$post_type,$id = NULL){
+    global $wpdb;
+  
+    $query = sprintf(
+      "SELECT COUNT(*) FROM %s WHERE name = '%s' AND post_type = '%s' ",
+      MF_TABLE_CUSTOM_GROUPS,
+      $name,
+      $post_type
+    );
+    if($id)
+      $query = sprintf("%s AND id != %s",$query,$id);
+      
+    $check = $wpdb->get_var($query);
+    return $check;
   }
 }

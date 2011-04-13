@@ -327,6 +327,7 @@ class mf_posttype extends mf_admin {
     global $mf_domain, $supports;
 
     print '<div class="wrap">';
+    print '<div id="message_post_type" class="error below-h2" style="display:none;"><p></p></div>';
     if( !$data['core']['id']['value'] ):
       print '<h2>'.__( 'Add Post Type', $mf_domain ).'</h2>';
     else:
@@ -580,6 +581,17 @@ class mf_posttype extends mf_admin {
         $this->mf_redirect(null,null,array('message' => 'success'));
       }
     }
+  }
+  
+  public function check_post_type($post_type,$id = NULL){
+    global $wpdb;
+  
+    $query = sprintf("SELECT COUNT(*) FROM %s WHERE type = '%s'",MF_TABLE_POSTTYPES,$post_type);
+    if($id)
+      $query = sprintf("%s AND id != %s",$query,$id);
+      
+    $check = $wpdb->get_var($query);
+    return $check;
   }
 
 }

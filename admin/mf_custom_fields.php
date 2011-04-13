@@ -404,6 +404,7 @@ class mf_custom_fields extends mf_admin {
     global $mf_domain;
     ?>
     <div class="wrap">
+      <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
       <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
 
 
@@ -602,5 +603,21 @@ class mf_custom_fields extends mf_admin {
         wp_get_referer()
       )
     );
+  }
+  
+  public function check_group($name,$post_type,$id = NULL){
+    global $wpdb;
+  
+    $query = sprintf(
+      "SELECT COUNT(*) FROM %s WHERE name = '%s' AND post_type = '%s' ",
+      MF_TABLE_CUSTOM_FIELDS,
+      $name,
+      $post_type
+    );
+    if($id)
+      $query = sprintf("%s AND id != %s",$query,$id);
+      
+    $check = $wpdb->get_var($query);
+    return $check;
   }
 }

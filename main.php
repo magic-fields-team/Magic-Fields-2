@@ -174,6 +174,58 @@ if( is_admin() ) {
     }
     die;
   }
+  
+  //validation name of post_type
+  add_action( 'wp_ajax_check_field_type', 'check_field_type_option' );
+  function check_field_type_option(){
+    $type = $_POST['post_type'];
+    $id = $_POST['post_type_id'];
+    $check = mf_posttype::check_post_type($type,$id);
+    if($check){
+      // exist type(name) in the system
+      $resp = array('success' => 0, 'msg' => __('The Type(name) of Post type exist,Please choose a different type(name).') );
+    }else{
+      $resp = array('success' => 1);
+    }
+    echo json_encode($resp);
+    die;
+  }
+  
+  //validation group name
+  add_action( 'wp_ajax_check_custom_group', 'check_custom_group' );
+  function check_custom_group(){
+    
+    $name = $_POST['group_name'];
+    $post_type = $_POST['post_type'];
+    $id = $_POST['group_id'];
+    $resp = array('success' => 1);
+    
+    $check = mf_custom_group::check_group($name,$post_type,$id);
+    if($check){
+      $resp = array('success' => 0, 'msg' => __('The name of Group exist in this post type, Please choose a different name.') );
+    }
+    
+    echo json_encode($resp);
+    die;
+  }
+  
+  //validation group name
+  add_action( 'wp_ajax_mf_check_custom_field', 'check_custom_field' );
+  function check_custom_field(){
+    
+    $name = $_POST['field_name'];
+    $post_type = $_POST['post_type'];
+    $id = $_POST['field_id'];
+    $resp = array('success' => 1);
+    
+    $check = mf_custom_fields::check_group($name,$post_type,$id);
+    if($check){
+      $resp = array('success' => 0, 'msg' => __('The name of Field exist in this post type, Please choose a different name.') );
+    }
+    
+    echo json_encode($resp);
+    die;
+  }
 }
 
 //Register Post Types and Custom Taxonomies
