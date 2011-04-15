@@ -99,6 +99,35 @@ jQuery(document).ready(function($) {
     return false;    
   });
   
+  //validation custom taxonomy
+  $('#addCustomTaxonomy').submit(function(){
+    type = $("#custom-taxonomy-type").val();
+    taxonomy_id = $("#custom-taxonomy-id").val();
+    if(name){
+      jQuery.ajax({
+         url: ajaxurl,
+         type: 'POST',
+         async: false,
+         dataType: 'json',
+         data: "action=mf_check_custom_taxonomy&taxonomy_type="+type+"&taxonomy_id="+taxonomy_id,
+         success: function(response){
+           $("#message_mf_error").hide();
+           if(response.success){
+             status = 1;
+           }else{
+             $('#message_mf_error p').empty().append(response.msg);
+             $("#message_mf_error").show();
+             $("#custom-taxonomy-type").focus();
+           }
+         }
+       });
+    }
+    if(status)
+      return true;
+      
+    return false;    
+  });
+  
   //Confirm for display a confirm box 
   $('.mf_confirm').click(function() {
     message = $(this).attr('alt');     

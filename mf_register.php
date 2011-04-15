@@ -57,7 +57,7 @@ class mf_register{
     $taxonomies = $this->_get_custom_taxonomies();
     foreach($taxonomies as $tax){
       $tax = json_decode($tax['arguments'],true);
-      $name = $tax['core']['name'];
+      $name = $tax['core']['type'];
       $option = $tax['option'];
 
       $option['show_in_nav_menus'] = ($option['show_in_nav_menus']) ? true : false;

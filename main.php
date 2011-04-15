@@ -226,6 +226,24 @@ if( is_admin() ) {
     echo json_encode($resp);
     die;
   }
+  
+  
+  //validation type (name) of custom taxonomy
+  add_action( 'wp_ajax_mf_check_custom_taxonomy', 'check_custom_taxonomy_option' );
+  function check_custom_taxonomy_option(){
+    $type = $_POST['taxonomy_type'];
+    $id = $_POST['taxonomy_id'];
+    $check = mf_custom_taxonomy::check_custom_taxonomy($type,$id);
+    if($check){
+      // exist type(name) in the system
+      $resp = array('success' => 0, 'msg' => __('The type(name) of custom taxonomy exist, Please choose a different type (name) .') );
+    }else{
+      $resp = array('success' => 1);
+    }
+    echo json_encode($resp);
+    die;
+  }
+  
 }
 
 //Register Post Types and Custom Taxonomies
