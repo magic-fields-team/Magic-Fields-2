@@ -15,24 +15,47 @@ class listbox_field extends mf_custom_fields {
     $this->description = __("Simple listbox input",$mf_domain);
   }
   
-  public function _options1(){
+  public function _options(){
     global $mf_domain;
     
     $data = array(
       'option'  => array(
-        'type'  => array(
+        'size'  => array(
           'type'        =>  'text',
-          'id'          =>  'uno',
-          'label'       =>  'opcion 1',
-          'name'        =>  'mf_field[option][uno]',
+          'id'          =>  'listbox_size',
+          'label'       =>  __('Size',$mf_domain),
+          'name'        =>  'mf_field[option][size]',
           'default'     =>  '',
-          'description' =>  __( 'aqui una descripcion', $mf_domain ),
+          'description' =>  '',
+          'value'       =>  '3',
+          'div_class'    => '',
+          'class'       => ''
+        ),
+        'options'  => array(
+          'type'        =>  'textarea',
+          'id'          =>  'listbox_options',
+          'label'       =>  __('Options',$mf_domain),
+          'name'        =>  'mf_field[option][options]',
+          'default'     =>  '',
+          'description' =>  __( 'Separate each option with a newline.', $mf_domain ),
           'value'       =>  '',
-          'div_class'    => 'clase1',
-          'class'       => 'vemos1'
+          'div_class'    => '',
+          'class'       => ''
+        ),
+        'default_value'  => array(
+          'type'        =>  'text',
+          'id'          =>  'listbox_default_value',
+          'label'       =>  __('Deafult value',$mf_domain),
+          'name'        =>  'mf_field[option][default_value]',
+          'default'     =>  '',
+          'description' =>  __( 'Separate each value with a newline.', $mf_domain ),
+          'value'       =>  '',
+          'div_class'    => '',
+          'class'       => ''
         )
       )
     );
+
     
     return $data;
   }

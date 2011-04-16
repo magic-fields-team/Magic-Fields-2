@@ -15,24 +15,44 @@ class slider_field extends mf_custom_fields {
     $this->description = __("Simple slider input",$mf_domain);
   }
   
-  public function _options1(){
+  public function _options(){
     global $mf_domain;
     
     $data = array(
       'option'  => array(
-        'type'  => array(
+        'value_min'  => array(
           'type'        =>  'text',
-          'id'          =>  'uno',
-          'label'       =>  'opcion 1',
-          'name'        =>  'mf_field[option][uno]',
-          'default'     =>  '',
-          'description' =>  __( 'aqui una descripcion', $mf_domain ),
-          'value'       =>  '',
-          'div_class'    => 'clase1',
-          'class'       => 'vemos1'
+          'id'          =>  'slider_value_min',
+          'label'       =>  __('Value min',$mf_domain),
+          'name'        =>  'mf_field[option][value_min]',
+          'description' =>  '',
+          'value'       =>  '0',
+          'div_class'    => '',
+          'class'       => ''
+        ),
+        'value_max'  => array(
+          'type'        =>  'text',
+          'id'          =>  'slider_value_max',
+          'label'       =>  __('Value max',$mf_domain),
+          'name'        =>  'mf_field[option][value_max]',
+          'description' =>  '',
+          'value'       =>  '10',
+          'div_class'    => '',
+          'class'       => ''
+        ),
+        'stepping'  => array(
+          'type'        =>  'text',
+          'id'          =>  'slider_stepping',
+          'label'       =>  __('Stepping',$mf_domain),
+          'name'        =>  'mf_field[option][stepping]',
+          'description' =>  '',
+          'value'       =>  '1',
+          'div_class'    => '',
+          'return'       => ''
         )
       )
-    );
+   );
+
     
     return $data;
   }
