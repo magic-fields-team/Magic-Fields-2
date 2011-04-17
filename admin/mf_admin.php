@@ -204,4 +204,11 @@ class mf_admin {
     $field = $wpdb->get_row( $query, ARRAY_A);
     return $field;
   }
+
+  
+  public function mf_resolve_linebreaks($data = NULL){
+    $data = preg_replace(array("/\r\n/","/\r/","/\n/"),"\\n",$data);
+    return $data;
+  }
+
 }
