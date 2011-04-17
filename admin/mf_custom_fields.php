@@ -2,6 +2,10 @@
 
 class mf_custom_fields extends mf_admin {
 
+  //Properties
+  public  $css_script = FALSE;
+  public  $js_script = FALSE;
+  public  $js_dependencies = array();
   public $allow_multiple = TRUE;
   public $has_properties = TRUE;
   public $description = '';
@@ -21,6 +25,16 @@ class mf_custom_fields extends mf_admin {
   public function _update_options(){
     $this->options = $this->_options();
   }
+
+  
+  public function get_properties() {
+    $properties['css']              = $this->css_script;
+    $properties['js_dependencies']  = $this->js_dependencies;
+    $properties['js']               = $this->js_script;
+
+    return $properties;
+  }
+
 
   public function get_options($options = NULL){
     global $mf_domain;
