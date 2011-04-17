@@ -23,6 +23,8 @@ class mf_custom_fields extends mf_admin {
   }
 
   public function get_options($options = NULL){
+    global $mf_domain;
+
     if($this->has_properties){
       //aqui deberiamos saber si el campos ya esta en el sistema y pedir los datos actuales
       // por el momento solo renderamos el formulario sin datos
@@ -32,6 +34,8 @@ class mf_custom_fields extends mf_admin {
         }
       }
       $this->form_options();
+    }else{
+      _e("This field no has properties",$mf_domain);
     }
 
     return false;
@@ -86,7 +90,7 @@ class mf_custom_fields extends mf_admin {
     $name = $group['label'];
     if($name != 'Magic Fields'){
       $name = sprintf('<a class="edit-group-h2" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=edit_group&custom_group_id=%s">%s</a>',$group['id'],$name);
-
+    }
       $add = sprintf('admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s&custom_group_id=%s',$post_type->name,$group['id']);
 
       $name .= sprintf('<span class="mf_add_group_field">(<a href="%s">create field</a>)</span>',$add);
@@ -96,7 +100,7 @@ class mf_custom_fields extends mf_admin {
       $delete_msg  = __( "This action can't be undone, are you sure?", $mf_domain );
 
       $name .= sprintf( '<span class="mf_delete_group delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
-    }
+    
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
     ?>

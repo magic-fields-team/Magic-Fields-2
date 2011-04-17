@@ -106,7 +106,7 @@ class mf_custom_taxonomy extends mf_admin{
       " values" .
       " ('%s', '%s', '%s', '%s', '%s')",
       $data['core']['type'],
-      $data['core']['label'],
+      $data['core']['name'],
       $data['core']['description'],
       json_encode($data),
       1
@@ -128,7 +128,7 @@ class mf_custom_taxonomy extends mf_admin{
       " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
       " WHERE id = %s",
       $data['core']['type'],
-      $data['core']['label'],
+      $data['core']['name'],
       $data['core']['description'],
       json_encode($data),
       $data['core']['id']
@@ -169,6 +169,7 @@ class mf_custom_taxonomy extends mf_admin{
     global $mf_domain;
 
     print '<div class="wrap">';
+    print '<div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>';
     if( !$data['core']['id']['value'] ):
       print '<h2>'.__( 'Add Custom Taxonomy', $mf_domain ).'</h2>';
     else:
@@ -548,6 +549,17 @@ class mf_custom_taxonomy extends mf_admin{
     );
 
     return $fields;
+  }
+  
+  public function check_custom_taxonomy($type,$id = NULL){
+    global $wpdb;
+  
+    $query = sprintf("SELECT COUNT(*) FROM %s WHERE type = '%s'",MF_TABLE_CUSTOM_TAXONOMY,$type);
+    if($id)
+      $query = sprintf("%s AND id != %s",$query,$id);
+      
+    $check = $wpdb->get_var($query);
+    return $check;
   }
 
 }

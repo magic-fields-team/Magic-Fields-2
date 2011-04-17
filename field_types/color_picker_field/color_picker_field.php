@@ -8,33 +8,11 @@ global $mf_domain;
 class color_picker_field extends mf_custom_fields {
 
   public $allow_multiple = TRUE;
-  public $has_properties = TRUE;
+  public $has_properties = FALSE;
   
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple color_picker input",$mf_domain);
-  }
-  
-  public function _options1(){
-    global $mf_domain;
-    
-    $data = array(
-      'option'  => array(
-        'type'  => array(
-          'type'        =>  'text',
-          'id'          =>  'uno',
-          'label'       =>  'opcion 1',
-          'name'        =>  'mf_field[option][uno]',
-          'default'     =>  '',
-          'description' =>  __( 'aqui una descripcion', $mf_domain ),
-          'value'       =>  '',
-          'div_class'    => 'clase1',
-          'class'       => 'vemos1'
-        )
-      )
-    );
-    
-    return $data;
+    $this->description = __("Simple Color picker input",$mf_domain);
   }
   
 }
