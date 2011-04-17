@@ -7,20 +7,17 @@ global $mf_domain;
 
 class textbox_field extends mf_custom_fields {
 
-  //This Properties MUST be static
-  public static $css_script = TRUE;
-  public static $js_script = TRUE;
-  public static $js_dependencies = array();
-  // --
-
   //Properties
-  public $allow_multiple = TRUE;
-  public $has_properties = TRUE;
+  public  $css_script = FALSE;
+  public  $js_script = FALSE;
+  public  $js_dependencies = array();
+  public  $allow_multiple = TRUE;
+  public  $has_properties = TRUE;
   
-  public static function get_static_properties() {
-    $properties['css']              = self::$css_script;
-    $properties['js_dependencies']  = self::$js_dependencies;
-    $properties['js']               = self::$js_script;
+  public function get_properties() {
+    $properties['css']              = $this->css_script;
+    $properties['js_dependencies']  = $this->js_dependencies;
+    $properties['js']               = $this->js_script;
 
     return $properties;
   }
@@ -60,5 +57,4 @@ class textbox_field extends mf_custom_fields {
     );
     return $data;
   }
-
-}
+ }

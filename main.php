@@ -153,27 +153,39 @@ if( is_admin() ) {
 
 
         //Loading any custom field  if is required 
-
         if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
           $post_type = get_post_type($_GET['post']);   
         }else{ //Creating a new post
-          $post_type = $_GET['post_type'];
+          $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
         }
         
         $ps = new mf_posttype();
         $fields = $ps->get_custom_fields_by_post_type($post_type);        
 
         foreach($fields as $field) {
-          //todo: Este méodo debería también de buscar en los paths donde los usuarios ponen sus custom fields
+          //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
           $type = $field['type']."_field";
-          $properties = textbox_field::get_static_properties();
-          wp_enqueue_script(
-            'mf_field_'.$field['type'],
-            MF_BASENAME.'field_types/'.$field['type'].'_field/'.$field['type'].'_field.js',
-            $properties['js_dependencies'],
-            null,
-            true
-          );
+          $type = new $type();
+          $properties = $type->get_properties();
+         
+
+          if ( $properties['js'] ) {
+            wp_enqueue_script(
+              'mf_field_'.$field['type'],
+              MF_BASENAME.'field_types/'.$field['type'].'_field/'.$field['type'].'_field.js',
+              $properties['js_dependencies'],
+              null,
+              true
+            );
+
+          }
+
+          if ( $properties['css'] ) {
+            wp_enqueue_style( 
+              'mf_field_'.$field['type'],
+              MF_BASENAME.'field_types/'.$field['type'].'_field/'.$field['type'].'_field.css'
+            );
+          }
         }
       }
     }
