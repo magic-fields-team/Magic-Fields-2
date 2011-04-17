@@ -171,7 +171,6 @@ class mf_admin {
   }
 
 
-
    /**
    * return all fields of group
    */
@@ -180,6 +179,18 @@ class mf_admin {
 
     $query = sprintf("SELECT * FROM %s WHERE custom_group_id = '%s' ORDER BY display_order",MF_TABLE_CUSTOM_FIELDS,$id);
     $fields = $wpdb->get_results( $query, ARRAY_A);
+    return $fields;
+  }
+
+  /**
+   * return all the fields of post type
+   */
+  public static function get_custom_fields_by_post_type($post_type = "post") {
+    global $wpdb;
+
+    $query = "SELECT * FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE post_type = '".$post_type."'";
+
+    $fields = $wpdb->get_results($query, ARRAY_A);
     return $fields;
   }
 
@@ -193,6 +204,7 @@ class mf_admin {
     $field = $wpdb->get_row( $query, ARRAY_A);
     return $field;
   }
+
   
   public function mf_resolve_linebreaks($data = NULL){
     $data = preg_replace(array("/\r\n/","/\r/","/\n/"),"\\n",$data);

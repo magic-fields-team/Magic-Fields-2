@@ -19,6 +19,8 @@ class mf_post extends mf_admin {
    * Adding the metaboxes
    */
   function mf_post_add_metaboxes() {
+    global $post;
+
     //Getting the post types
     $post_types = $this->mf_get_post_types( array('public' => true ), 'names'  );
   
@@ -55,7 +57,7 @@ class mf_post extends mf_admin {
     $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
     //default markup
     ?>
-    <div class="mf_group group-<?php print $metabox['args']['group_info']['name'];?>" > 
+    <div class="mf_group group-<?php print $metabox['args']['group_info']['id'];?>" > 
       <div class="mf-group-count">1 items</div> 
       <!-- grupos se puede repetir --> 
       <div class="mf_group mf_duplicate_group" id="mf_group_<?php print $metabox['args']['group_info']['id']; ?>_1"> 
@@ -70,7 +72,7 @@ class mf_post extends mf_admin {
                 </div> 
                 <?php if( $field['duplicated'] ) :?>
                   <div class="buttons"> 
-                    <a href="javascript:void(0);">Add Another</a> <a href="javascript:void(0);">Remove</a> 
+                    <a href="javascript:void(0);" class="mf_add_another">Add Another</a> <a href="javascript:void(0);">Remove</a> 
                   </div> 
                 <?php endif;?> 
             </div> 

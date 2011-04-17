@@ -7,9 +7,21 @@ global $mf_domain;
 
 class textbox_field extends mf_custom_fields {
 
-  public $allow_multiple = TRUE;
-  public $has_properties = TRUE;
+  //Properties
+  public  $css_script = FALSE;
+  public  $js_script = FALSE;
+  public  $js_dependencies = array();
+  public  $allow_multiple = TRUE;
+  public  $has_properties = TRUE;
   
+  public function get_properties() {
+    $properties['css']              = $this->css_script;
+    $properties['js_dependencies']  = $this->js_dependencies;
+    $properties['js']               = $this->js_script;
+
+    return $properties;
+  }
+
   public function _update_description(){
     global $mf_domain;
     $this->description = __("Simple Textbox input",$mf_domain);
@@ -45,5 +57,4 @@ class textbox_field extends mf_custom_fields {
     );
     return $data;
   }
-
-}
+ }

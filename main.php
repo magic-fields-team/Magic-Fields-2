@@ -128,6 +128,7 @@ if( is_admin() ) {
   //Including javascripts files
   add_action( 'init', 'mf_add_js');
   function mf_add_js() {
+
     if( is_admin() ) { //this scripts only will be added on the admin area
       wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js', array( 'jquery' ) );
       wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js', array( 'jquery' ) );
@@ -143,6 +144,49 @@ if( is_admin() ) {
           ( !empty( $_GET['mf_action'] ) && $_GET['mf_action'] == 'fields_list' ) ) {
         wp_enqueue_script( 'mf_sortable_fields', MF_BASENAME.'js/mf_posttypes_sortable.js', array( 'jquery-ui-sortable' ) );
   
+      }
+
+      //Adding Css files for the post-new.php section (where is created a new post in wp)
+      if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {
+        wp_enqueue_style( 'mf_field_base', MF_BASENAME.'css/mf_field_base.css' ); 
+        wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js', 'interface' ); 
+
+
+        //Loading any custom field  if is required 
+        if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
+          $post_type = get_post_type($_GET['post']);   
+        }else{ //Creating a new post
+          $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
+        }
+        
+        $ps = new mf_posttype();
+        $fields = $ps->get_custom_fields_by_post_type($post_type);        
+
+        foreach($fields as $field) {
+          //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
+          $type = $field['type']."_field";
+          $type = new $type();
+          $properties = $type->get_properties();
+         
+
+          if ( $properties['js'] ) {
+            wp_enqueue_script(
+              'mf_field_'.$field['type'],
+              MF_BASENAME.'field_types/'.$field['type'].'_field/'.$field['type'].'_field.js',
+              $properties['js_dependencies'],
+              null,
+              true
+            );
+
+          }
+
+          if ( $properties['css'] ) {
+            wp_enqueue_style( 
+              'mf_field_'.$field['type'],
+              MF_BASENAME.'field_types/'.$field['type'].'_field/'.$field['type'].'_field.css'
+            );
+          }
+        }
       }
     }
   }
