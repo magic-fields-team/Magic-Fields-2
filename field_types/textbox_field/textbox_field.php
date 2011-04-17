@@ -7,9 +7,24 @@ global $mf_domain;
 
 class textbox_field extends mf_custom_fields {
 
+  //This Properties MUST be static
+  public static $css_script = TRUE;
+  public static $js_script = TRUE;
+  public static $js_dependencies = array();
+  // --
+
+  //Properties
   public $allow_multiple = TRUE;
   public $has_properties = FALSE;
   
+  public static function get_static_properties() {
+    $properties['css']              = self::$css_script;
+    $properties['js_dependencies']  = self::$js_dependencies;
+    $properties['js']               = self::$js_script;
+
+    return $properties;
+  }
+
   public function _update_description(){
     global $mf_domain;
     $this->description = __("Simple Textbox input",$mf_domain);
