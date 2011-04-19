@@ -66,9 +66,12 @@ class mf_post extends mf_admin {
           <?php foreach( $custom_fields as $field ):?>
             <!-- si el campo se puede duplicar deberia estar esto N veces --> 
             <div class="mf-field  mf-field-ui <?php print $field['name'];?>" id="row_<?php print $field['id']; ?>_1_1_ui"> 
-              <label><span><?php print $field['label'];?></span><small><?php print $field['description']; ?></small></label> 
                 <div> 
-                  <span> html para el campo, con los name y cosas que ya usamos </span>
+                  <?php 
+                    $f = $field['type'].'_field';
+                    $f = new $f();
+                    print $f->display_field($field);
+                   ?>
                 </div> 
                 <?php if( $field['duplicated'] ) :?>
                   <div class="buttons"> 
@@ -84,7 +87,7 @@ class mf_post extends mf_admin {
       <!-- fin del grupo --> 
     </div>
   <?php
-    pr($custom_fields);
-    pr($metabox);
+    //pr($custom_fields);
+    //pr($metabox);
   }
 }
