@@ -1,6 +1,14 @@
+/*label*/
+label > span { float:left; }
+/*tool tip*/
+.mf_group .mf_description { position: relative; color:#5D8EB6; margin-left:10px; padding-left:10px; float:left; }  
+.mf_group .mf_description span { position:absolute; width:200; height:0; left:-1px; top:-30px; display:none; color:#000}
+
+/*inputs*/
+.mf_group input { clear:both; display:block; margin:10px}
+
+
 .mf_group { padding: 0px 7px 8px 7px; border-top: 1px solid #EAEAEA; background: #F8F8F8; padding-bottom: 6px; }
 .mf_group:hover { background: #F0F7FD; }
-.mf-field label { font-weight:bold; margin: 0 0 8px 3px; font-size:12px; }
-.mf-field input { margin-bottom:4px; outline:none; background:#FFF;
-
-
+.mf-field label { font-weight:bold; margin: 10px; font-size:12px; }
+.mf-field input { margin-bottom:4px; outline:none; background:#FFF;}

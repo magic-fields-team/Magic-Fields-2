@@ -61,9 +61,11 @@ class textbox_field extends mf_custom_fields {
   /** 
    * This method display the markup of the field into the admin area
    */
-  function display_field( $field , $field_index = 1, $group_index = 1 ) {
+  function display_field( $field, $value = '', $field_index = 1, $group_index = 1 ) {
+    global $mf_domain;
+
     $output = "";
-    $output .= "<label><span>{$field['label']}</span><small>{$field['description']}</small></label>";
+    $output .= "<label><span>{$field['label']}</span><small class=\"mf_description\">".__( 'What\'s this?', $mf_domain )." <span>{$field['description']}</span></small></label>";
     $output .= "<input name=\"data[{$group_index}][{$field_index}]\" placeholder=\"{$field['label']}\" />";
     return $output;
   }
