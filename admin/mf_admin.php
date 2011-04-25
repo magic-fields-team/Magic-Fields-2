@@ -183,14 +183,14 @@ class mf_admin {
   }
 
   /**
-   * return all the fields of post type
+   * return a unique type the fields of post type
    */
-  public static function get_custom_fields_by_post_type($post_type = "post") {
+  public static function get_unique_custom_fields_by_post_type($post_type = "post") {
     global $wpdb;
 
-    $query = "SELECT * FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE post_type = '".$post_type."'";
+    $query = "SELECT DISTINCT(type) FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE post_type = '".$post_type."'";
 
-    $fields = $wpdb->get_results($query, ARRAY_A);
+    $fields = $wpdb->get_col($query);
     return $fields;
   }
 

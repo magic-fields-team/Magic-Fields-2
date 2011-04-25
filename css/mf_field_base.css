@@ -1,14 +1,101 @@
+.mf_group .mf-field{ border-top: 1px solid #EAEAEA; }
 /*label*/
 label > span { float:left; }
 /*tool tip*/
-.mf_group .mf_description { position: relative; color:#5D8EB6; margin-left:10px; padding-left:10px; float:left; }  
+.mf_group .mf_description { position: relative; color:#5D8EB6; margin-left:10px; padding-left:10px; float:left; }
 .mf_group .mf_description span { position:absolute; width:200; height:0; left:-1px; top:-30px; display:none; color:#000}
+
+.mf-field small.mf_tip { color: #5d8eb6;  margin-left: 10px;  padding-left: 20px;  background: url(../images/small-tip.png) no-repeat;  float: left;  line-height: 16px;  font-size: 10px;  font-weight: normal;}
+.mf-field small.mf_tip span { position:relative; height:0; left:-88px; top:-57px; display:none; color:#000;}
+
+.mf_group .inside .mf-field{ padding: 0px 7px 8px 0; padding-bottom: 6px; }
+.mf_group .mf-field-title { /*overflow: hidden;*/ zoom: 100%; padding-top: 10px; }
 
 /*inputs*/
 .mf_group input { clear:both; display:block; margin:10px}
 
 
-.mf_group { padding: 0px 7px 8px 7px; border-top: 1px solid #EAEAEA; background: #F8F8F8; padding-bottom: 6px; }
+.mf_group { padding: 0px 7px 8px 0; border-top: 1px solid #EAEAEA; background: #F8F8F8; padding-bottom: 6px; }
 .mf_group:hover { background: #F0F7FD; }
-.mf-field label { font-weight:bold; margin: 10px; font-size:12px; }
+.mf_group .mf-field label { font-weight:bold; margin-bottom: 8px;margin-left: 3px; margin-top: 0; font-size:12px; float: left; }
 .mf-field input { margin-bottom:4px; outline:none; background:#FFF;}
+
+
+
+/* -- Tooltips -- */
+.tt {
+  position: absolute;
+  max-width: 550px;
+}
+
+.tth,  /* head */
+.tthl,
+.tthr {
+  height: 9px;
+  line-height: 0;
+  font-size: 0;
+}
+
+.tthl {
+  padding-left: 10px;
+  background: url(../images/tthl.png) no-repeat top left;
+}
+
+.tthr {
+  padding-right: 10px;
+  background: url(../images/tthr.png) no-repeat top right;
+}
+
+.tth {
+  background: url(../images/tth.png) repeat-x;
+}
+
+.ttb, /* body */
+.ttbl,
+.ttbr {
+  zoom: 100%;
+  overflow: hidden;
+}
+
+.ttbl {
+  padding-left: 4px;
+  background: url(../images/ttbl.png) repeat-y top left;
+}
+
+.ttbr {
+  padding-right: 4px;
+  background: url(../images/ttbr.png) repeat-y top right;
+}
+
+.ttb {
+  background: url(../images/ttb.png) repeat-x #FDFCE4;
+}
+
+.ttbc {
+  padding: 0 10px 2px 10px;
+  font-size: 11px;
+  color: #33330B;
+  line-height: 18px;
+}
+
+.ttf, /* foot */
+.ttfl,
+.ttfr {
+  height: 16px;
+  line-height: 0;
+  font-size: 0;
+}
+
+.ttfl {
+  padding-left: 27px;
+  background: url(../images/ttfl.png) no-repeat bottom left;
+}
+
+.ttfr {
+  padding-right: 10px;
+  background: url(../images/ttfr.png) no-repeat bottom right;
+}
+
+.ttf {
+  background: url(../images/ttf.png) repeat-x;
+}

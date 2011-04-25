@@ -65,7 +65,7 @@ class mf_post extends mf_admin {
           <!-- campos del grupo (por cada campo) --> 
           <?php foreach( $custom_fields as $field ):?>
             <!-- si el campo se puede duplicar deberia estar esto N veces --> 
-            <div class="mf-field  mf-field-ui <?php print $field['name'];?>" id="row_<?php print $field['id']; ?>_1_1_ui"> 
+            <div class="mf-field  mf-field-ui field-<?php print $field['name'];?>" id="row_<?php print $field['id']; ?>_1_1_ui"> 
                 <div> 
                   <?php 
                     $f = $field['type'].'_field';

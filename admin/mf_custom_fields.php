@@ -26,7 +26,7 @@ class mf_custom_fields extends mf_admin {
     $this->options = $this->_options();
   }
 
-  
+
   public function get_properties() {
     $properties['css']              = $this->css_script;
     $properties['js_dependencies']  = $this->js_dependencies;
@@ -114,7 +114,7 @@ class mf_custom_fields extends mf_admin {
       $delete_msg  = __( "This action can't be undone, are you sure?", $mf_domain );
 
       $name .= sprintf( '<span class="mf_delete_group delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
-    
+
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
     ?>
@@ -179,7 +179,7 @@ class mf_custom_fields extends mf_admin {
    */
   function add_field() {
     global $mf_domain;
-    
+
     $data = $this->fields_form();
     $this->form_custom_field($data);
     ?>
@@ -565,9 +565,9 @@ class mf_custom_fields extends mf_admin {
     }
 
     foreach( $order as $key => $value ) {
-      $update = $wpdb->update( 
-        MF_TABLE_CUSTOM_FIELDS, 
-        array( 'display_order' => $key ), 
+      $update = $wpdb->update(
+        MF_TABLE_CUSTOM_FIELDS,
+        array( 'display_order' => $key ),
         array( 'custom_group_id' => $group_id, 'id' => $value ),
         array( '%d' ),
         array( '%d', '%d' )
@@ -575,21 +575,21 @@ class mf_custom_fields extends mf_admin {
 
       if( $update  === false ) {
         return $update;
-      } 
+      }
     }
     return true;
   }
 
-  /** 
+  /**
    * Return True if the post type has at least one custom field
-   * 
+   *
    * return @bool
    **/
   public static function has_fields($post_type_name) {
     global $wpdb;
 
     $sql = $wpdb->prepare("SELECT COUNT(1) FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE post_type = %s",$post_type_name);
-  
+
     return $wpdb->get_var( $sql ) > 0;
   }
 
@@ -621,10 +621,10 @@ class mf_custom_fields extends mf_admin {
       )
     );
   }
-  
+
   public function check_group($name,$post_type,$id = NULL){
     global $wpdb;
-  
+
     $query = sprintf(
       "SELECT COUNT(*) FROM %s WHERE name = '%s' AND post_type = '%s' ",
       MF_TABLE_CUSTOM_FIELDS,
@@ -633,8 +633,44 @@ class mf_custom_fields extends mf_admin {
     );
     if($id)
       $query = sprintf("%s AND id != %s",$query,$id);
-      
+
     $check = $wpdb->get_var($query);
     return $check;
   }
+
+  public function display_field( $field, $value = '', $field_index = 1, $group_index = 1 ) {
+    global $mf_domain;
+
+    $tt = '<div class="tt">
+             <div class="tthl">
+               <div class="tthr">
+                 <div class="tth"></div>
+               </div>
+             </div>
+             <div class="ttbl">
+               <div class="ttbr">
+                 <div class="ttb">
+                   <div class="ttbc">%s</div>
+                 </div>
+               </div>
+             </div>
+             <div class="ttfl">
+               <div class="ttfr">
+                 <div class="ttf"></div>
+               </div>
+             </div>
+           </div>';
+
+    $help = '';
+    if($field['description']) {
+      $h = sprintf($tt,$field['description']);
+      $help = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),$h);
+    }
+
+    $output  = "";
+    $output  = sprintf('<div class="mf-field-title"><label><span>%s</span>%s</label></div>',$field['label'],$help);
+    $output .= sprintf('<div><input name="data[%s][%s]" placeholder="%s" /></div>',$group_index,$field_index,$field['label']);
+    return $output;
+  }
+
 }
