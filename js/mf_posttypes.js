@@ -1,6 +1,7 @@
 jQuery(document).ready(function($) {
   mf_suggest_labels = function () {
-    $('input[name*=mf_posttype[label]]').each(function(index,value) {  
+
+    $('.options_label input[name*=mf_posttype]:text').each(function(index,value) {
       rel = $(this).attr('rel');
       label = $('#posttype-label').val();
       rel = rel.replace('%s',label);
