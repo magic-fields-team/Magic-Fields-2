@@ -8,11 +8,10 @@ class mf_post extends mf_admin {
   
   function __construct() {
     //creating metaboxes
-    add_action('add_meta_boxes', array( &$this, 'mf_post_add_metaboxes' ));
+    add_action( 'add_meta_boxes', array( &$this, 'mf_post_add_metaboxes' ));
 
     //save data
-    //add_action('save_post', 'mf_save_post_data');
-    
+    add_action( 'save_post', array( &$this, 'mf_save_post_data' ) );
   }
   
   /** 
@@ -53,6 +52,7 @@ class mf_post extends mf_admin {
    * Fill a metabox with custom fields
    */
   function mf_metabox_content( $post, $metabox ) {
+    global $mf_domain;
     //Getting the custom fields for this metabox
     $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
     //default markup
@@ -66,7 +66,16 @@ class mf_post extends mf_admin {
           <?php foreach( $custom_fields as $field ):?>
             <!-- si el campo se puede duplicar deberia estar esto N veces --> 
             <div class="mf-field  mf-field-ui field-<?php print $field['name'];?>" id="row_<?php print $field['id']; ?>_1_1_ui"> 
-                <div> 
+                <div>
+                  <?php
+                    $help = '';
+                    if($field['description']) {
+                      $h = $field['description'];
+                      $help = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),$h);
+                    }
+
+                    print sprintf('<div class="mf-field-title"><label><span>%s</span>%s</label></div>',$field['label'],$help);
+                  ?>
                   <?php 
                     $f = $field['type'].'_field';
                     $f = new $f();
@@ -89,5 +98,44 @@ class mf_post extends mf_admin {
   <?php
     //pr($custom_fields);
     //pr($metabox);
+  }
+
+  /** When the post is saved, saves our custom data **/
+  function mf_save_post_data( $post_id ) {  
+    global $wpdb;
+      
+    //@todo hay que ponerle nonce a una de las metaboxes
+    /*if ( !wp_verify_nonce( $_POST['myplugin_noncename'], plugin_basename(__FILE__) ) ) {*/
+      //return $post_id;
+    /*}*/
+
+    if ( !current_user_can( 'edit_post', $post_id ) )
+      return $post_id;
+
+    if (!empty($_POST['magicfields'])) {
+      
+      $customfields = $_POST['magicfields'];
+
+      //creating the new values
+      foreach( $customfields as $field_id => $groups ) {
+         
+        foreach( $groups as $group_count => $fields ) {
+          
+          foreach( $fields as $field_count => $value ) {
+            // Adding field value meta data
+ /*           add_post_meta($post_id, $name, $value);*/
+
+            //$meta_id = $wpdb->insert_id;
+
+            //$wpdb->query("INSERT INTO ". MF_TABLE_POST_META." ( meta_id, field_id, field_count, group_id, group_count, post_id ) ".
+                         //" VALUES ({$meta_id}, '{$field_id}', {$field})"
+                        //);
+ 
+//              print_r($field_count);
+ //             print_r($value);
+          }
+        }
+      }
+    }
   }
 }

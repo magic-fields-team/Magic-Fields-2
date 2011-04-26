@@ -640,17 +640,9 @@ class mf_custom_fields extends mf_admin {
 
   public function display_field( $field, $value = '', $field_index = 1, $group_index = 1 ) {
     global $mf_domain;
-
-    $help = '';
-    if($field['description']) {
-      $h = $field['description'];
-      $help = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),$h);
-    }
-
-    $output  = "";
-    $output  = sprintf('<div class="mf-field-title"><label><span>%s</span>%s</label></div>',$field['label'],$help);
-    $output .= sprintf('<div><input name="data[%s][%s]" placeholder="%s" /></div>',$group_index,$field_index,$field['label']);
+    
+    $output = '';
+    $output .= sprintf('<div><input name="magicfields[%s][%s][%s]" placeholder="%s" /></div>', $field['id'], $group_index, $field_index, $field['label'] );
     return $output;
   }
-
 }
