@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
   $('#addPostType').submit(function(){
     name = $('#posttype-type').val();
     id = $('#posttype-id').val();
-    status = '';
+    var status = 0;
      
      jQuery.ajax({
        url: ajaxurl,
@@ -44,6 +44,7 @@ jQuery(document).ready(function($) {
     name = $("#custom_group_name").val();
     group_id = $("#custom_group_id").val();
     post_type = $("#custom_group_post_type").val();
+    var status = 0;
     if(name){
       jQuery.ajax({
          url: ajaxurl,
@@ -65,8 +66,9 @@ jQuery(document).ready(function($) {
     }
     if(status)
       return true;
-      
-    return false;    
+
+    return false;
+        
   });
   
   //validation custom field
@@ -74,6 +76,7 @@ jQuery(document).ready(function($) {
     name = $("#customfield-name").val();
     field_id = $("#customfield_id").val();
     post_type = $("#customfield-post_type").val();
+    var status = 0;
     if(name){
       jQuery.ajax({
          url: ajaxurl,
@@ -103,6 +106,7 @@ jQuery(document).ready(function($) {
   $('#addCustomTaxonomy').submit(function(){
     type = $("#custom-taxonomy-type").val();
     taxonomy_id = $("#custom-taxonomy-id").val();
+    var status = 0;
     if(name){
       jQuery.ajax({
          url: ajaxurl,
