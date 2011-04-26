@@ -15,8 +15,12 @@ jQuery(document).ready(function($) {
           var tt = $($.tmpl(tt_template, { content: ht }));
           var tip = $(this).offset();
           var tip_left = tip.left - 13;
-          var tip_top = tip.top - 40; 
+          var tip_top = tip.top + 5; 
           $(this).children('span.mf_helptext').after(tt).hide();
+          
+          var tip_height = $(this).children('div.tt').height();;
+          tip_top -= tip_height;
+
           $(this).children('div.tt').offset({ top: tip_top, left: tip_left}).show();
        }
     } else {
