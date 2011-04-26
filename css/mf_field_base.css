@@ -99,3 +99,13 @@ label > span { float:left; }
 .ttf {
   background: url(../images/ttf.png) repeat-x;
 }
+
+/** duplicate controls **/
+.mf_group .mf-duplicate-controls { overflow: hidden; zoom: 100%; clear: left; padding-top: 3px; }
+.mf_group .mf-duplicate-controls a { text-decoration: none; float: left; background-repeat: no-repeat; line-height: 14px !important; padding-left: 16px !important; }
+.mf_group .duplicate-field { background-image: url(../images/duplicate-field.png); }
+.mf_group .duplicate-field span { color: #39A944; }
+.mf_group .duplicate-field:hover span { color: #26702d; }
+.mf_group .delete_duplicate_field { background-image: url(../images/delete-duplicate-field.png); }
+.mf_group .delete_duplicate_field span { color: #BB3939; }
+.mf_group .delete_duplicate_field:hover span { color: #802727; }

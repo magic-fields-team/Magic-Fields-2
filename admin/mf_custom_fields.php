@@ -147,7 +147,10 @@ class mf_custom_fields extends mf_admin {
           <td>
             <img class="mf-order-icon" src="<?php echo MF_BASENAME ?>images/arrows_up_down.gif" />
           </td>
-          <td><a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a></td>
+          <td>
+            <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a> 
+            <?php if($field['requiered_field']): ?><span class="required">*</span> <?php endif; ?>
+          </td>
           <td><?php echo $field['name'];?> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
           <td><?php echo $field['type'];?></td>
           <?php

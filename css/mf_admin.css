@@ -29,3 +29,6 @@ div.options_label input{ width: 200px;}
 .mf-sortable-placeholder { height: 1.2em; line-height:1.2em; display:table-row } 
 .ui-sortable-helper  { border: 1px solid #DFDFDF; background: #FFF; }
 .mf-ajax-loading { width: 16px; height: 16px; background-image:url('../images/ajax-loader.gif'); display:none; } 
+
+/** requiered span **/
+#wpbody-content span.required { color: red; }

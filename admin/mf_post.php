@@ -73,8 +73,11 @@ class mf_post extends mf_admin {
                       $h = $field['description'];
                       $help = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),$h);
                     }
-
-                    print sprintf('<div class="mf-field-title"><label><span>%s</span>%s</label></div>',$field['label'],$help);
+                    $requiered = '';
+                    if($field['requiered_field']){
+                      $requiered = ' <span class="required">*</span>';
+                    }
+                    print sprintf('<div class="mf-field-title"><label><span>%s%s</span>%s</label></div>',$field['label'],$requiered,$help);
                   ?>
                   <?php 
                     $f = $field['type'].'_field';
@@ -83,8 +86,9 @@ class mf_post extends mf_admin {
                    ?>
                 </div> 
                 <?php if( $field['duplicated'] ) :?>
-                  <div class="buttons"> 
-                    <a href="javascript:void(0);" class="mf_add_another">Add Another</a> <a href="javascript:void(0);">Remove</a> 
+                  <div class="mf-duplicate-controls"> 
+                    <a href="javascript:void(0);" class="duplicate-field"> <span>Add Another</span> </a>
+                    <a href="javascript:void(0);" class="delete_duplicate_field"><span>Remove</span> </a> 
                   </div> 
                 <?php endif;?> 
             </div> 
