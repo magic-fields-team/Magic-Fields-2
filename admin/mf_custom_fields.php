@@ -641,29 +641,9 @@ class mf_custom_fields extends mf_admin {
   public function display_field( $field, $value = '', $field_index = 1, $group_index = 1 ) {
     global $mf_domain;
 
-    $tt = '<div class="tt">
-             <div class="tthl">
-               <div class="tthr">
-                 <div class="tth"></div>
-               </div>
-             </div>
-             <div class="ttbl">
-               <div class="ttbr">
-                 <div class="ttb">
-                   <div class="ttbc">%s</div>
-                 </div>
-               </div>
-             </div>
-             <div class="ttfl">
-               <div class="ttfr">
-                 <div class="ttf"></div>
-               </div>
-             </div>
-           </div>';
-
     $help = '';
     if($field['description']) {
-      $h = sprintf($tt,$field['description']);
+      $h = $field['description'];
       $help = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),$h);
     }
 
