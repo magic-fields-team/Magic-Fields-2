@@ -1,4 +1,7 @@
-.mf_group .mf-field{ border-top: 0px solid #EAEAEA; }
+/** mf-group-warpper **/
+.mf-group-wrapper { border: 1px solid #eaeaea; background: url(../images/mf-field.png) repeat-x #f8f8f8; }
+.mf-group-wrapper a { color: #999; font-size: 10px; }
+.mf-group-wrapper .mf-field{ border-top: 1px solid #EAEAEA; }
 /*label*/
 label > span { float:left; }
 /*tool tip*/
@@ -8,104 +11,107 @@ label > span { float:left; }
 .mf-field small.mf_tip { color: #5d8eb6;  margin-left: 10px;  padding-left: 20px;  background: url(../images/small-tip.png) no-repeat;  float: left;  line-height: 16px;  font-size: 10px;  font-weight: normal;}
 .mf-field small.mf_tip span { position:relative; height:0; left:-88px; top:-57px; display:none; color:#000;}
 
-.mf_group .inside .mf-field{ padding: 0px 7px 8px 0; padding-bottom: 6px; }
+.mf_group .mf-field{ padding: 0px 7px 8px 0; padding-bottom: 6px; }
 .mf_group .mf-field-title { /*overflow: hidden;*/ zoom: 100%; padding-top: 10px; }
 
 /*inputs*/
 .mf_group input { clear:both; display:block; margin:10px}
 
 
-.mf_group { padding: 0px 7px 8px 0; border-top: 1px solid #EAEAEA; background: #F8F8F8; padding-bottom: 6px; }
+.mf_group { padding: 0px 0px 8px 0; border-top: 1px solid #EAEAEA; background: #F8F8F8; padding-bottom: 6px; }
 .mf_group:hover { background: #F0F7FD; }
 .mf_group .mf-field label { font-weight:bold; margin-bottom: 8px;margin-left: 3px; margin-top: 0; font-size:12px; float: left; }
 .mf-field input { margin-bottom:4px; outline:none; background:#FFF;}
 
-
-
 /* -- Tooltips -- */
-.tt {
-  position: absolute;
-  max-width: 550px;
-}
+.tt { position: absolute; max-width: 550px; }
+/* head */
+.tth,.tthl,.tthr { height: 9px; line-height: 0; font-size: 0; }
+.tthl { padding-left: 10px; background: url(../images/tthl.png) no-repeat top left; }
+.tthr { padding-right: 10px; background: url(../images/tthr.png) no-repeat top right; }
+.tth { background: url(../images/tth.png) repeat-x; }
+/* body */
+.ttb,.ttbl,.ttbr { zoom: 100%; overflow: hidden; }
+.ttbl { padding-left: 4px; background: url(../images/ttbl.png) repeat-y top left; }
+.ttbr { padding-right: 4px; background: url(../images/ttbr.png) repeat-y top right; }
+.ttb { background: url(../images/ttb.png) repeat-x #FDFCE4; }
+.ttbc { padding: 0 10px 2px 10px; font-size: 11px; color: #33330B; line-height: 18px; }
+/** tt-foot **/
+.ttf,.ttfl,.ttfr { height: 16px; line-height: 0; font-size: 0; }
+.ttfl { padding-left: 27px; background: url(../images/ttfl.png) no-repeat bottom left; }
+.ttfr { padding-right: 10px; background: url(../images/ttfr.png) no-repeat bottom right; }
+.ttf { background: url(../images/ttf.png) repeat-x; }
 
-.tth,  /* head */
-.tthl,
-.tthr {
-  height: 9px;
-  line-height: 0;
-  font-size: 0;
-}
-
-.tthl {
-  padding-left: 10px;
-  background: url(../images/tthl.png) no-repeat top left;
-}
-
-.tthr {
-  padding-right: 10px;
-  background: url(../images/tthr.png) no-repeat top right;
-}
-
-.tth {
-  background: url(../images/tth.png) repeat-x;
-}
-
-.ttb, /* body */
-.ttbl,
-.ttbr {
-  zoom: 100%;
-  overflow: hidden;
-}
-
-.ttbl {
-  padding-left: 4px;
-  background: url(../images/ttbl.png) repeat-y top left;
-}
-
-.ttbr {
-  padding-right: 4px;
-  background: url(../images/ttbr.png) repeat-y top right;
-}
-
-.ttb {
-  background: url(../images/ttb.png) repeat-x #FDFCE4;
-}
-
-.ttbc {
-  padding: 0 10px 2px 10px;
-  font-size: 11px;
-  color: #33330B;
-  line-height: 18px;
-}
-
-.ttf, /* foot */
-.ttfl,
-.ttfr {
-  height: 16px;
-  line-height: 0;
-  font-size: 0;
-}
-
-.ttfl {
-  padding-left: 27px;
-  background: url(../images/ttfl.png) no-repeat bottom left;
-}
-
-.ttfr {
-  padding-right: 10px;
-  background: url(../images/ttfr.png) no-repeat bottom right;
-}
-
-.ttf {
-  background: url(../images/ttf.png) repeat-x;
-}
-
-/** duplicate controls **/
+/** duplicate field **/
 .mf_group .mf-duplicate-controls { overflow: hidden; zoom: 100%; clear: left; padding-top: 3px; }
-.mf_group .mf-duplicate-controls a { text-decoration: none; float: left; background-repeat: no-repeat; line-height: 14px !important; padding-left: 16px !important; }
-.mf_group .duplicate-field { background-image: url(../images/duplicate-field.png); }
-.mf_group .duplicate-field span { color: #39A944; }
-.mf_group .duplicate-field:hover span { color: #26702d; }
-.mf_group .delete_duplicate_field { background-image: url(../images/delete-duplicate-field.png); }
-.mf_group .delete_duplicate_field span { color: #BB3939; }
-.mf_group .delete_duplicate_field:hover span { color: #802727; }
+.mf_group .mf-duplicate-controls a,.mf-group-wrapper .mf_toolbox_controls a { text-decoration: none; float: left; background-repeat: no-repeat; line-height: 14px !important; padding-left: 16px !important; }
+.mf-group-wrapper .duplicate-field,.mf-group-wrapper .duplicate_button { background-image: url(../images/duplicate-field.png); }
+.mf_group .duplicate-field span, .mf-group-wrapper .duplicate_button span { color: #39A944; }
+.mf_group .duplicate-field:hover span, .mf-group-wrapper .duplicate_button:hover span { color: #26702d; }
+.mf_group .delete_duplicate_field, .mf-group-wrapper .delete_duplicate_button { background-image: url(../images/delete-duplicate-field.png); }
+.mf_group .delete_duplicate_field span, .mf-group-wrapper .delete_duplicate_button span { color: #BB3939; }
+.mf_group .delete_duplicate_field:hover span, .mf-group-wrapper .delete_duplicate_button:hover span { color: #802727; }
+
+/** duplicate group **/
+.mf_group .mf_toolbox { 
+  height: 22px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 6px;
+  background: #F3F3F3;
+  border-top: 1px solid #EAEAEA;
+  border-bottom: 1px solid #EAEAEA;
+  cursor: move;
+}
+.mf_group .mf_toolbox { 
+  padding-top: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 21px;
+}
+.mf-group-wrapper .mf_duplicate_group:hover .mf_toolbox { 
+  background-color: #FAFAFA;
+  border-top-color: #F2F2F2; 
+}
+.mf_group .mf_toolbox_controls { 
+  float: right;
+  overflow: hidden;
+  zoom: 100%;
+  padding-right: 4px;
+}
+.mf-group-wrapper .mf-counter { 
+  background-image: url(../images/mf-toolbox-mf-counter.png);
+  color: #FFF;
+  font-weight: bold;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  font-size: 9px;
+  line-height: 16px;
+  cursor: move;
+}
+.mf_group .mf_toolbox_controls a { 
+  font-size: 10px;
+}
+.mf_group .mf_toolbox_controls a,
+.mf_group .mf-counter { 
+  float: left;
+  background-repeat: no-repeat;
+  display: block;
+}
+.row_mf { 
+float: left;
+}
+.mf-group-wrapper .mf_toolbox .hndle { 
+  background: url(../images/mf-toolbox-hndle.png) no-repeat 1px 3px;
+  width: 12px;
+  height: 16px;
+  display: block;
+}
+
+.mf-group-wrapper a.duplicate-field:hover,
+.mf-group-wrapper a.delete_duplicate_field:hover,
+.mf-group-wrapper a.duplicate_button:hover,
+.mf-group-wrapper a.delete_duplicate_button:hover{ 
+  color: #666 !important;
+}

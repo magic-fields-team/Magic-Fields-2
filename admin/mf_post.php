@@ -57,11 +57,10 @@ class mf_post extends mf_admin {
     $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
     //default markup
     ?>
-    <div class="mf_group group-<?php print $metabox['args']['group_info']['id'];?>" > 
-      <div class="mf-group-count">1 items</div> 
+    <div class="mf-group-wrapper group-<?php print $metabox['args']['group_info']['id'];?>" > 
       <!-- grupos se puede repetir --> 
       <div class="mf_group mf_duplicate_group" id="mf_group_<?php print $metabox['args']['group_info']['id']; ?>_1"> 
-        <div class="inside" > 
+     
           <!-- campos del grupo (por cada campo) --> 
           <?php foreach( $custom_fields as $field ):?>
             <!-- si el campo se puede duplicar deberia estar esto N veces --> 
@@ -85,19 +84,30 @@ class mf_post extends mf_admin {
                     print $f->display_field($field);
                    ?>
                 </div> 
+
                 <?php if( $field['duplicated'] ) :?>
                   <div class="mf-duplicate-controls"> 
-                    <a href="javascript:void(0);" class="duplicate-field"> <span>Add Another</span> </a>
-                    <a href="javascript:void(0);" class="delete_duplicate_field"><span>Remove</span> </a> 
+                    <a href="javascript:void(0);" class="duplicate-field"> <span>Add Another</span> <?php echo $field['label']; ?></a>
+                    <a href="javascript:void(0);" class="delete_duplicate_field"><span>Remove</span> <?php echo $field['label']; ?></a> 
                   </div> 
                 <?php endif;?> 
             </div> 
             <!-- fin del campo duplicado --> 
           <?php endforeach;?> 
           <!-- fin del campo --> 
-        </div> 
-      </div> 
-      <!-- fin del grupo --> 
+     
+        <?php if($metabox['args']['group_info']['duplicated']): ?>
+          <div class="mf_toolbox">
+             <span class="mf-counter sortable-mf">1</span>
+             <span class="hndle sortable_mf row_mf">&nbsp;</span>
+             <span class="mf_toolbox_controls">
+               <a class="duplicate_button" href="javascript:void(0);"><span>Add Another</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+               <a class="delete_duplicate_button" href="javascript:void(0);"><span>Remove</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+             </span>
+           </div>
+        <?php endif; ?>
+      </div>
+      <!-- fin del grupo -->
     </div>
   <?php
     //pr($custom_fields);
