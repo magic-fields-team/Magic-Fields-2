@@ -77,7 +77,6 @@ class mf_dashboard extends mf_admin {
     <?php
 
     print '<h3>'.__(' Custom Taxonomy',$mf_domain).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy" class="add-new-h2 button">'.__( 'Add new Custom Taxonomy', $mf_domain ).'</a></h3>';
-    print '</div>';
 
     if( empty( $custom_taxonomies ) ) :
     ?>
@@ -140,7 +139,7 @@ class mf_dashboard extends mf_admin {
     </table>
     <?php
     endif;
-
+    print '</div>';
   }
 
 }

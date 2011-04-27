@@ -32,3 +32,9 @@ div.options_label input{ width: 200px;}
 
 /** requiered span **/
 #wpbody-content span.required { color: red; }
+
+/** anchor delete **/
+a.mf-delete, span.mf-delete a{ color: #BC0B0B; }
+.mf-change-pt { font-weight: bolder; font-size: 12px; padding-left:200px; }
+.mf-no-default-group a { text-decoration: none; }
+.mf_add_group_field, .mf_delete_group_field { font-size: 10px; }

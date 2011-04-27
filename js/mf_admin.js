@@ -138,6 +138,13 @@ jQuery(document).ready(function($) {
 
     return confirm_message(message);
   });
+
+  $('#change-post-type').change(function(){
+
+    post_type = $(this).val();
+    url = 'admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=';
+    window.location= url +  post_type;
+  });
   
 });
 

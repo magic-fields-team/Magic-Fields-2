@@ -79,14 +79,42 @@ class mf_custom_fields extends mf_admin {
    * @return none
    */
   function fields_list() {
-    global $mf_domain;
+    global $mf_domain,$mf_pt_register;
 
     $post_type =  get_post_type_object($_GET['post_type']);
+    $select = array();
+    $posttypes = $this->mf_get_post_types();
 
     print '<div class="wrap">';
-    print '<h2>'.$post_type->label.'</h2>';
-    print '<h3>'.__( 'Custom Fields', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type->name.'" class="add-new-h2 button">'.__( 'Add new Custom Field', $mf_domain ).'</a>';
-    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type->name.'" class="add-new-h2 button">'.__( '+ Create a Group', $mf_domain ).'</a></h3>';
+    print '<h2>';
+    print $post_type->label;
+    print '  ';
+
+    if(in_array($post_type->name,$mf_pt_register)):
+      print '<span style="font-size:small">';
+      printf('<a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=%s">Edit</a> |',$post_type->name);
+      $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type={$post_type->name}";
+      $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
+      printf('<a class="mf-delete mf_confirm" alt="%s" href="%s">Delete</a>',__("This action can't be undone, are you sure?", $mf_domain ),$link);
+      print '</span>';
+    endif;
+
+    print '<span class="mf-change-pt" >'.__( 'Choose a Post Type', $mf_domain ).' </span>';
+    print '<select id="change-post-type" >';
+    foreach($posttypes as $p){
+      $selected = '';
+      if($p->name == $post_type->name ) $selected = 'selected="selected"';
+      printf('<option value="%s" %s >%s</option>',$p->name,$selected,$p->label);
+    }
+    print '</select>';
+    print '</h2>';
+
+    print '<p id="post-search" style="margin-top:16px">';
+    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type->name.'" class="add-new-h2 button">+ '.__( 'Create a Group', $mf_domain ).'</a>';
+    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type->name.'" class="add-new-h2 button">+ '.__( 'Create a Field', $mf_domain ).'</a>';
+    print '</p>';
+
+
     //list cusmtom field of post type
     $groups = $this->get_groups_by_post_type($post_type->name);
 
@@ -104,28 +132,28 @@ class mf_custom_fields extends mf_admin {
     $name = $group['label'];
     if($name != 'Magic Fields'){
       $name = sprintf('<a class="edit-group-h2" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=edit_group&custom_group_id=%s">%s</a>',$group['id'],$name);
-    }
+    
       $add = sprintf('admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s&custom_group_id=%s',$post_type->name,$group['id']);
 
-      $name .= sprintf('<span class="mf_add_group_field">(<a href="%s">create field</a>)</span>',$add);
+      $name .= sprintf('  <span class="mf_add_group_field">(<a href="%s">create field</a>)</span>',$add);
 
       $delete_link = 'admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=delete_custom_group&custom_group_id='.$group['id'];
       $delete_link = wp_nonce_url($delete_link,'delete_custom_group');
       $delete_msg  = __( "This action can't be undone, are you sure?", $mf_domain );
 
-      $name .= sprintf( '<span class="mf_delete_group delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
-
+      $name .= sprintf( '  <span class="mf_delete_group_field mf-delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
+    }
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
     ?>
-      <h3><?php echo $name; ?></h3><div class="mf-ajax-loading" id="mf-ajax-loading-<?php echo $group['id'];?>"></div>
+      <h2 class="mf-no-default-group"><?php echo $name; ?></h2><div class="mf-ajax-loading" id="mf-ajax-loading-<?php echo $group['id'];?>"></div>
       <?php if($fields): ?>
      <div>
       <input type="hidden" name="mf_order_fields" id="mf_order_fields" />
      <table class="widefat fixed" id="mf_sortable" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="order" class="manage-column column-title" width="10%"><?php _e( 'Order', $mf_domain ); ?></th>
+          <th scope="col" id="order" class="manage-column column-title" width="10%"></th>
           <th scope="col" id="label" class="manage-column column-title" width="25%"><?php _e('Label',$mf_domain); ?></th>
           <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
           <th scope="col" id="type" class="manage-column column-title" width="20%"><?php _e('Type',$mf_domain); ?></th>
@@ -134,7 +162,7 @@ class mf_custom_fields extends mf_admin {
       </thead>
       <tfoot>
          <tr>
-          <th scope="col" id="order" class="manage-column column-title" width="10%"><?php _e( 'Order', $mf_domain ); ?></th>
+          <th scope="col" id="order" class="manage-column column-title" width="10%"></th>
           <th scope="col" id="label" class="manage-column column-title" width="10%"><?php _e('Label',$mf_domain); ?></th>
           <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
           <th scope="col" id="type" class="manage-column column-title" width="25%"><?php _e('Type',$mf_domain); ?></th>
@@ -148,11 +176,11 @@ class mf_custom_fields extends mf_admin {
             <img class="mf-order-icon" src="<?php echo MF_BASENAME ?>images/arrows_up_down.gif" />
           </td>
           <td>
-            <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a> 
+            <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a>
             <?php if($field['requiered_field']): ?><span class="required">*</span> <?php endif; ?>
           </td>
-          <td><?php echo $field['name'];?> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
-          <td><?php echo $field['type'];?></td>
+          <td><tt><?php echo $field['name'];?></tt> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
+          <td style="text-transform:capitalize;" ><?php echo preg_replace('/_/',' ',$field['type']);?></td>
           <?php
             $delete_link = "admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=delete_custom_field&custom_field_id={$field['id']}&init=true";
             $delete_link = wp_nonce_url($delete_link,'delete_custom_field');
@@ -643,7 +671,7 @@ class mf_custom_fields extends mf_admin {
 
   public function display_field( $field, $value = '', $field_index = 1, $group_index = 1 ) {
     global $mf_domain;
-    
+
     $output = '';
     $output .= sprintf('<div><input name="magicfields[%s][%s][%s]" placeholder="%s" /></div>', $field['id'], $group_index, $field_index, $field['label'] );
     return $output;
