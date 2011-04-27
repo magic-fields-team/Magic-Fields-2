@@ -1,7 +1,8 @@
 /** mf-group-warpper **/
 .mf-group-wrapper { border: 1px solid #eaeaea; background: url(../images/mf-field.png) repeat-x #f8f8f8; }
 .mf-group-wrapper a { color: #999; font-size: 10px; }
-.mf-group-wrapper .mf-field{ border-top: 1px solid #EAEAEA; }
+.mf-group-wrapper .mf-field{ border-top: 1px solid #EAEAEA; background: url(../images/mf-field.png) repeat-x; }
+.mf-group-wrapper .mf-field:first-child { border-top: none; }
 /*label*/
 label > span { float:left; }
 /*tool tip*/
@@ -18,9 +19,9 @@ label > span { float:left; }
 .mf_group input { clear:both; display:block; margin:10px}
 
 
-.mf_group { padding: 0px 0px 8px 0; border-top: 1px solid #EAEAEA; background: #F8F8F8; padding-bottom: 6px; }
-.mf_group:hover { background: #F0F7FD; }
-.mf_group .mf-field label { font-weight:bold; margin-bottom: 8px;margin-left: 3px; margin-top: 0; font-size:12px; float: left; }
+.mf_group { padding: 0; border-top: 1px solid #EAEAEA; background: #F8F8F8; }
+.mf_group .mf-field:hover { background: #F0F7FD; }
+.mf_group .mf-field label { font-weight:bold; margin-bottom: 8px; margin-left: 10px; margin-top: 0; font-size:12px; float: left; }
 .mf-field input { margin-bottom:4px; outline:none; background:#FFF;}
 
 /* -- Tooltips -- */
@@ -43,7 +44,7 @@ label > span { float:left; }
 .ttf { background: url(../images/ttf.png) repeat-x; }
 
 /** duplicate field **/
-.mf_group .mf-duplicate-controls { overflow: hidden; zoom: 100%; clear: left; padding-top: 3px; }
+.mf_group .mf-duplicate-controls { overflow: hidden; zoom: 100%; clear: left; padding-top: 3px; padding-left: 10px; }
 .mf_group .mf-duplicate-controls a,.mf-group-wrapper .mf_toolbox_controls a { text-decoration: none; float: left; background-repeat: no-repeat; line-height: 14px !important; padding-left: 16px !important; }
 .mf-group-wrapper .duplicate-field,.mf-group-wrapper .duplicate_button { background-image: url(../images/duplicate-field.png); }
 .mf_group .duplicate-field span, .mf-group-wrapper .duplicate_button span { color: #39A944; }
@@ -65,7 +66,7 @@ label > span { float:left; }
 }
 .mf_group .mf_toolbox { 
   padding-top: 4px;
-  padding-left: 5px;
+  padding-left: 10px;
   padding-right: 5px;
   height: 21px;
 }
