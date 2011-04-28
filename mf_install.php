@@ -81,9 +81,8 @@ class mf_install {
     if( $wpdb->get_var("SHOW tables LIKE '{MF_TABLE_POST_META}'") != MF_TABLE_POST_META ) {
       $sql = "CREATE TABLE ".MF_TABLE_POST_META." ( 
         meta_id INT NOT NULL, 
-        field_id INT NOT NULL, 
+        field_name VARCHAR(255) NOT NULL, 
         field_count INT NOT NULL,  
-        group_id INT NOT NULL, 
         group_count  INT NOT NULL, 
         post_id INT NOT NULL
       );";

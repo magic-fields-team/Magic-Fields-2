@@ -18,7 +18,10 @@ class mf_post extends mf_admin {
    * Adding the metaboxes
    */
   function mf_post_add_metaboxes() {
-    global $post;
+    global $post,$mf_post_values;
+
+//    $mf_post_values = $this->mf_get_post_values();
+
 
     //Getting the post types
     $post_types = $this->mf_get_post_types( array('public' => true ), 'names'  );
@@ -52,7 +55,7 @@ class mf_post extends mf_admin {
    * Fill a metabox with custom fields
    */
   function mf_metabox_content( $post, $metabox ) {
-    global $mf_domain;
+    global $mf_domain, $mf_post_values;
     //Getting the custom fields for this metabox
     $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
     //default markup
@@ -128,28 +131,51 @@ class mf_post extends mf_admin {
 
     if (!empty($_POST['magicfields'])) {
       
+      //just in case to post_id is a post revision and not the post inself
+      if ( $the_post = wp_is_post_revision( $post_id ) ) {
+  		  $post_id = $the_post;
+      }
+ 
       $customfields = $_POST['magicfields'];
 
+      /** Deleting the old values **/
+	    $wpdb->query( "DELETE FROM ". MF_TABLE_POST_META ." WHERE post_id= {$post_id}" );
+      foreach ( $customfields as $field_name => $field ) {
+        delete_post_meta($post_id, $field_name);
+      }
+      /** / Deleting the old values **/
+
       //creating the new values
-      foreach( $customfields as $field_id => $groups ) {
+      foreach( $customfields as $field_name => $groups ) {
          
         foreach( $groups as $group_count => $fields ) {
           
           foreach( $fields as $field_count => $value ) {
+
+            //here if the value of the field needs a process before to be saved
+            //should be trigger that method here
+            //$value =  mf_process_value_by_type($field_name,$value);
+
             // Adding field value meta data
- /*           add_post_meta($post_id, $name, $value);*/
+            add_post_meta($post_id, "{$field_name}", $value);
 
-            //$meta_id = $wpdb->insert_id;
+            $meta_id = $wpdb->insert_id;
 
-            //$wpdb->query("INSERT INTO ". MF_TABLE_POST_META." ( meta_id, field_id, field_count, group_id, group_count, post_id ) ".
-                         //" VALUES ({$meta_id}, '{$field_id}', {$field})"
-                        //);
- 
-//              print_r($field_count);
- //             print_r($value);
+            $wpdb->query("INSERT INTO ". MF_TABLE_POST_META." ( meta_id, field_name, field_count, group_count, post_id ) ".
+              " VALUES ( {$meta_id}, '{$field_name}' , {$field_count},{$group_count} ,{$post_id} )"
+            );
           }
         }
       }
     }
+  }
+
+
+  /**
+   * retrieve the custom fields values of a certain post
+   */
+  function mf_get_post_values( $post_id ) {
+    global $wpdb;
+//    $data = $wpdb;
   }
 }
