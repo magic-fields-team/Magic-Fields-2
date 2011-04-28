@@ -20,8 +20,7 @@ class mf_post extends mf_admin {
   function mf_post_add_metaboxes() {
     global $post,$mf_post_values;
 
-//    $mf_post_values = $this->mf_get_post_values();
-
+    $mf_post_values = $this->mf_get_post_values($post->ID);
 
     //Getting the post types
     $post_types = $this->mf_get_post_types( array('public' => true ), 'names'  );
@@ -56,13 +55,27 @@ class mf_post extends mf_admin {
    */
   function mf_metabox_content( $post, $metabox ) {
     global $mf_domain, $mf_post_values;
+
     //Getting the custom fields for this metabox
     $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
     //default markup
     ?>
     <div class="mf-group-wrapper group-<?php print $metabox['args']['group_info']['id'];?>" > 
-      <!-- grupos se puede repetir --> 
-      <div class="mf_group mf_duplicate_group" id="mf_group_<?php print $metabox['args']['group_info']['id']; ?>_1"> 
+      <!-- grupos se puede repetir -->
+      <?php
+        $extraclass = ""; 
+        if( $metabox['args']['group_info']['duplicated'] ) {
+          $extraclass = "mf_duplicate_group";
+
+          $repeated_groups = $this->mf_get_duplicated_groups( $post->ID, $metabox['args']['group_info']['id'] );
+        } else {
+          $repeated_groups = 1;
+        }
+
+        for( $group_index = 1; $group_index <= $repeated_groups; $group_index++ ):
+      ?>
+      
+      <div class="mf_group <?php print $extraclass; ?>" id="mf_group_<?php print $metabox['args']['group_info']['id']; ?>_<?php print $group_index;?>"> 
      
           <!-- campos del grupo (por cada campo) --> 
           <?php foreach( $custom_fields as $field ):?>
@@ -84,7 +97,9 @@ class mf_post extends mf_admin {
                   <?php 
                     $f = $field['type'].'_field';
                     $f = new $f();
-                    print $f->display_field($field);
+                    //@TODO el  $field_index esta hardcodeado, cuando se este trabajando en duplicar campos no olvidar desharcodearlos
+                    $value =  (!empty($mf_post_values[$field['name']][$group_index][1])) ? $mf_post_values[$field['name']][$group_index][1] : '' ;
+                    print $f->display_field( $field, $value, $group_index, 1  );
                    ?>
                 </div> 
 
@@ -110,6 +125,7 @@ class mf_post extends mf_admin {
            </div>
         <?php endif; ?>
       </div>
+      <?php endfor;?>
       <!-- fin del grupo -->
     </div>
   <?php
@@ -170,12 +186,58 @@ class mf_post extends mf_admin {
     }
   }
 
+  /**
+   *
+   * @param int $post_id  the post id
+   * @param int $group_id the group_id
+   * @return int 
+   */
+  function mf_get_duplicated_groups( $post_id, $group_id ) { 
+    global $wpdb;
+
+    return $wpdb->get_var( 
+      "SELECT 
+        mfpm.group_count 
+      FROM 
+        ".MF_TABLE_POST_META." AS mfpm 
+      LEFT JOIN 
+        ".MF_TABLE_CUSTOM_FIELDS." AS mfcf ON ( mfpm.field_name = mfcf.name) 
+      WHERE 
+        mfpm.post_id  = 78 
+      AND 
+        custom_group_id = 1"
+    );
+  }
 
   /**
    * retrieve the custom fields values of a certain post
    */
   function mf_get_post_values( $post_id ) {
     global $wpdb;
-//    $data = $wpdb;
+    
+    $raw = $wpdb->get_results(
+      "SELECT   
+        mfpm.meta_id, 
+        mfpm.field_name, 
+        mfpm.field_count, 
+        mfpm.group_count, 
+        pm.meta_value  
+      FROM 
+        ".MF_TABLE_POST_META." as mfpm 
+      LEFT JOIN  
+       ".$wpdb->postmeta." as pm 
+      ON 
+        ( mfpm.meta_id = pm.meta_id ) 
+      WHERE 
+        mfpm.post_id = ".$post_id
+    );
+
+    $data = array();
+
+    foreach( $raw as $key => $field ){
+      $data[$field->field_name][$field->group_count][$field->field_count] = $field->meta_value;
+    }
+
+    return $data;
   }
 }
