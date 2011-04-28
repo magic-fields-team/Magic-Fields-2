@@ -195,7 +195,7 @@ class mf_post extends mf_admin {
   function mf_get_duplicated_groups( $post_id, $group_id ) { 
     global $wpdb;
 
-    return $wpdb->get_var( 
+    $group_count =  $wpdb->get_var( 
       "SELECT 
         mfpm.group_count 
       FROM 
@@ -203,10 +203,15 @@ class mf_post extends mf_admin {
       LEFT JOIN 
         ".MF_TABLE_CUSTOM_FIELDS." AS mfcf ON ( mfpm.field_name = mfcf.name) 
       WHERE 
-        mfpm.post_id  = 78 
+        mfpm.post_id  = {$post_id} 
       AND 
-        custom_group_id = 1"
+        custom_group_id = {$group_id}
+      ORDER BY 
+        group_count DESC 
+      LIMIT 1"
     );
+    
+    return ($group_count > 1) ? $group_count : 1;
   }
 
   /**
