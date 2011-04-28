@@ -157,7 +157,6 @@ class mf_custom_fields extends mf_admin {
           <th scope="col" id="label" class="manage-column column-title" width="25%"><?php _e('Label',$mf_domain); ?></th>
           <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
           <th scope="col" id="type" class="manage-column column-title" width="20%"><?php _e('Type',$mf_domain); ?></th>
-          <th scope="col" id="actions" class="manage-column column-title" width="20%"><?php _e('Actions',$mf_domain); ?></th>
         </tr>
       </thead>
       <tfoot>
@@ -166,7 +165,6 @@ class mf_custom_fields extends mf_admin {
           <th scope="col" id="label" class="manage-column column-title" width="10%"><?php _e('Label',$mf_domain); ?></th>
           <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
           <th scope="col" id="type" class="manage-column column-title" width="25%"><?php _e('Type',$mf_domain); ?></th>
-          <th scope="col" id="actions" class="manage-column column-title" width="20%"><?php _e('Actions',$mf_domain); ?></th>
         </tr>
       </tfood>
       <tbody rel="group-<?php print $group['id']; ?>" >
@@ -176,17 +174,24 @@ class mf_custom_fields extends mf_admin {
             <img class="mf-order-icon" src="<?php echo MF_BASENAME ?>images/arrows_up_down.gif" />
           </td>
           <td>
-            <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php echo $field['label'];?></a>
+            <?php echo $field['label'];?>
             <?php if($field['requiered_field']): ?><span class="required">*</span> <?php endif; ?>
+            <div class="row-actions">
+              <span class="edit">
+               <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php _e('Edit',$mf_domain); ?></a>
+              </span> |
+              <span class="delete">
+                <?php
+                $delete_link = "admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=delete_custom_field&custom_field_id={$field['id']}&init=true";
+                $delete_link = wp_nonce_url($delete_link,'delete_custom_field');
+                $delete_msg = __('This action can\'t be undone, are you sure?', $mf_domain);
+                ?>
+                <a class="mf_confirm" alt="<?php print $delete_msg; ?>" href="<?php print $delete_link;?>"><?php _e('Delete',$mf_domain)?></a>
+              </span>
+            </div>
           </td>
           <td><tt><?php echo $field['name'];?></tt> <span style="color: #999;">(<?php echo $field['display_order']; ?>)</span></td>
           <td style="text-transform:capitalize;" ><?php echo preg_replace('/_/',' ',$field['type']);?></td>
-          <?php
-            $delete_link = "admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=delete_custom_field&custom_field_id={$field['id']}&init=true";
-            $delete_link = wp_nonce_url($delete_link,'delete_custom_field');
-            $delete_msg = __('This action can\'t be undone, are you sure?', $mf_domain);
-          ?>
-          <td><span class="delete"><a class="mf_confirm" alt="<?php print $delete_msg; ?>" href="<?php print $delete_link;?>">X <?php _e('Delete',$mf_domain)?></a></span></td>
         </tr>
        <?php endforeach; ?>
       </tbody>
