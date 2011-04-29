@@ -678,7 +678,7 @@ class mf_custom_fields extends mf_admin {
     global $mf_domain;
 
     $output = '';
-    $output .= sprintf('<div><input name="magicfields[%s][%d][%d]" placeholder="%s" value="%s" /></div>', $field['name'], $group_index, $field_index, $field['label'], $value );
+    $output .= sprintf('<input name="magicfields[%s][%d][%d]" placeholder="%s" value="%s" />', $field['name'], $group_index, $field_index, $field['label'], $value );
     return $output;
   }
 }
