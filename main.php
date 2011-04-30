@@ -273,6 +273,23 @@ wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
     die;
   }
   
+  add_action('wp_ajax_mf_call','mf_ajax_call');
+  /* estara sera la funcion principal de llamadas js de MF*/
+  function mf_ajax_call(){
+    $type = $_POST['type'];
+    switch($type){
+      case 'field_duplicate':
+        $group_id = (int)$_POST['group_id'];
+        $group_index = (int)$_POST['group_index'];
+        $field_id = (int)$_POST['field_id'];
+        $field_index = (int)$_POST['field_index'];
+        mf_post::mf_ajax_duplicate_field($group_id,$group_index,$field_id,$field_index);
+        break;
+      default:
+        break;
+    }
+    die;
+  }
   
   //validation type (name) of custom taxonomy
   add_action( 'wp_ajax_mf_check_custom_taxonomy', 'check_custom_taxonomy_option' );

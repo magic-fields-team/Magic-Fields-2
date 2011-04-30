@@ -82,13 +82,30 @@ class mf_post extends mf_admin {
   }
 
   public function mf_draw_group($metabox,$extraclass = '',$group_index = 1 ,$custom_fields = array() ,$mf_post_values = array()){
+    global $post;
     $id = sprintf('mf_group_%s_%s',$metabox['args']['group_info']['id'], $group_index);
+    $group_id = $metabox['args']['group_info']['id'];
    ?>
     <div class="mf_group <?php print $extraclass; ?>" id="<?php print $id; ?>">
        <!-- campos del grupo (por cada campo) -->
        <?php foreach( $custom_fields as $field ):?>
          <!-- si el campo se puede duplicar deberia estar esto N veces -->
-       <?php $this->mf_draw_field($field,$group_index,1,$mf_post_values); ?>
+         <?php
+           $field_class = '';
+           if($field['duplicated']){
+             $repeated_field = $this->mf_get_duplicated_fields_by_group($post->ID, $field['name'],$group_id,$group_index);
+           }else{
+             $repeated_field = 1;
+           }
+
+           $group_field = sprintf('mf_group_field_%d_%d_%d',$group_id,$group_index,$field['id']);
+           print '<div class="mf-field" id="'.$group_field.'" >';
+           for( $field_index = 1; $field_index <= $repeated_field; $field_index++ ){
+             $this->mf_draw_field($field,$group_id,$group_index,$field_index,$mf_post_values);
+           }
+           printf('<input value="%d" id="mf_counter_%d_%d_%d" style="display:none" >',$repeated_field,$group_id,$group_index,$field['id']);
+           print '</div>';
+         ?>
          <!-- fin de campo duplicado -->
        <?php endforeach;?>
        <!-- fin del campo -->
@@ -106,21 +123,25 @@ class mf_post extends mf_admin {
    <?php
   }
 
-
-  public function mf_draw_field($field,$group_index =1,$field_index =1 , $mf_post_values = array() ){
+  public function mf_draw_field($field,$group_id,$group_index =1,$field_index =1 , $mf_post_values = array() ){
     global $mf_domain;
 
-    $id = sprintf('mf_field_%d_%d_%d_ui',$field['id'],$group_index,$field_index);
+    $id = sprintf('mf_field_%d_%d_%d_%d_ui',$group_id,$group_index,$field['id'],$field_index);
+    $delete_id = sprintf('delete_field_repeat-%d_%d_%d_%d',$group_id,$group_index,$field['id'],$field_index);
+    $add_id = sprintf('mf_field_repeat-%d_%d_%d_%d',$group_id,$group_index,$field['id'],$field_index);
+    $delete_style = ($field_index == 1)? 'style="display: none; "' : ''; 
+
     $name = sprintf('field-%s',$field['name']);
     $tool = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),'%s');
     $help = ($field['description'])? sprintf($tool,$field['description']) : '';
     $requiered = ($field['requiered_field'])? ' <span class="required">*</span>' : '';
     $value =  (!empty($mf_post_values[$field['name']][$group_index][$field_index])) ? $mf_post_values[$field['name']][$group_index][$field_index] : '';
     ?>
-      <div class="mf-field  mf-field-ui <?php print $name;?>" id="<?php print $id;?>">
+      <div class="mf-field-ui <?php print $name;?>" id="<?php print $id;?>">
          <div>
            <?php
-             print sprintf('<div class="mf-field-title"><label><span>%s%s</span>%s</label></div>',$field['label'],$requiered,$help);
+             $field_num = ($field_index > 1)? sprintf(' <em>(<span class="mf-field-count">%d</span>)</em> ',$field_index) : '';
+             print sprintf('<div class="mf-field-title"><label><span class="name" >%s%s%s</span>%s</label></div>',$field['label'],$field_num,$requiered,$help);
              $f = $field['type'].'_field';
              $f = new $f();
              print '<div>';
@@ -130,12 +151,17 @@ class mf_post extends mf_admin {
          </div>
          <?php if( $field['duplicated'] ) :?>
            <div class="mf-duplicate-controls">
-             <a href="javascript:void(0);" class="duplicate-field"> <span>Add Another</span> <?php echo $field['label']; ?></a>
-             <a href="javascript:void(0);" class="delete_duplicate_field"><span>Remove</span> <?php echo $field['label']; ?></a>
+             <a href="javascript:void(0);" id="<?php print $add_id; ?>" class="duplicate-field"> <span>Add Another</span> <?php echo $field['label']; ?></a>
+             <a href="javascript:void(0);" id="<?php print $delete_id; ?>" <?php print $delete_style; ?> class="delete_duplicate_field"><span>Remove</span> <?php echo $field['label']; ?></a>
            </div>
          <?php endif;?>
       </div>
     <?php
+  }
+
+  public function mf_ajax_duplicate_field($group_id,$group_index,$field_id,$field_index){
+    $field = self::get_custom_field($field_id);
+    self::mf_draw_field($field,$group_id,$group_index,$field_index);
   }
 
 
@@ -171,9 +197,9 @@ class mf_post extends mf_admin {
       foreach( $customfields as $field_name => $groups ) {
 
         foreach( $groups as $group_count => $fields ) {
-
-          foreach( $fields as $field_count => $value ) {
-
+          $j = 1;
+          foreach( $fields as $field_count1 => $value ) {
+            $field_count = $j;
             //here if the value of the field needs a process before to be saved
             //should be trigger that method here
             //$value =  mf_process_value_by_type($field_name,$value);
@@ -186,6 +212,7 @@ class mf_post extends mf_admin {
             $wpdb->query("INSERT INTO ". MF_TABLE_POST_META." ( meta_id, field_name, field_count, group_count, post_id ) ".
               " VALUES ( {$meta_id}, '{$field_name}' , {$field_count},{$group_count} ,{$post_id} )"
             );
+            $j += 1;
           }
         }
       }
@@ -219,6 +246,39 @@ class mf_post extends mf_admin {
 
     return ($group_count > 1) ? $group_count : 1;
   }
+
+  /**
+   *
+   * @param int $post_id  the post id
+   * @param int $group_id the group_id
+   * @param int $group_index (group_count)
+   * @return int
+   */
+  function mf_get_duplicated_fields_by_group( $post_id,$field_name, $group_id , $group_index ) {
+    global $wpdb;
+
+    $field_count =  $wpdb->get_var(
+    "SELECT
+      mfpm.field_count
+    FROM
+      ".MF_TABLE_POST_META." AS mfpm
+    LEFT JOIN
+      ".MF_TABLE_CUSTOM_FIELDS." AS mfcf ON ( mfpm.field_name = mfcf.name)
+    WHERE
+      mfpm.post_id  = {$post_id}
+    AND
+      custom_group_id = {$group_id}
+    AND
+      mfpm.group_count = {$group_index}
+    AND
+      mfpm.field_name = '{$field_name}'
+    ORDER BY
+      field_count DESC
+    LIMIT 1"
+    );
+    return ($field_count > 1) ? $field_count : 1;
+  }
+
 
   /**
    * retrieve the custom fields values of a certain post
