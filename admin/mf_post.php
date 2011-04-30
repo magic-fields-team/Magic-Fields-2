@@ -73,7 +73,8 @@ class mf_post extends mf_admin {
         }
 
         for( $group_index = 1; $group_index <= $repeated_groups; $group_index++ ){
-          $this->mf_draw_group($metabox,$extraclass,$group_index,$custom_fields,$mf_post_values);
+          $only = ($repeated_groups == 1)? TRUE : FALSE;
+          $this->mf_draw_group($metabox,$extraclass,$group_index,$custom_fields,$mf_post_values,$only);
         }
         printf('<input value="%d" id="mf_group_counter_%d" style="display:none" >',$repeated_groups,$group_id);
       ?>
@@ -82,12 +83,13 @@ class mf_post extends mf_admin {
   <?php
   }
 
-  public function mf_draw_group($metabox,$extraclass = '',$group_index = 1 ,$custom_fields = array() ,$mf_post_values = array(),$only = FALSE){
+  public function mf_draw_group($metabox,$extraclass = '',$group_index = 1 ,$custom_fields = array() ,$mf_post_values = array(),$only_group = FALSE){
     global $post;
     $id = sprintf('mf_group_%s_%s',$metabox['args']['group_info']['id'], $group_index);
     $group_id = $metabox['args']['group_info']['id'];
     $delete_id = sprintf('delete_group_repeat-%d_%d',$group_id,$group_index);
     $add_id = sprintf('mf_group_repeat-%s_%s',$group_id,$group_index);
+    $group_style = 'style="display: none;"';
    ?>
     <div class="mf_group <?php print $extraclass; ?>" id="<?php print $id; ?>">
        <!-- campos del grupo (por cada campo) -->
@@ -119,7 +121,7 @@ class mf_post extends mf_admin {
              <span class="hndle sortable_mf row_mf">&nbsp;</span>
              <span class="mf_toolbox_controls">
                <a class="duplicate_button" id="<?php print $add_id; ?>" href="javascript:void(0);"><span>Add Another</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
-               <a class="delete_duplicate_button"  id="<?php print $delete_id; ?>" href="javascript:void(0);"><span>Remove</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+                                                                                                                                                                                      <a class="delete_duplicate_button"  id="<?php print $delete_id; ?>" href="javascript:void(0);" <?php if($only_group) print $group_style; ?> ><span>Remove</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
              </span>
           </div>
        <?php endif; ?>
