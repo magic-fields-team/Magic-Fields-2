@@ -58,16 +58,16 @@ class mf_post extends mf_admin {
 
     //Getting the custom fields for this metabox
     $custom_fields = $this->get_custom_fields_by_group($metabox['args']['group_info']['id']);
+    $group_id = $metabox['args']['group_info']['id'];
     //default markup
     ?>
-    <div class="mf-group-wrapper group-<?php print $metabox['args']['group_info']['id'];?>" >
+    <div class="mf-group-wrapper group-<?php print $group_id;?>" id="mf_group-<?php print $group_id; ?>" >
       <!-- grupos se puede repetir -->
       <?php
         $extraclass = "";
         if( $metabox['args']['group_info']['duplicated'] ) {
           $extraclass = "mf_duplicate_group";
-
-          $repeated_groups = $this->mf_get_duplicated_groups( $post->ID, $metabox['args']['group_info']['id'] );
+          $repeated_groups = $this->mf_get_duplicated_groups( $post->ID, $group_id );
         } else {
           $repeated_groups = 1;
         }
@@ -75,16 +75,19 @@ class mf_post extends mf_admin {
         for( $group_index = 1; $group_index <= $repeated_groups; $group_index++ ){
           $this->mf_draw_group($metabox,$extraclass,$group_index,$custom_fields,$mf_post_values);
         }
+        printf('<input value="%d" id="mf_group_counter_%d" style="display:none" >',$repeated_groups,$group_id);
       ?>
       <!-- fin del grupo -->
     </div>
   <?php
   }
 
-  public function mf_draw_group($metabox,$extraclass = '',$group_index = 1 ,$custom_fields = array() ,$mf_post_values = array()){
+  public function mf_draw_group($metabox,$extraclass = '',$group_index = 1 ,$custom_fields = array() ,$mf_post_values = array(),$only = FALSE){
     global $post;
     $id = sprintf('mf_group_%s_%s',$metabox['args']['group_info']['id'], $group_index);
     $group_id = $metabox['args']['group_info']['id'];
+    $delete_id = sprintf('delete_group_repeat-%d_%d',$group_id,$group_index);
+    $add_id = sprintf('mf_group_repeat-%s_%s',$group_id,$group_index);
    ?>
     <div class="mf_group <?php print $extraclass; ?>" id="<?php print $id; ?>">
        <!-- campos del grupo (por cada campo) -->
@@ -92,7 +95,7 @@ class mf_post extends mf_admin {
          <!-- si el campo se puede duplicar deberia estar esto N veces -->
          <?php
            $field_class = '';
-           if($field['duplicated']){
+    if($field['duplicated'] && isset($post->ID) ){
              $repeated_field = $this->mf_get_duplicated_fields_by_group($post->ID, $field['name'],$group_id,$group_index);
            }else{
              $repeated_field = 1;
@@ -101,7 +104,8 @@ class mf_post extends mf_admin {
            $group_field = sprintf('mf_group_field_%d_%d_%d',$group_id,$group_index,$field['id']);
            print '<div class="mf-field" id="'.$group_field.'" >';
            for( $field_index = 1; $field_index <= $repeated_field; $field_index++ ){
-             $this->mf_draw_field($field,$group_id,$group_index,$field_index,$mf_post_values);
+             $only = ($repeated_field == 1)? TRUE : FALSE;
+             $this->mf_draw_field($field,$group_id,$group_index,$field_index,$mf_post_values, $only);
            }
            printf('<input value="%d" id="mf_counter_%d_%d_%d" style="display:none" >',$repeated_field,$group_id,$group_index,$field['id']);
            print '</div>';
@@ -114,8 +118,8 @@ class mf_post extends mf_admin {
              <span class="mf-counter sortable-mf"><?php print $group_index; ?></span>
              <span class="hndle sortable_mf row_mf">&nbsp;</span>
              <span class="mf_toolbox_controls">
-               <a class="duplicate_button" href="javascript:void(0);"><span>Add Another</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
-               <a class="delete_duplicate_button" href="javascript:void(0);"><span>Remove</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+               <a class="duplicate_button" id="<?php print $add_id; ?>" href="javascript:void(0);"><span>Add Another</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+               <a class="delete_duplicate_button"  id="<?php print $delete_id; ?>" href="javascript:void(0);"><span>Remove</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
              </span>
           </div>
        <?php endif; ?>
@@ -123,13 +127,13 @@ class mf_post extends mf_admin {
    <?php
   }
 
-  public function mf_draw_field($field,$group_id,$group_index =1,$field_index =1 , $mf_post_values = array() ){
+  public function mf_draw_field($field,$group_id,$group_index =1,$field_index =1 , $mf_post_values = array(),$only = FALSE ){
     global $mf_domain;
 
     $id = sprintf('mf_field_%d_%d_%d_%d_ui',$group_id,$group_index,$field['id'],$field_index);
     $delete_id = sprintf('delete_field_repeat-%d_%d_%d_%d',$group_id,$group_index,$field['id'],$field_index);
     $add_id = sprintf('mf_field_repeat-%d_%d_%d_%d',$group_id,$group_index,$field['id'],$field_index);
-    $delete_style = ($field_index == 1)? 'style="display: none; "' : ''; 
+    $field_style = ($field_index == 1)? 'style="display: none; "' : ''; 
 
     $name = sprintf('field-%s',$field['name']);
     $tool = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),'%s');
@@ -140,7 +144,7 @@ class mf_post extends mf_admin {
       <div class="mf-field-ui <?php print $name;?>" id="<?php print $id;?>">
          <div>
            <?php
-             $field_num = ($field_index > 1)? sprintf(' <em>(<span class="mf-field-count">%d</span>)</em> ',$field_index) : '';
+         $field_num = sprintf(' <em %s>(<span class="mf-field-count">%d</span>)</em> ',$field_style,$field_index);
              print sprintf('<div class="mf-field-title"><label><span class="name" >%s%s%s</span>%s</label></div>',$field['label'],$field_num,$requiered,$help);
              $f = $field['type'].'_field';
              $f = new $f();
@@ -152,7 +156,7 @@ class mf_post extends mf_admin {
          <?php if( $field['duplicated'] ) :?>
            <div class="mf-duplicate-controls">
              <a href="javascript:void(0);" id="<?php print $add_id; ?>" class="duplicate-field"> <span>Add Another</span> <?php echo $field['label']; ?></a>
-             <a href="javascript:void(0);" id="<?php print $delete_id; ?>" <?php print $delete_style; ?> class="delete_duplicate_field"><span>Remove</span> <?php echo $field['label']; ?></a>
+             <a href="javascript:void(0);" id="<?php print $delete_id; ?>" <?php if($only) print $field_style; ?> class="delete_duplicate_field"><span>Remove</span> <?php echo $field['label']; ?></a>
            </div>
          <?php endif;?>
       </div>
@@ -160,8 +164,19 @@ class mf_post extends mf_admin {
   }
 
   public function mf_ajax_duplicate_field($group_id,$group_index,$field_id,$field_index){
-    $field = self::get_custom_field($field_id);
-    self::mf_draw_field($field,$group_id,$group_index,$field_index);
+    $field = $this->get_custom_field($field_id);
+    $this->mf_draw_field($field,$group_id,$group_index,$field_index);
+  }
+
+  public function mf_ajax_duplicate_group($group_id,$group_index){
+    $group = $this->get_group($group_id);
+    $metabox = array(
+      'args' => array(
+        'group_info' => $group
+      )
+    );
+    $custom_fields = $this->get_custom_fields_by_group($group_id);
+    $this->mf_draw_group($metabox,'mf_duplicate_group',$group_index,$custom_fields);
   }
 
 
@@ -196,10 +211,10 @@ class mf_post extends mf_admin {
       //creating the new values
       foreach( $customfields as $field_name => $groups ) {
 
-        foreach( $groups as $group_count => $fields ) {
-          $j = 1;
-          foreach( $fields as $field_count1 => $value ) {
-            $field_count = $j;
+        $group_count = 1;
+        foreach( $groups as $fields ) {
+          $field_count = 1;
+          foreach( $fields as $value ) {
             //here if the value of the field needs a process before to be saved
             //should be trigger that method here
             //$value =  mf_process_value_by_type($field_name,$value);
@@ -212,8 +227,9 @@ class mf_post extends mf_admin {
             $wpdb->query("INSERT INTO ". MF_TABLE_POST_META." ( meta_id, field_name, field_count, group_count, post_id ) ".
               " VALUES ( {$meta_id}, '{$field_name}' , {$field_count},{$group_count} ,{$post_id} )"
             );
-            $j += 1;
+            $field_count++;
           }
+          $group_count++;
         }
       }
     }

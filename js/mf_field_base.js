@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
    id = jQuery(this).attr("id");
    pattern =  /delete\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
    item =  pattern.exec(id);
-   div = 'mf_field_' + item[1] + '_ui';
+   div = '#mf_field_' + item[1] + '_ui';
 
    group_id = item[2];
    group_index = item[3];
@@ -40,12 +40,27 @@ jQuery(document).ready(function($) {
 
    div_group_id = '#mf_group_field_'+group_id+'_'+group_index+'_'+field_id;
    if($(div_group_id).children('div.mf-field-ui').length > 1){
-     deleteGroupDuplicate(div);
+     deleteGroupDuplicate(div,div_group_id);
    }else{
      /*debemos usar las notificaciones que antes teniamos para mostrar este mensaje*/
      $(div_group_id).find('a.delete_duplicate_field').fadeOut({duration: "slow"});
-//     alert('mensaje que no puedes dejar solo el grupo');
    }
+  });
+
+  $('a.delete_duplicate_button').live('click', function(){
+    id = jQuery(this).attr("id");
+    pattern =  /delete\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
+    item =  pattern.exec(id);
+
+    div = '#mf_group_'+item[1];
+    parent = $(div);
+    parent.fadeOut({
+      duration: "normal",
+      complete: function() {
+        parent.remove();
+        fixCounterGroup('#mf_group-'+item[2]);
+      }
+    });
   });
 
   $('a.duplicate-field').live("click",function(){
@@ -66,21 +81,43 @@ jQuery(document).ready(function($) {
       success: function(response){
         $(counter_id).before(response);
         $(counter_id).val(field_index);
-        fixcounter('mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
+        fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
+      }
+    });
+  });
+
+  $('a.duplicate_button').live('click', function(){
+    id = jQuery(this).attr('id');
+    pattern =  /mf\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
+    item =  pattern.exec(id);
+
+    group_id = item[2];
+    counter_group_id = '#mf_group_counter_'+group_id;
+    group_index = parseInt($(counter_group_id).val()) + 1;
+
+    jQuery.ajax({
+      url: ajaxurl,
+      type: 'POST',
+      data: "action=mf_call&type=group_duplicate&group_id="+group_id+"&group_index="+group_index,
+      success: function(response){
+        $(counter_group_id).before(response);
+        $(counter_group_id).val(group_index);
+        fixCounterGroup('#mf_group-'+group_id);
       }
     });
   });
 
 });
 
-deleteGroupDuplicate = function(div){
-    var parent = jQuery("#"+div);
+deleteGroupDuplicate = function(div,div_group_id){
+    var parent = jQuery(div);
     /*var db = parent.find(".duplicate_button").clone();*/
     /*var context = parent.closest(".write_panel_wrapper");*/
     parent.fadeOut({
       duration: "normal",
       complete: function() {
         parent.remove();
+fixcounter(div_group_id);
         /*context.mf_group_update_count();
         context.mf_group_show_save_warning();
         moveAddToLast(context, db);*/
@@ -90,11 +127,30 @@ deleteGroupDuplicate = function(div){
 
 fixcounter = function(field_class){
   init = 1;
-  jQuery.each(jQuery('#'+field_class).children('div.mf-field-ui'),function(key,value){
-    if(key > 0){
-      jQuery(this).find('span.mf-field-count').text(key+1);;
-    }
+  div_content_field = jQuery(field_class).children('div.mf-field-ui');
+  jQuery.each(div_content_field,function(key,value){
+    jQuery(this).find('span.mf-field-count').text(key+1);
+      if(key == 0){
+        jQuery(this).find('span.name em').hide();
+      }
   });
-  jQuery('#'+field_class).find('div.mf-duplicate-controls a.delete_duplicate_field').show();
+  if(div_content_field.length == 1){
+    jQuery(field_class).find('div.mf-duplicate-controls a.delete_duplicate_field').hide();  
+  }else{
+    jQuery(field_class).find('div.mf-duplicate-controls a.delete_duplicate_field').show();
+  }
+}
+
+fixCounterGroup = function(div_group){
+  div_content = jQuery(div_group).children('div.mf_group');
+  jQuery.each(div_content, function(key,value){
+    jQuery(this).find('span.mf-counter').text(key+1);
+  });
+  
+  if(div_content.length == 1){
+   jQuery(div_group).find('a.delete_duplicate_button').hide();
+  }else{
+    jQuery(div_group).find('a.delete_duplicate_button').show();
+  }
 }
 

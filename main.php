@@ -283,7 +283,14 @@ wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
         $group_index = (int)$_POST['group_index'];
         $field_id = (int)$_POST['field_id'];
         $field_index = (int)$_POST['field_index'];
-        mf_post::mf_ajax_duplicate_field($group_id,$group_index,$field_id,$field_index);
+        $mf_post = new mf_post();
+        $mf_post->mf_ajax_duplicate_field($group_id,$group_index,$field_id,$field_index);
+        break;
+      case 'group_duplicate':
+        $group_id = (int)$_POST['group_id'];
+        $group_index = (int)$_POST['group_index'];
+        $mf_post = new mf_post();
+        $mf_post->mf_ajax_duplicate_group($group_id,$group_index);
         break;
       default:
         break;
