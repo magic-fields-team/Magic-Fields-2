@@ -149,7 +149,7 @@ if( is_admin() ) {
       //Adding Css files for the post-new.php section (where is created a new post in wp)
       if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {
         wp_enqueue_style( 'mf_field_base', MF_BASENAME.'css/mf_field_base.css' );
-wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
+        wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
         wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js'); 
 
 
@@ -187,6 +187,12 @@ wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
               'mf_field_'.$field,
               MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.css'
             );
+          }
+
+          if ( !empty($properties['css_dependencies'] )) {
+            foreach($properties['css_dependencies'] as $css_script) {
+              wp_enqueue_style($css_script);
+            }
           }
         }
       }
