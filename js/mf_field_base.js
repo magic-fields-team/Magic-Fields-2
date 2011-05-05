@@ -1,4 +1,49 @@
+(function( $ ){
+  var mf_stack = [];
+  var methods = {
+    init : function( options ) {
+      $.each(mf_stack, function(indice, valor) {
+        try{
+          if (typeof valor == "function") valor();
+          else
+            eval(valor);
+        }catch(err){
+          $.error(err);
+        }
+      });
+    },
+    duplicate : function( ) {
+      $.each(mf_stack, function(indice, valor) {
+        try{
+          if (typeof valor == "function") valor();
+          else
+            eval(valor);
+        }catch(err){
+          $.error(err);
+        }
+      });
+    },
+    add: function ( content) {
+      mf_stack.push(content);
+    }
+  };
+
+  $.fn.mf_bind = function( method ) {
+    if ( methods[method] ) {
+      return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+    } else if ( typeof method === 'object' || ! method ) {
+      return methods.init.apply( this, arguments );
+    } else {
+      $.error( 'Method ' +  method + ' does not exist on jQuery.mf_bind' );
+    }
+  };
+})( jQuery );
+jQuery.mf_bind = function(method, content){
+  jQuery().mf_bind(method,content);
+}
+
 jQuery(document).ready(function($) {
+  $.mf_bind();
 
   var tt_template =
    '<div class="tt"> \
@@ -82,7 +127,7 @@ jQuery(document).ready(function($) {
         $(counter_id).before(response);
         $(counter_id).val(field_index);
         fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
-        mfAfterDuplicate();
+        $.mf_bind('duplicate');
       }
     });
   });
@@ -104,38 +149,22 @@ jQuery(document).ready(function($) {
         $(counter_group_id).before(response);
         $(counter_group_id).val(group_index);
         fixCounterGroup('#mf_group-'+group_id);
-        mfAfterDuplicate();
+        $.mf_bind('duplicate');
       }
     });
   });
 
 });
 
-mfAfterDuplicate = function(){
-   jQuery.each(mf_callback, function(index, value) { 
-     try{
-       eval(value);
-     }catch(err){
-       //function not defined
-        //console.log(err);
-     }  
-   });
-}
-
 deleteGroupDuplicate = function(div,div_group_id){
-    var parent = jQuery(div);
-    /*var db = parent.find(".duplicate_button").clone();*/
-    /*var context = parent.closest(".write_panel_wrapper");*/
-    parent.fadeOut({
-      duration: "normal",
-      complete: function() {
-        parent.remove();
-fixcounter(div_group_id);
-        /*context.mf_group_update_count();
-        context.mf_group_show_save_warning();
-        moveAddToLast(context, db);*/
-      }
-    });
+  var parent = jQuery(div);
+  parent.fadeOut({
+    duration: "normal",
+    complete: function() {
+      parent.remove();
+      fixcounter(div_group_id);
+    }
+  });
 }
 
 fixcounter = function(field_class){
@@ -148,7 +177,7 @@ fixcounter = function(field_class){
       }
   });
   if(div_content_field.length == 1){
-    jQuery(field_class).find('div.mf-duplicate-controls a.delete_duplicate_field').hide();  
+    jQuery(field_class).find('div.mf-duplicate-controls a.delete_duplicate_field').hide();
   }else{
     jQuery(field_class).find('div.mf-duplicate-controls a.delete_duplicate_field').show();
   }
@@ -159,13 +188,10 @@ fixCounterGroup = function(div_group){
   jQuery.each(div_content, function(key,value){
     jQuery(this).find('span.mf-counter').text(key+1);
   });
-  
+
   if(div_content.length == 1){
     jQuery(div_group).find('a.delete_duplicate_button').hide();
   }else{
     jQuery(div_group).find('a.delete_duplicate_button').show();
   }
 }
-
-var mf_callback = [];
-
