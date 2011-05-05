@@ -82,6 +82,7 @@ jQuery(document).ready(function($) {
         $(counter_id).before(response);
         $(counter_id).val(field_index);
         fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
+        mfAfterDuplicate();
       }
     });
   });
@@ -103,11 +104,23 @@ jQuery(document).ready(function($) {
         $(counter_group_id).before(response);
         $(counter_group_id).val(group_index);
         fixCounterGroup('#mf_group-'+group_id);
+        mfAfterDuplicate();
       }
     });
   });
 
 });
+
+mfAfterDuplicate = function(){
+   jQuery.each(mf_callback, function(index, value) { 
+     try{
+       eval(value);
+     }catch(err){
+       //function not defined
+        //console.log(err);
+     }  
+   });
+}
 
 deleteGroupDuplicate = function(div,div_group_id){
     var parent = jQuery(div);
@@ -148,9 +161,11 @@ fixCounterGroup = function(div_group){
   });
   
   if(div_content.length == 1){
-   jQuery(div_group).find('a.delete_duplicate_button').hide();
+    jQuery(div_group).find('a.delete_duplicate_button').hide();
   }else{
     jQuery(div_group).find('a.delete_duplicate_button').show();
   }
 }
+
+var mf_callback = [];
 

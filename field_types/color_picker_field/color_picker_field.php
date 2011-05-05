@@ -7,6 +7,8 @@ global $mf_domain;
 
 class color_picker_field extends mf_custom_fields {
 
+  public $has_properties = FALSE;
+
   function get_properties() {
     return  array(
       'js'  => TRUE,
