@@ -123,3 +123,8 @@ label.selectit { font-weight: normal; padding-top: 3px;}
 .mf-checkbox-list input { position: relative;
 float: left;
 margin-right: 5px; margin-top: 0px;}
+
+
+/** Dropdown Field **/
+#wpcontent select.dropdown_mf { min-width:200px; margin:10px; height:auto; }
+
