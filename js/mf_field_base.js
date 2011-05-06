@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
   $('.delete_duplicate_field').live("click", function(event){
    id = jQuery(this).attr("id");
    pattern =  /delete\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
-   item =  pattern.exec(id);
+   var item =  pattern.exec(id);
    div = '#mf_field_' + item[1] + '_ui';
 
    group_id = item[2];
@@ -95,10 +95,10 @@ jQuery(document).ready(function($) {
   $('a.delete_duplicate_button').live('click', function(){
     id = jQuery(this).attr("id");
     pattern =  /delete\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
-    item =  pattern.exec(id);
+    var item =  pattern.exec(id);
 
     div = '#mf_group_'+item[1];
-    parent = $(div);
+    var parent = $(div);
     parent.fadeOut({
       duration: "normal",
       complete: function() {
@@ -111,7 +111,7 @@ jQuery(document).ready(function($) {
   $('a.duplicate-field').live("click",function(){
     id = jQuery(this).attr("id");
     pattern =  /mf\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
-    item =  pattern.exec(id);
+    var item =  pattern.exec(id);
 
     group_id = item[2];
     group_index = item[3];
@@ -135,7 +135,7 @@ jQuery(document).ready(function($) {
   $('a.duplicate_button').live('click', function(){
     id = jQuery(this).attr('id');
     pattern =  /mf\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
-    item =  pattern.exec(id);
+    var item = pattern.exec(id);
 
     group_id = item[2];
     counter_group_id = '#mf_group_counter_'+group_id;

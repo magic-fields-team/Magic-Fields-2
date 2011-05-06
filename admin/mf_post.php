@@ -150,9 +150,14 @@ class mf_post extends mf_admin {
              print sprintf('<div class="mf-field-title"><label><span class="name" >%s%s%s</span>%s</label></div>',$field['label'],$field_num,$requiered,$help);
              $f = $field['type'].'_field';
              $f = new $f();
-             print '<div>';
-             print $f->display_field( $field, $value, $group_index, $field_index);
-             print '</div>';
+             print '<div class="clear"></div><div>';
+
+             $field['input_name'] = sprintf("magicfields[%s][%d][%d]",$field['name'],$group_index,$field_index);
+             $field['input_id'] = sprintf("%s_%s_%s",$field['name'],$group_index,$field_index);
+             $field['input_value'] = $value;
+             $field['options'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+             print $f->display_field( $field,$group_index, $field_index);
+             print '</div><div class="clear"></div>';
              ?>
          </div>
          <?php if( $field['duplicated'] ) :?>

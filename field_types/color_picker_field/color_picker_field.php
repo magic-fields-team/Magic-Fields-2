@@ -28,23 +28,17 @@ class color_picker_field extends mf_custom_fields {
     $this->description = __("Simple Color picker input",$mf_domain);
   }
 
-  public function display_field( $field, $value = '-', $group_index = 1, $field_index = 1 ) {
+  public function display_field( $field, $group_index = 1, $field_index = 1 ) {
     global $mf_domain;
-    if(!trim($value)) $value = '#ffffff';
+    if(!trim($field['input_value'])) $field['input_value'] = '#ffffff';
     $output = '';
     $output .= sprintf(
-      '<input name="magicfields[%s][%d][%d]" placeholder="%s" value="%s" id="colorpicker_value_%s_%d_%d" /><div class="mf_colorpicker" id="colorpicker_%s_%d_%d"></div>', 
-      $field['name'], 
-      $group_index, 
-      $field_index, 
-      $field['label'], 
-      $value,
-      $field['name'],
-      $group_index,
-      $field_index,
-      $field['name'],
-      $group_index,
-      $field_index
+      '<input name="%s" placeholder="%s" value="%s" id="colorpicker_value_%s" /><div class="mf_colorpicker" id="colorpicker_%s"></div>', 
+      $field['input_name'],
+      $field['label'],
+      $field['input_value'],
+      $field['input_id'],
+      $field['input_id']
     );
 
     return $output;

@@ -674,11 +674,11 @@ class mf_custom_fields extends mf_admin {
     return $check;
   }
 
-  public function display_field( $field, $value = '', $group_index = 1, $field_index = 1 ) {
+  public function display_field( $field, $group_index = 1, $field_index = 1 ) {
     global $mf_domain;
 
     $output = '';
-    $output .= sprintf('<input name="magicfields[%s][%d][%d]" placeholder="%s" value="%s" />', $field['name'], $group_index, $field_index, $field['label'], $value );
+    $output .= sprintf('<input name="%s" placeholder="%s" value="%s" />', $field['input_name'], $field['label'], $field['input_value'] );
     return $output;
   }
 }

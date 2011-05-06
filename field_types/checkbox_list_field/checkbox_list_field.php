@@ -47,5 +47,29 @@ class checkbox_list_field extends mf_custom_fields {
     
     return $data;
   }
+
+  public function display_field($field, $group_index = 1, $field_index = 1){
+    $output = '';
+    $check_post_id = apply_filters('mf_source_post_data', $_REQUEST['post']);
+    $values = array();
+    if($check_post_id){
+      $values = unserialize($field['input_value']);
+    }else{
+      $values = (array)$field['options']->default_value;
+    }
+    $options = preg_split("/\\n/",$field['options']->options);
+    
+    $output = '<div class="mf-checkbox-list-box" >';
+    foreach($options as $option){
+      $check = in_array($option, $values) ? 'checked="checked"' : '';
+      $output .= sprintf('<label for="%s_%s" class="selectit mf-checkbox-list">',$field['input_id'],$option);
+      $output .= sprintf('<input tabindex="3" class="checkbox_list_mf" id="%s_%s" name="%s[]" value="%s" type="checkbox" %s />',$field['input_id'],$option,$field['input_name'],$option,$check);
+      $output .= attribute_escape($option);
+      $output .= '</label>';
+    }
+
+    $output .= '</div>';
+    return $output;
+  }
   
 }

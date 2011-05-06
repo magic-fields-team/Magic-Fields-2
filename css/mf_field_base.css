@@ -115,3 +115,11 @@ float: left;
 .mf-group-wrapper a.duplicate_button:hover,
 .mf-group-wrapper a.delete_duplicate_button:hover{ color: #666 !important; }
 .mf-field label .name em { font-style: normal; color: #666; font-weight: normal; }
+
+
+/* checkbox list*/
+label.mf-checkbox-list{font-weight: normal !important; margin-left: 2px !important;}
+label.selectit { font-weight: normal; padding-top: 3px;}
+.mf-checkbox-list input { position: relative;
+float: left;
+margin-right: 5px; margin-top: 0px;}
