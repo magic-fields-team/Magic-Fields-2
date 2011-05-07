@@ -22,7 +22,7 @@ class dropdown_field extends mf_custom_fields {
       'option'  => array(
         'options'  => array(
           'type'        =>  'textarea',
-          'id'          =>  'checkbox_dropdown_options',
+          'id'          =>  'dropdown_options',
           'label'       =>  __('Options',$mf_domain),
           'name'        =>  'mf_field[option][options]',
           'default'     =>  '',
@@ -44,7 +44,7 @@ class dropdown_field extends mf_custom_fields {
         ),
         'default_value'  => array(
           'type'        =>  'text',
-          'id'          =>  'checkbox_dropdown_default_value',
+          'id'          =>  'dropdown_default_value',
           'label'       =>  __('Default value',$mf_domain),
           'name'        =>  'mf_field[option][default_value]',
           'default'     =>  '',
@@ -61,33 +61,36 @@ class dropdown_field extends mf_custom_fields {
   
   public function display_field( $field, $group_index = 1, $field_index = 1 ) {
     $output = '';
+    $is_multiple = ($field['options']->multiple) ? true : false;
 
     $check_post_id = null;
     if(!empty($_REQUEST['post'])) {
       $check_post_id = apply_filters('mf_source_post_data', $_REQUEST['post']);
     }
 
-
     $values = array();
     
     if($check_post_id) {
-      $values = ($field['options']->multiple) ? unserialize($field['input_value']) : $field['input_value'];
+      $values = ($field['input_value']) ? unserialize($field['input_value']) : array();
     }else{
-      $values =   $field['input_value']; 
+      $values[] = $field['options']->default_value;
     }
+ 
+
 
     $options = preg_split("/\\n/", $field['options']->options);
 
     $output = '<div class="mf-dropdown-box">';
 
-    $multiple = ($field['options']->multiple) ? 'multiple="multiple"' : '';
-    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s" %s />',$field['input_id'],$field['input_name'],$multiple);
+    $multiple = ($is_multiple) ? 'multiple="multiple"' : '';
+    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s[]" %s />',$field['input_id'],$field['input_name'],$multiple);
     foreach($options as $option) {
-      $check = '';
-      $output .= sprintf('<option value="%s" type="checkbox" %s >%s</option>',
-        $option,
+      $check = in_array($option,$values) ? 'selected="selected"' : '';
+
+      $output .= sprintf('<option value="%s" %s >%s</option>',
+        esc_attr($option),
         $check,
-        $option
+        esc_attr($option)
       );
     }
     $output .= '</select>';
