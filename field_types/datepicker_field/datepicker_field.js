@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){
+jQuery(document).ready(function($){
         jQuery('.datebotton_mf').live('click',function(){
         the_id = jQuery(this).attr('id');
         picker = the_id.replace(/pick_/,'');
@@ -10,26 +10,28 @@ jQuery(document).ready(function(){
             showAnim: 'fadeIn',
             changeYear: true,
             dateFormat: format,
-            altFormat: "yy-mm-dd",
-            altField: '#' + the_id.replace(/pick_/,'date_field_'),
             showOn:'focus',
             onClose: function(){
                 input = jQuery(this);
                 date = input.val();
                 //unbind the event
                 jQuery(this).datepicker('destroy');
-            }
+            },
+           onSelect: function(){
+             raw =  '#' + the_id.replace(/pick_/,'date_field_');
+             $(raw).val( $.datepicker.formatDate('@', $(this).datepicker('getDate')) / 1000 );
+           }
         }).focus();
 
         });
         
         //TODAY Botton
-	jQuery('.todaybotton_mf').live('click',function(){
+	jQuery('.todaybotton_mf').live('click',function($){
 	    the_id = jQuery(this).attr('id');
 	    picker = the_id.replace(/today_/,'');
 	    today = jQuery(this).attr('alt');
-            today_raw = jQuery(this).attr('rel');
-	    
+            today_raw = jQuery(this).attr('rel') + " 00:00:00";
+            today_raw = Date.parse(today_raw)/1000;	    
 	    jQuery('#display_date_field_'+picker).val(today);
             jQuery('#date_field_'+picker).val(today_raw);
 	});

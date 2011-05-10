@@ -130,4 +130,5 @@ margin-right: 5px; margin-top: 0px;}
 
 /* datepicker */
 .ui-datepicker, .ui-datepicker .ui-datepicker-title select, .ui-datepicker .ui-datepicker-month, .ui-datepicker td, .ui-datepicker th { font-size: 11px !important;}
-.mf-field-ui input.datepicker_mf { background-color: #EEE; width: 192px;}
+.mf-field-ui input.datepicker_mf { background-color: #EEE; width: 192px; display: inline; }
+.mf-field-ui .datebotton_mf, .mf-field-ui .todaybotton_mf, .mf-field-ui .blankBotton_mf{ display: inline; margin-right: 1px; margin-left:1px; }

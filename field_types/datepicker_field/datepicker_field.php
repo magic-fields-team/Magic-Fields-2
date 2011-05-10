@@ -71,7 +71,7 @@ class datepicker_field extends mf_custom_fields {
     $value = $value_raw = '';
     if($field['input_value']){
       $value_raw = $field['input_value'];
-      $value = 	$value = date($format,strtotime($value_raw));
+      $value = 	$value = date($format,$value_raw);
     }
 
     $output = '';
