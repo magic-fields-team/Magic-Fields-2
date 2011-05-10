@@ -9,6 +9,21 @@ class datepicker_field extends mf_custom_fields {
 
   public $allow_multiple = TRUE;
   public $has_properties = TRUE;
+
+    function get_properties() {
+    return  array(
+      'js'  => TRUE,
+      'js_dependencies' => array(),
+      'js_internal_dependencies' => array(
+        'jquery',
+        'jquery-ui-core',
+      ),
+      'js_internal' =>'ui.datepicker.js',
+      'css' => FALSE,
+      'css_internal' => 'ui.datepicker.css'
+    );
+  }
+
   
   public function _update_description(){
     global $mf_domain;
@@ -48,6 +63,29 @@ class datepicker_field extends mf_custom_fields {
     );
     
     return $data;
+  }
+
+  public function display_field($field, $group_index = 1, $field_index =1){
+
+    $format = $field['options']->format;
+    $value = $value_raw = '';
+    if($field['input_value']){
+      $value_raw = $field['input_value'];
+      $value = 	$value = date($format,strtotime($value_raw));
+    }
+
+    $output = '';
+    $today = date($format);
+    $today_field = date('Y-m-d');
+  
+    $output .= sprintf('<div id="format_date_field_%s" style="display:none;">%s</div>',$field['input_id'],$format);
+    $output .= sprintf('<input id="display_date_field_%s" value="%s" type="text" class="datepicker_mf" readonly="readonly" />',$field['input_id'],$value);
+    $output .= sprintf('<input id="date_field_%s" value="%s" name="%s" type="hidden" />',$field['input_id'],$value_raw,$field['input_name']);
+    $output .= sprintf('<input type="button" value="Pick..." id="pick_%s" class="datebotton_mf button" />',$field['input_id']);
+    $output .= sprintf('<input type="button" id="today_%s" value="Today" alt="%s" rel="%s" class="todaybotton_mf button"/>',$field['input_id'],$today,$today_field);
+    $output .= sprintf('<input 	type="button" id="blank_%s"value="Blank" class="blankBotton_mf button"/>',$field['input_id']);
+
+    return $output;
   }
   
 }

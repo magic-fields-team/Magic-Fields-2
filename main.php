@@ -179,7 +179,17 @@ if( is_admin() ) {
               null,
               true
             );
-
+            
+            /* idear forma por si se necesita mas de dos js*/
+            if( isset($properties['js_internal']) ){
+              wp_enqueue_script(
+                'mf_field_'. preg_replace('/\./','_',$properties['js_internal']),
+              MF_BASENAME.'field_types/'.$field.'_field/'.$properties['js_internal'],
+              $properties['js_internal_dependencies'],
+              null,
+              true
+            );
+            }
           }
 
           if ( $properties['css'] ) {
@@ -193,6 +203,14 @@ if( is_admin() ) {
             foreach($properties['css_dependencies'] as $css_script) {
               wp_enqueue_style($css_script);
             }
+          }
+          
+          /* load css internal */
+          if(isset($properties['css_internal'])){
+            wp_enqueue_style( 
+              'mf_field_'.preg_replace('/\./','_',$properties['css_internal']),
+              MF_BASENAME.'field_types/'.$field.'_field/'.$properties['css_internal']
+            );
           }
         }
       }
