@@ -52,8 +52,9 @@ class checkbox_list_field extends mf_custom_fields {
     $output = '';
     $check_post_id = null;
     if( !empty($_REQUEST['post'])) {
-      $check_post_id = apply_filters('mf_source_post_data', $_REQUEST['post']);
+      $check_post_id = $_REQUEST['post'];
     }
+
     $values = array();
     if($check_post_id){
       $values = ($field['input_value']) ? unserialize($field['input_value']) : array() ;

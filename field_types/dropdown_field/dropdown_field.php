@@ -65,7 +65,7 @@ class dropdown_field extends mf_custom_fields {
 
     $check_post_id = null;
     if(!empty($_REQUEST['post'])) {
-      $check_post_id = apply_filters('mf_source_post_data', $_REQUEST['post']);
+      $check_post_id = $_REQUEST['post'];
     }
 
     $values = array();
