@@ -160,6 +160,12 @@ if( is_admin() ) {
           $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
         }
         
+        //global mf js
+        $js_vars = array(
+          'mf_url' => MF_BASENAME
+        );
+        wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );
+
         $ps = new mf_posttype();
         //ToDo: cambiar esta funcion por una donde regrese campos unicos, sin repetir campos
         $fields = $ps->get_unique_custom_fields_by_post_type($post_type);
