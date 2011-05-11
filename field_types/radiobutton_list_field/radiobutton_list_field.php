@@ -47,5 +47,35 @@ class radiobutton_list_field extends mf_custom_fields {
     
     return $data;
   }
-  
+
+  public function display_field( $field, $group_index = 1, $field_index = 1 ) {
+    $output = '';
+
+    $check_post_id = null; 
+    if( !empty($_REQUEST['post'] ) ) {
+      $check_post_id = $_REQUEST['post'];
+    }
+
+    $value = array();
+    if( $check_post_id ) {
+        $value = $field['input_value'];
+    } else {
+        $value = $field['options']->default_value;
+    }
+
+    $options = preg_split( "/\\n/", $field['options']->options);
+    
+    foreach( $options as $option ) {
+      $checked = ''; 
+      if( $option == $value ) {
+        $checked =  'checked="checked"';
+      }
+   
+      $output .= '<label class="mf-radio-field">';
+      $output .=  sprintf('<input type="radio" value="%s" name="%s" %s>%s', $option, $field['input_name'], $checked, $option);
+      $output .= '</label>';
+    }
+
+    return $output; 
+  }
 }
