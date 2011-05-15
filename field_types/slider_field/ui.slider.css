@@ -1,93 +1,21 @@
 /** widget **/ 
-.ui-widget-content {
-    background: url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFFFFF;
-    border: 1px solid #AAAAAA;
-    color: #222222;
-}
+.ui-widget-content { background: url("images/ui-bg_flat_75_ffffff_40x100.png") repeat-x scroll 50% 50% #FFFFFF; border: 1px solid #AAAAAA; color: #222222; }
+.ui-widget-content a { color: #222222; }
+.ui-state-default, .ui-widget-content .ui-state-default { background: url("images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6; border: 1px solid #D3D3D3; color: #555555; font-weight: normal; outline: medium none; }
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #555555; outline: medium none; text-decoration: none; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus { background: url("images/ui-bg_glass_75_dadada_1x400.png") repeat-x scroll 50% 50% #DADADA; border: 1px solid #999999; color: #212121; font-weight: normal; outline: medium none; }
+.ui-state-hover a, .ui-state-hover a:hover { color: #212121; outline: medium none; text-decoration: none; }
+.ui-state-active, .ui-widget-content .ui-state-active { background: url("images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #FFFFFF; border: 1px solid #AAAAAA; color: #212121; font-weight: normal; outline: medium none; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121; outline: medium none; text-decoration: none; }
+.ui-state-highlight, .ui-widget-content .ui-state-highlight { background: url("images/ui-bg_glass_55_fbf9ee_1x400.png") repeat-x scroll 50% 50% #FBF9EE; border: 1px solid #FCEFA1; color: #363636; }
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a { color: #363636; }
+.ui-state-error, .ui-widget-content .ui-state-error { background: url("images/ui-bg_glass_95_fef1ec_1x400.png") repeat-x scroll 50% 50% #FEF1EC; border: 1px solid #CD0A0A; color: #CD0A0A; }
+.ui-state-error a, .ui-widget-content .ui-state-error a { color: #CD0A0A; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text { color: #CD0A0A; }
+.ui-state-disabled, .ui-widget-content .ui-state-disabled { background-image: none; opacity: 0.35; }
+.ui-corner-all { border-radius: 4px 4px 4px 4px; }
+.ui-slider { margin: 20px 10px; }
 
-.ui-widget-content a {
-    color: #222222;
-}
-
-.ui-state-default, .ui-widget-content .ui-state-default {
-    background: url("images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
-    border: 1px solid #D3D3D3;
-    color: #555555;
-    font-weight: normal;
-    outline: medium none;
-}
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-    color: #555555;
-    outline: medium none;
-    text-decoration: none;
-}
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus {
-    background: url("images/ui-bg_glass_75_dadada_1x400.png") repeat-x scroll 50% 50% #DADADA;
-    border: 1px solid #999999;
-    color: #212121;
-    font-weight: normal;
-    outline: medium none;
-}
-.ui-state-hover a, .ui-state-hover a:hover {
-    color: #212121;
-    outline: medium none;
-    text-decoration: none;
-}
-.ui-state-active, .ui-widget-content .ui-state-active {
-    background: url("images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #FFFFFF;
-    border: 1px solid #AAAAAA;
-    color: #212121;
-    font-weight: normal;
-    outline: medium none;
-}
-.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
-    color: #212121;
-    outline: medium none;
-    text-decoration: none;
-}
-.ui-state-highlight, .ui-widget-content .ui-state-highlight {
-    background: url("images/ui-bg_glass_55_fbf9ee_1x400.png") repeat-x scroll 50% 50% #FBF9EE;
-    border: 1px solid #FCEFA1;
-    color: #363636;
-}
-.ui-state-highlight a, .ui-widget-content .ui-state-highlight a {
-    color: #363636;
-}
-.ui-state-error, .ui-widget-content .ui-state-error {
-    background: url("images/ui-bg_glass_95_fef1ec_1x400.png") repeat-x scroll 50% 50% #FEF1EC;
-    border: 1px solid #CD0A0A;
-    color: #CD0A0A;
-}
-.ui-state-error a, .ui-widget-content .ui-state-error a {
-    color: #CD0A0A;
-}
-.ui-state-error-text, .ui-widget-content .ui-state-error-text {
-    color: #CD0A0A;
-}
-.ui-state-disabled, .ui-widget-content .ui-state-disabled {
-    background-image: none;
-    opacity: 0.35;
-}
-
-.ui-corner-all {
-    border-radius: 4px 4px 4px 4px;
-}
-
-
-.ui-slider {
-    margin: 20px 10px;
-}
-
-
-/*
- * jQuery UI Slider 1.8.12
- *
- * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
- *
- * http://docs.jquery.com/UI/Slider#theming
- */
 .ui-slider { position: relative; text-align: left; }
 .ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1.2em; height: 1.2em; cursor: default; }
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
@@ -104,10 +32,5 @@
 .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
 .ui-slider-vertical .ui-slider-range-max { top: 0; }
 
-.ui-slider-handle {
-  text-decoration:none;
-}
-.slider_value {
-  display:block;
-  margin-top:-16px;
-}
+.ui-slider-handle { text-decoration:none; }
+.slider_value { display:block; margin-top:-16px; }
