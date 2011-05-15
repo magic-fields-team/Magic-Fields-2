@@ -1,8 +1,17 @@
 (function( $ ){
   var mf_stack = [];
+  var mf_before_sort = [];
+  var mf_after_sort = [];
   var methods = {
-    init : function( options ) {
-      $.each(mf_stack, function(indice, valor) {
+    init : function( options ) { methods.callback_execute_js(mf_stack); },
+    duplicate : function( ) { methods.callback_execute_js(mf_stack); },
+    add: function( content){ mf_stack.push(content); },
+    before_sort: function(content){ mf_before_sort.push(content); },
+    after_sort: function(content){ mf_after_sort.push(content); },
+    callback_before_sort: function(){ methods.callback_execute_js(mf_before_sort); },
+    callback_after_sort: function(){ methods.callback_execute_js(mf_after_sort); },
+    callback_execute_js: function( mf_var){
+      $.each(mf_var, function(indice, valor) {
         try{
           if (typeof valor == "function") valor();
           else
@@ -11,20 +20,6 @@
           $.error(err);
         }
       });
-    },
-    duplicate : function( ) {
-      $.each(mf_stack, function(indice, valor) {
-        try{
-          if (typeof valor == "function") valor();
-          else
-            eval(valor);
-        }catch(err){
-          $.error(err);
-        }
-      });
-    },
-    add: function ( content) {
-      mf_stack.push(content);
     }
   };
 
@@ -153,7 +148,6 @@ jQuery(document).ready(function($) {
       }
     });
   });
-
 });
 
 deleteGroupDuplicate = function(div,div_group_id){
