@@ -678,7 +678,7 @@ class mf_custom_fields extends mf_admin {
     global $mf_domain;
 
     $output = '';
-    $output .= sprintf('<input name="%s" placeholder="%s" value="%s" />', $field['input_name'], $field['label'], $field['input_value'] );
+    $output .= sprintf('<input %s type="text" name="%s" placeholder="%s" value="%s" />',$field['input_validate'], $field['input_name'], $field['label'], $field['input_value'] );
     return $output;
   }
 }

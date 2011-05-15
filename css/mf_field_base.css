@@ -116,6 +116,33 @@ float: left;
 .mf-group-wrapper a.delete_duplicate_button:hover{ color: #666 !important; }
 .mf-field label .name em { font-style: normal; color: #666; font-weight: normal; }
 
+/* label error validation */
+.mf-group-wrapper .error_magicfields { color: #cc0000; }
+.mf-group-wrapper label.error_magicfields, #mf-publish-errors {
+  margin-left: 4px;
+  margin-top: 2px;
+  overflow: hidden;
+  zoom: 100%;
+  color: red;
+  padding: 0px 6px 0px 24px;
+  line-height: 20px;
+  font-size: 10px;
+  height: auto;
+  display: block;
+  background: #FFFFCC url(../images/error-magicfields.png) no-repeat 4px 1px;
+  float: left;
+  border: 1px solid #DCCD4D;
+}
+#mf-publish-errors {
+  float: none;
+  margin-left: 0;
+  margin-top: 6px;
+  line-height: 14px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 28px;
+  background-position: 6px 4px; 
+}
 
 /* checkbox list*/
 label.mf-checkbox-list{font-weight: normal !important; margin-left: 2px !important;}

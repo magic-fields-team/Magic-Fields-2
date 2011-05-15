@@ -103,6 +103,7 @@ jQuery(document).ready(function($) {
     });
   });
 
+  // duplicate field
   $('a.duplicate-field').live("click",function(){
     id = jQuery(this).attr("id");
     pattern =  /mf\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
@@ -119,7 +120,9 @@ jQuery(document).ready(function($) {
       type: 'POST',
       data: "action=mf_call&type=field_duplicate&group_id="+group_id+"&group_index="+group_index+"&field_id="+field_id+"&field_index="+field_index,
       success: function(response){
-        $(counter_id).before(response);
+        var newel = jQuery(response);
+        $(counter_id).before(newel);
+        newel.find('.mf_message_error .error_magicfields').hide();
         $(counter_id).val(field_index);
         fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
         $.mf_bind('duplicate');
@@ -127,6 +130,7 @@ jQuery(document).ready(function($) {
     });
   });
 
+  //duplicate group
   $('a.duplicate_button').live('click', function(){
     id = jQuery(this).attr('id');
     pattern =  /mf\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
@@ -141,13 +145,41 @@ jQuery(document).ready(function($) {
       type: 'POST',
       data: "action=mf_call&type=group_duplicate&group_id="+group_id+"&group_index="+group_index,
       success: function(response){
-        $(counter_group_id).before(response);
+        var newel = jQuery(response);
+        $(counter_group_id).before(newel);
+        newel.find('.mf_message_error .error_magicfields').hide();
         $(counter_group_id).val(group_index);
         fixCounterGroup('#mf_group-'+group_id);
         $.mf_bind('duplicate');
       }
     });
   });
+
+  //add validation for fields
+  $('.mf_message_error .error_magicfields').hide();
+  $.metadata.setType("attr", "validate");
+  
+    $("#post").validate({
+      errorClass: "error_magicfields",
+      invalidHandler: function(form, validator) { 
+          var errors = validator.numberOfInvalids();
+          if (errors) {
+            $('#mf-publish-errors').remove();
+            $('#publishing-action #ajax-loading').hide();
+            $('#publishing-action #publish').removeClass("button-primary-disabled");
+            $('#major-publishing-actions').append( $('<div id="mf-publish-errors">'+mf_js.mf_validation_error_msg+'</div>') ); 
+          }
+        
+        },
+	submitHandler: function(form) {
+          $('#mf-publish-errors').remove();
+          form.submit();
+        }
+    });
+  var mf_groups = $('.mf_group');
+  mf_groups.find("input[type=text],textarea").live("keydown", fieldchange);
+  mf_groups.find("input[type=checkbox],input[type=radio]").live("click", fieldchange);
+  mf_groups.find("select").live("change", fieldchange);
 });
 
 deleteGroupDuplicate = function(div,div_group_id){
@@ -188,4 +220,8 @@ fixCounterGroup = function(div_group){
   }else{
     jQuery(div_group).find('a.delete_duplicate_button').show();
   }
+}
+
+fieldchange = function() {
+  jQuery('#mf-publish-errors').hide();
 }

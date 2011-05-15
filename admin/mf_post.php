@@ -156,8 +156,15 @@ class mf_post extends mf_admin {
              $field['input_id'] = sprintf("%s_%s_%s",$field['name'],$group_index,$field_index);
              $field['input_value'] = $value;
              $field['options'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+             $field['input_validate'] = ($field['requiered_field']) ? 'validate="required:true"' : '';
+
              print $f->display_field( $field,$group_index, $field_index);
              print '</div><div class="clear"></div>';
+             if( $field['requiered_field'] ){
+               print '<div class="mf_message_error"><label for="' . $field['input_id']. '" class="error_magicfields error">';
+               _e("This field is required",$mf_domain);
+               print '</label></div>';
+             }
              ?>
          </div>
          <?php if( $field['duplicated'] ) :?>
