@@ -79,7 +79,7 @@ class slider_field extends mf_custom_fields {
     
     $value = $field['options']->value_min;
     if( $check_post_id ) {
-      $value = $field['input_value'];
+      $value = (!empty($field['input_value'])) ? $field['input_value'] : 0;
     }
 
     $output = '';
