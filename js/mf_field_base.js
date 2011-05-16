@@ -2,14 +2,17 @@
   var mf_stack = [];
   var mf_before_sort = [];
   var mf_after_sort = [];
+  var mf_before_save = [];
   var methods = {
     init : function( options ) { methods.callback_execute_js(mf_stack); },
     duplicate : function( ) { methods.callback_execute_js(mf_stack); },
     add: function( content){ mf_stack.push(content); },
     before_sort: function(content){ mf_before_sort.push(content); },
     after_sort: function(content){ mf_after_sort.push(content); },
+    before_save: function(content){ mf_before_save.push(content); },
     callback_before_sort: function(){ methods.callback_execute_js(mf_before_sort); },
     callback_after_sort: function(){ methods.callback_execute_js(mf_after_sort); },
+    callback_before_save: function(){ methods.callback_execute_js(mf_before_save); },
     callback_execute_js: function( mf_var){
       $.each(mf_var, function(indice, valor) {
         try{
@@ -180,6 +183,9 @@ jQuery(document).ready(function($) {
   mf_groups.find("input[type=text],textarea").live("keydown", fieldchange);
   mf_groups.find("input[type=checkbox],input[type=radio]").live("click", fieldchange);
   mf_groups.find("select").live("change", fieldchange);
+
+  //callback before save
+  $("#publish").live('click',function(){ $.mf_bind('callback_before_save'); });
 });
 
 deleteGroupDuplicate = function(div,div_group_id){

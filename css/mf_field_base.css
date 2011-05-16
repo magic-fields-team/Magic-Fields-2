@@ -164,3 +164,59 @@ margin-right: 5px; margin-top: 0px;}
 .mf_group label.mf-radio-field{  font-weight: normal; padding-top:3px; font-size:12px; } 
 .mf_group label.mf-radio-field input { float:left; margin-right: 5px; margin-top: 0; position:relative; }
 
+
+/* Multiline*/
+textarea.mf_editor { width: 99%; padding: 8px;}
+.mf-field-ui .tab_multi_mf { float: left;}
+.mf-field-ui .tab_multi_mf a {
+  float: right;
+  line-height: 18px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-right: 3px;
+}
+.mf-field-ui .tab_multi_mf a.current {
+    background-color: #A5BFD6;
+    color: #FFF !important;
+    border-color: #8aa6c0;
+    font-weight: bold;
+}
+.tab_multi_mf {
+ padding-bottom:2px;
+ display: block;
+ margin-right:10px;
+}
+.multiline_custom_field{ margin-left: 10px; }
+.edButtonHTML_mf {
+    background-color:#F1F1F1;
+	border-color:#DFDFDF;
+	color:#999999;
+	margin-right:15px;
+	border-style:solid;
+	border-style:solid;
+    border-width:1px;
+    cursor:pointer;
+    display:block;
+    float:left;
+    height:18px;
+    margin:5px 5px 0 0;
+    padding:4px 5px 2px;
+}
+
+.edButtonPreview_mf {
+    background-color:#F1F1F1;
+	border-color:#DFDFDF;
+	color:#999999;
+	margin-right:15px;
+	border-style:solid;
+	border-style:solid;
+    border-width:1px;
+    cursor:pointer;
+    display:block;
+    float:right;
+    height:18px;
+    margin:5px 5px 0 0;
+    padding:4px 5px 2px;
+}
