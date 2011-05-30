@@ -63,6 +63,9 @@ register_activation_hook( __FILE__, array('mf_install', 'install' ) );
 
 
 if( is_admin() ) {
+  //check folders
+  add_action('admin_notices', array('mf_install', 'folders'));  
+  
   //add common function
   require_once(MF_PATH.'/mf_common.php');
 

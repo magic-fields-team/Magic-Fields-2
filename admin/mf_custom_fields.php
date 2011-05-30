@@ -681,4 +681,11 @@ class mf_custom_fields extends mf_admin {
     $output .= sprintf('<input %s type="text" name="%s" placeholder="%s" value="%s" />',$field['input_validate'], $field['input_name'], $field['label'], $field['input_value'] );
     return $output;
   }
+
+  public function upload($custom_field_id, $type = 'image',$callback = 'mf_callback_upload'){
+    $iframe_src = sprintf('%sadmin/mf_upload.php?input_name=%s&callback=%s&type=%s',MF_BASENAME,$custom_field_id,$callback,$type);
+    $out = sprintf('<iframe id="iframe_upload_%s" src="%s" ></iframe>',$custom_field_id,$iframe_src);
+    
+    return $out;
+  }
 }

@@ -1,10 +1,29 @@
 <?php
+
+if ( !defined('DS') ){
+  if (strpos(php_uname('s'), 'Win') !== false )
+    define('DS', '\\');
+  else 
+    define('DS', '/');
+}
+
 //useful for get quickly the path for  images/javascript files and css files
 //return something like: http://wordpress.local/wp-content/plugins/Magic-Fields/
 define('MF_BASENAME',plugins_url().'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__)));
-
+define('MF_URL',MF_BASENAME);
 //return something like: /Users/user/sites/wordpres/wp-content/plugins/Magic-Fields
 define("MF_PATH", dirname(__FILE__));
+
+define("PHPTHUMB",MF_URL."thirdparty/phpthumb/phpThumb.php");
+
+define('MF_FILES_NAME','files_mf');
+define('MF_CACHE_NAME','cache');
+//ToDo: falta probar que en MU este colocando el path correcto
+define('MF_FILES_DIR', WP_CONTENT_DIR.DS.MF_FILES_NAME.DS);
+define('MF_FILES_URL', WP_CONTENT_URL.'/'.MF_FILES_NAME.'/');
+
+define('MF_CACHE_DIR', MF_FILES_DIR.MF_CACHE_NAME.DS);
+define('MF_CACHE_URL', MF_FILES_URL.MF_CACHE_NAME.'/');
 
 global $supports,$wpdb;
 

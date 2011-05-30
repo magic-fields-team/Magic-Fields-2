@@ -90,4 +90,38 @@ class mf_install {
       dbDelta($sql);
     }
   }
+
+  public function folders(){
+    global $mf_domain;
+    
+    $dir_list = "";
+    $dir_list2 = "";
+
+    wp_mkdir_p(MF_FILES_DIR);
+    wp_mkdir_p(MF_CACHE_DIR);
+    
+    if (!is_dir(MF_CACHE_DIR)){
+      $dir_list2.= "<li>".MF_CACHE_DIR . "</li>";
+    }elseif (!is_writable(MF_CACHE_DIR)){
+      $dir_list.= "<li>".MF_CACHE_DIR . "</li>";
+    }
+    
+    if (!is_dir(MF_FILES_DIR)){
+      $dir_list2.= "<li>".MF_FILES_DIR . "</li>";
+    }elseif (!is_writable(MF_FILES_DIR)){
+      $dir_list.= "<li>".MF_FILES_DIR . "</li>";
+    }
+    
+    if ($dir_list2 != ""){
+      echo "<div id='magic-fields-install-error-message' class='error'><p><strong>".__('Magic Fields is not ready yet.', $mf_domain)."</strong> ".__('must create the following folders (and must chmod 777):', $mf_domain)."</p><ul>";
+      echo $dir_list2;
+      echo "</ul></div>";
+    }
+    if ($dir_list != ""){
+      echo "<div id='magic-fields-install-error-message-2' class='error'><p><strong>".__('Magic Fields is not ready yet.', $mf_domain)."</strong> ".__('The following folders must be writable (usually chmod 777 is neccesary):', $mf_domain)."</p><ul>";
+      echo $dir_list;
+      echo "</ul></div>";
+    }
+
+  }
 }
