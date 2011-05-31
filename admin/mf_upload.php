@@ -80,6 +80,7 @@ if( isset($_POST['fileframe']) ){
           'field_id'  => $_POST['input_name'],
           'file_path' => MF_FILES_DIR . $filename,
           'file_url' => MF_FILES_URL . $filename,
+          'encode_file_url' => urlencode(MF_FILES_URL . $filename),
           'phpthumb' => PHPTHUMB,
           'msg' => __("Successful upload",$mf_domain)
         );

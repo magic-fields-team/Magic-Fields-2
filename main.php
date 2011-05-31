@@ -167,6 +167,7 @@ if( is_admin() ) {
         //global mf js
         $js_vars = array(
           'mf_url' => MF_BASENAME,
+          'mf_player_url' => MF_BASENAME . 'js/singlemp3player.swf',
           'mf_validation_error_msg' => 'Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.'
         );
         wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );
