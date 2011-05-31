@@ -252,16 +252,22 @@ textarea.mf_editor { width: 99%; padding: 8px;}
   float: left;
   margin-right: 14px;
 }
-.image_layout .image_wrap {
+.image_layout .file_wrap, .image_layout .image_wrap {
   min-height: 78px;
   text-align: center;
 }
 .image_layout .image_input {
   float: left;
   margin-top: 10px;
+  height: 40px;
   /*width: 520px;*/
 }
-
+.photo_edit_link a.mf-file-view {
+background-image: url(../images/mf-file-view.png);
+padding-left: 20px;
+background-repeat: no-repeat;
+}
+.photo_edit_link a.remove_file{ padding-right: 13px;}
 .mf-upload-success,
 .mf-upload-error {
   background-repeat: no-repeat;
