@@ -164,11 +164,13 @@ if( is_admin() ) {
           $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
         }
         
+        //ToDo: poner $mf_domain
         //global mf js
         $js_vars = array(
           'mf_url' => MF_BASENAME,
           'mf_player_url' => MF_BASENAME . 'js/singlemp3player.swf',
-          'mf_validation_error_msg' => 'Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.'
+          'mf_validation_error_msg' => 'Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.',
+          'mf_image_media_set' => 'Insert into field'
         );
         wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );
 
@@ -348,6 +350,18 @@ if( is_admin() ) {
     }
     echo json_encode($resp);
     die;
+  }
+
+  add_filter('attachment_fields_to_edit', 'charge_link_after_upload_image', 10, 2);
+
+  function charge_link_after_upload_image($fields){
+    printf("
+      <script type=\"text/javascript\">
+      //<![CDATA[
+        load_link_in_media_upload();
+      //]]>
+      </script>");
+      return $fields;
   }
   
 }
