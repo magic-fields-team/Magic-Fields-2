@@ -28,7 +28,7 @@ class image_media_field extends mf_custom_fields {
     
     $data = array(
       'option'  => array(
-        'css_clas'  => array(
+        'css_class'  => array(
           'type'        =>  'text',
           'id'          =>  'image_css_class',
           'label'       =>  __('Css Class',$mf_domain),

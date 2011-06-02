@@ -19,7 +19,7 @@ class multiline_field extends mf_custom_fields {
 
   public function _update_description(){
     global $mf_domain;
-    $this->description = _("Multiline field",$mf_domain);
+    $this->description = __("Multiline field",$mf_domain);
   }
   
   public function _options() {

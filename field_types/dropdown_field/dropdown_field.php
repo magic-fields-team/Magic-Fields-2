@@ -71,7 +71,7 @@ class dropdown_field extends mf_custom_fields {
     $values = array();
     
     if($check_post_id) {
-      $values = ($field['input_value']) ? unserialize($field['input_value']) : array();
+      $values = ($field['input_value']) ? (is_serialized($field['input_value']))? unserialize($field['input_value']): (array)$field['input_value'] : array() ;
     }else{
       $values[] = $field['options']->default_value;
     }

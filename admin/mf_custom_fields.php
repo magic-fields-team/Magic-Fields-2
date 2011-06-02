@@ -463,7 +463,7 @@ class mf_custom_fields extends mf_admin {
 
 
      <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate">
-      <div class="alignleft fixed" id="mf_add_custom_field">
+      <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_field">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
                   <?php mf_form_hidden($core); ?>
@@ -684,7 +684,7 @@ class mf_custom_fields extends mf_admin {
 
   public function upload($custom_field_id, $type = 'image',$callback = 'mf_callback_upload'){
     $iframe_src = sprintf('%sadmin/mf_upload.php?input_name=%s&callback=%s&type=%s',MF_BASENAME,$custom_field_id,$callback,$type);
-    $out = sprintf('<iframe id="iframe_upload_%s" src="%s" ></iframe>',$custom_field_id,$iframe_src);
+    $out = sprintf('<iframe id="iframe_upload_%s" src="%s" height="45" scrolling="no" ></iframe>',$custom_field_id,$iframe_src);
     
     return $out;
   }

@@ -70,5 +70,33 @@ class related_type_field extends mf_custom_fields {
     
     return $data;
   }
+
+  public function display_field( $field, $group_index = 1, $field_index = 1 ) {
+    $output = '';
+
+    $type        = $field['options']->post_type;
+    $order       = $field['options']->order;
+    $field_order = $field['options']->field_order;
+
+    $options = get_posts( sprintf("post_type=%s&numberposts=-1&order=%s&orderby=%s",$type,$order,$field_order) );
+    $output = '<div class="mf-dropdown-box">';
+
+    $value = $field['input_value'];
+
+    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s" />',$field['input_id'],$field['input_name']);
+    foreach($options as $option) {
+      $check = ($option->ID == $value) ? 'selected="selected"' : '';
+
+      $output .= sprintf('<option value="%s" %s >%s</option>',
+        esc_attr($option->ID),
+        $check,
+        esc_attr($option->post_title)
+      );
+    }
+    $output .= '</select>';
+    $output .= '</div>';
+
+    return $output;
+  }
   
 }

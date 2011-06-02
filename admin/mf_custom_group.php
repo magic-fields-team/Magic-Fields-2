@@ -201,7 +201,7 @@ class mf_custom_group extends mf_admin {
 
 
      <form id="addCustomGroup" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate">
-      <div class="alignleft fixed" id="mf_add_custom_group">
+      <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_group">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
 	          <?php mf_form_hidden($core); ?>

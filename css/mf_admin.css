@@ -38,3 +38,11 @@ a.mf-delete, span.mf-delete a{ color: #BC0B0B; }
 .mf-change-pt { font-weight: bolder; font-size: 12px; padding-left:200px; }
 .mf-no-default-group a { text-decoration: none; }
 .mf_add_group_field, .mf_delete_group_field { font-size: 10px; }
+
+/*IE8*/
+#add_mf_posttype input[type="checkbox"], 
+.mf_label_checkbox input[type="checkbox"],
+.mf_form input[type="checkbox"]
+{ border:0; }
+
+.mf_form input[type="checkbox"] { width: auto;  }

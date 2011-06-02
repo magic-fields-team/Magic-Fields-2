@@ -106,9 +106,18 @@ if( isset($_POST['fileframe']) ){
     iframe.style.display="";
   </script>
 <?php } ?>
+<link rel='stylesheet' href='<?php echo get_bloginfo('wpurl');?>/wp-admin/css/global.css' type='text/css' />
 <style>
-body { padding: 0px; margin: 0px; vertical-align:top; background: transparent; }
+  body { padding: 0px; margin: 0px; vertical-align:top; background: transparent;}
+
+input.mf-file { background: #f8f8f8;}
+label.label-file { font-size: 12px; padding-left: 2px; }
 </style>
+
+<!--[if IE]>
+    <style> body{ background:#F8F8F8;}  </style>
+<![endif]-->
+
 <script language="javascript">
 function upload(){
   // hide old iframe
@@ -141,8 +150,8 @@ function transferring(dots){
 </head>
 <body>
 <form name="iform" action="" method="post" enctype="multipart/form-data">
-  File:  
-  <input id="file" type="file" name="file" onchange="upload()" />
+  <label for="file" class="label-file"><?php _e('File', $mf_domain); ?>:</label><br />
+  <input id="file" type="file" name="file" onchange="upload()" class="mf-file" />
   <input type="hidden" name="input_name" value="<?php echo $_GET["input_name"]?>" />
   <input type="hidden" name="callback" value="<?php echo $_GET["callback"]?>" />
   <input type="hidden" name="fileframe" value="true" />
