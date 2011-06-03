@@ -341,4 +341,86 @@ class mf_post extends mf_admin {
 
     return $data;
   }
+
+  /* enqueue css and js base for post area*/
+  public function load_js_css_base(){
+    global $mf_domain;
+
+    wp_enqueue_style( 'mf_field_base', MF_BASENAME.'css/mf_field_base.css' );
+    wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');       
+    wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js'); 
+    wp_enqueue_script( 'mf_sortable_groups', MF_BASENAME.'js/mf_sortable_groups.js', array( 'jquery-ui-sortable' ) );
+
+    //global mf js
+    $js_vars = array(
+      'mf_url' => MF_BASENAME,
+      'mf_player_url' => MF_BASENAME . 'js/singlemp3player.swf',
+      'mf_validation_error_msg' => __('Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.',$mf_domain),
+      'mf_image_media_set' => __('Insert into field',$mf_domain)
+    );
+    wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );    
+    
+  }
+
+  /* enqueue css and js of fields */
+  public function load_js_css_fields(){
+    
+    //Loading any custom field  if is required 
+    if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
+      $post_type = get_post_type($_GET['post']);   
+    }else{ //Creating a new post
+      $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
+    }
+
+    $fields = $this->get_unique_custom_fields_by_post_type($post_type);
+    
+    foreach($fields as $field) {
+      //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
+      $type = $field."_field";
+      $type = new $type();
+      $properties = $type->get_properties();
+         
+      if ( $properties['js'] ) {
+        wp_enqueue_script(
+          'mf_field_'.$field,
+          MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.js',
+          $properties['js_dependencies'],
+          null,
+          true
+        );
+            
+        /* idear forma por si se necesita mas de dos js*/
+        if( isset($properties['js_internal']) ){
+          wp_enqueue_script(
+            'mf_field_'. preg_replace('/\./','_',$properties['js_internal']),
+            MF_BASENAME.'field_types/'.$field.'_field/'.$properties['js_internal'],
+            $properties['js_internal_dependencies'],
+            null,
+            true
+          );
+        }
+      }
+
+      if ( $properties['css'] ) {
+        wp_enqueue_style( 
+          'mf_field_'.$field,
+          MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.css'
+        );
+      }
+      
+      if ( !empty($properties['css_dependencies'] )) {
+        foreach($properties['css_dependencies'] as $css_script) {
+          wp_enqueue_style($css_script);
+        }
+      }
+          
+      /* load css internal */
+      if(isset($properties['css_internal'])){
+        wp_enqueue_style( 
+          'mf_field_'.preg_replace('/\./','_',$properties['css_internal']),
+          MF_BASENAME.'field_types/'.$field.'_field/'.$properties['css_internal']
+        );
+      }
+    }
+  }
 }

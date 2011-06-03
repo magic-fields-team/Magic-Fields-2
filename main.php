@@ -131,6 +131,7 @@ if( is_admin() ) {
   //Including javascripts files
   add_action( 'init', 'mf_add_js');
   function mf_add_js() {
+    global $mf_domain;
 
     if( is_admin() ) { //this scripts only will be added on the admin area
       wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js', array( 'jquery' ) );
@@ -151,209 +152,22 @@ if( is_admin() ) {
 
       //Adding Css files for the post-new.php section (where is created a new post in wp)
       if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {
-        wp_enqueue_style( 'mf_field_base', MF_BASENAME.'css/mf_field_base.css' );
-        wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');       
-        wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js'); 
-        wp_enqueue_script( 'mf_sortable_groups', MF_BASENAME.'js/mf_sortable_groups.js', array( 'jquery-ui-sortable' ) );
-
-      
-        //Loading any custom field  if is required 
-        if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
-          $post_type = get_post_type($_GET['post']);   
-        }else{ //Creating a new post
-          $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
-        }
-        
-        //ToDo: poner $mf_domain
-        //global mf js
-        $js_vars = array(
-          'mf_url' => MF_BASENAME,
-          'mf_player_url' => MF_BASENAME . 'js/singlemp3player.swf',
-          'mf_validation_error_msg' => 'Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.',
-          'mf_image_media_set' => 'Insert into field'
-        );
-        wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );
-
-        $ps = new mf_posttype();
-        //ToDo: cambiar esta funcion por una donde regrese campos unicos, sin repetir campos
-        $fields = $ps->get_unique_custom_fields_by_post_type($post_type);
-
-
-        foreach($fields as $field) {
-          //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
-          $type = $field."_field";
-          $type = new $type();
-          $properties = $type->get_properties();
-         
-          if ( $properties['js'] ) {
-            wp_enqueue_script(
-              'mf_field_'.$field,
-              MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.js',
-              $properties['js_dependencies'],
-              null,
-              true
-            );
-            
-            /* idear forma por si se necesita mas de dos js*/
-            if( isset($properties['js_internal']) ){
-              wp_enqueue_script(
-                'mf_field_'. preg_replace('/\./','_',$properties['js_internal']),
-              MF_BASENAME.'field_types/'.$field.'_field/'.$properties['js_internal'],
-              $properties['js_internal_dependencies'],
-              null,
-              true
-            );
-            }
-          }
-
-          if ( $properties['css'] ) {
-            wp_enqueue_style( 
-              'mf_field_'.$field,
-              MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.css'
-            );
-          }
-
-          if ( !empty($properties['css_dependencies'] )) {
-            foreach($properties['css_dependencies'] as $css_script) {
-              wp_enqueue_style($css_script);
-            }
-          }
-          
-          /* load css internal */
-          if(isset($properties['css_internal'])){
-            wp_enqueue_style( 
-              'mf_field_'.preg_replace('/\./','_',$properties['css_internal']),
-              MF_BASENAME.'field_types/'.$field.'_field/'.$properties['css_internal']
-            );
-          }
-        }
+        /* Load JS and CSS for post page */
+        $css_js = new mf_post();
+        $css_js->load_js_css_base();
+        $css_js->load_js_css_fields();
       }
     }
   }
-  
-  //catch call ajax for new field
-  add_action( 'wp_ajax_load_field_type', 'load_field_type_option' );
-  function load_field_type_option(){
-    if( isset($_POST['field_type']) && ($_POST['field_type'] != NULL) ){
-      $name = sprintf('%s_field',$_POST['field_type']);
-      $mf_field = new $name();
-      $mf_field->get_options();
-    }
-    die;
-  }
-
-  //catch call ajax for sorter the fields
-  add_action( 'wp_ajax_mf_sort_fields', 'mf_sort_fields' );
-  function mf_sort_fields() {
-    if ( !empty( $_POST['order'] ) && !empty( $_POST['group_id'] ) ) {
-      $order = $_POST['order'];
-      $order = split(',',$order);
-      array_walk( $order, create_function( '&$v,$k', '$v =  str_replace("order_","",$v);' ));
-    
-      if( $thing =  mf_custom_fields::save_order_field( $_POST['group_id'], $order ) ) {
-        print "1";
-        die;
-      }
-      print "0"; //error!
-    }
-    die;
-  }
-  
-  //validation name of post_type
-  add_action( 'wp_ajax_check_field_type', 'check_field_type_option' );
-  function check_field_type_option(){
-    $type = $_POST['post_type'];
-    $id = $_POST['post_type_id'];
-    $check = mf_posttype::check_post_type($type,$id);
-    if($check){
-      // exist type(name) in the system
-      $resp = array('success' => 0, 'msg' => __('The Type(name) of Post type exist,Please choose a different type(name).') );
-    }else{
-      $resp = array('success' => 1);
-    }
-    echo json_encode($resp);
-    die;
-  }
-  
-  //validation group name
-  add_action( 'wp_ajax_check_custom_group', 'check_custom_group' );
-  function check_custom_group(){
-    
-    $name = $_POST['group_name'];
-    $post_type = $_POST['post_type'];
-    $id = $_POST['group_id'];
-    $resp = array('success' => 1);
-    
-    $check = mf_custom_group::check_group($name,$post_type,$id);
-    if($check){
-      $resp = array('success' => 0, 'msg' => __('The name of Group exist in this post type, Please choose a different name.') );
-    }
-    
-    echo json_encode($resp);
-    die;
-  }
-  
-  //validation group name
-  add_action( 'wp_ajax_mf_check_custom_field', 'check_custom_field' );
-  function check_custom_field(){
-    
-    $name = $_POST['field_name'];
-    $post_type = $_POST['post_type'];
-    $id = $_POST['field_id'];
-    $resp = array('success' => 1);
-    
-    $check = mf_custom_fields::check_group($name,$post_type,$id);
-    if($check){
-      $resp = array('success' => 0, 'msg' => __('The name of Field exist in this post type, Please choose a different name.') );
-    }
-    
-    echo json_encode($resp);
-    die;
-  }
-  
+   
   add_action('wp_ajax_mf_call','mf_ajax_call');
   /* estara sera la funcion principal de llamadas js de MF*/
   function mf_ajax_call(){
-    $type = $_POST['type'];
-    switch($type){
-      case 'field_duplicate':
-        $group_id = (int)$_POST['group_id'];
-        $group_index = (int)$_POST['group_index'];
-        $field_id = (int)$_POST['field_id'];
-        $field_index = (int)$_POST['field_index'];
-        $mf_post = new mf_post();
-        $mf_post->mf_ajax_duplicate_field($group_id,$group_index,$field_id,$field_index);
-        break;
-      case 'group_duplicate':
-        $group_id = (int)$_POST['group_id'];
-        $group_index = (int)$_POST['group_index'];
-        $mf_post = new mf_post();
-        $mf_post->mf_ajax_duplicate_group($group_id,$group_index);
-        break;
-      default:
-        break;
-    }
-    die;
-  }
-  
-  //validation type (name) of custom taxonomy
-  add_action( 'wp_ajax_mf_check_custom_taxonomy', 'check_custom_taxonomy_option' );
-  function check_custom_taxonomy_option(){
-    $type = $_POST['taxonomy_type'];
-    $id = $_POST['taxonomy_id'];
-    $check = mf_custom_taxonomy::check_custom_taxonomy($type,$id);
-    if($check){
-      // exist type(name) in the system
-      $resp = array('success' => 0, 'msg' => __('The type(name) of custom taxonomy exist, Please choose a different type (name) .') );
-    }else{
-      $resp = array('success' => 1);
-    }
-    echo json_encode($resp);
-    die;
+    $call = new mf_ajax_call();
+    $call->resolve($_POST);
   }
 
   add_filter('attachment_fields_to_edit', 'charge_link_after_upload_image', 10, 2);
-
   function charge_link_after_upload_image($fields){
     printf("
       <script type=\"text/javascript\">
@@ -366,22 +180,8 @@ if( is_admin() ) {
   
 }
 
-add_action( 'admin_footer', 'getMemoryUsage');
-
 //Register Post Types and Custom Taxonomies
 $mf_register = new mf_register();
 
 //Adding metaboxes, and hooks for save the data when is created a new post
 $mf_post = new mf_post();
-
-/** 
- * aux function 
- **/
-if (!function_exists('pr')) {
-  function pr($data){
-    echo "<pre>";
-    print_r($data);
-    echo "</pre>";
-  }
-}
-

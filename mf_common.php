@@ -90,17 +90,14 @@ function mf_form_hidden($data){
   <?php
 }
 
-// debug function with time, memory consumption (MB) and optional custom message
-function getMemoryUsage($message="", $echo=1) 
-{
-  $mem_used = memory_get_usage(true)/ 1024 / 1024;
-  $mem_peak = memory_get_peak_usage(true) / 1024 / 1024;
-  preg_match("/(\d)+/",ini_get('memory_limit'),$matches);  // regexp, takes only digits
-  $mem_limit = $matches[0];
-  $percentual = ($mem_used * $mem_limit) / 100;
- 
-  $res = date("H:i:s",time())." ".$message." ";      
-  $res .= "[MEM_USED: $mem_used MB ($percentual%) - Peak: $mem_peak MB]\n";
-  if($echo) echo $res;
-  else return $res;
+/** 
+ * aux function 
+ **/
+if (!function_exists('pr')) {
+  function pr($data){
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+  }
 }
+

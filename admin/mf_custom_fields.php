@@ -505,35 +505,6 @@ class mf_custom_fields extends mf_admin {
       </div>
     </div>
 </form>
-    <script type="text/javascript">
-      jQuery(document).ready(function($) {
-        $('#customfield-type').change( function(){
-          type = $(this).val();
-          if(type != ''){
-            jQuery.post(
-               ajaxurl,
-               {
-                  'action':'load_field_type',
-                  'field_type': type
-               },
-               function(response){
-                 $('#options_field_legend').hide();
-                 $("#options_field").empty().append(response);
-               }
-            );
-          }else{
-            $("#options_field_legend").show();
-            $("#options_field").empty();
-          }
-          <?php if($data['core']['id']['value']){
-
-              }
-
-          ?>
-
-        });
-      });
-    </script>
   <?php
   }
 

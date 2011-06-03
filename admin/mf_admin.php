@@ -211,4 +211,58 @@ class mf_admin {
     return $data;
   }
 
+  public function js_css_post($post_type){
+    
+    $fields = $this->get_unique_custom_fields_by_post_type($post_type);
+    
+    foreach($fields as $field) {
+      //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
+      $type = $field."_field";
+      $type = new $type();
+      $properties = $type->get_properties();
+         
+      if ( $properties['js'] ) {
+        wp_enqueue_script(
+          'mf_field_'.$field,
+          MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.js',
+          $properties['js_dependencies'],
+          null,
+          true
+        );
+            
+        /* idear forma por si se necesita mas de dos js*/
+        if( isset($properties['js_internal']) ){
+          wp_enqueue_script(
+            'mf_field_'. preg_replace('/\./','_',$properties['js_internal']),
+            MF_BASENAME.'field_types/'.$field.'_field/'.$properties['js_internal'],
+            $properties['js_internal_dependencies'],
+            null,
+            true
+          );
+        }
+      }
+
+      if ( $properties['css'] ) {
+        wp_enqueue_style( 
+          'mf_field_'.$field,
+          MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.css'
+        );
+      }
+      
+      if ( !empty($properties['css_dependencies'] )) {
+        foreach($properties['css_dependencies'] as $css_script) {
+          wp_enqueue_style($css_script);
+        }
+      }
+          
+      /* load css internal */
+      if(isset($properties['css_internal'])){
+        wp_enqueue_style( 
+          'mf_field_'.preg_replace('/\./','_',$properties['css_internal']),
+          MF_BASENAME.'field_types/'.$field.'_field/'.$properties['css_internal']
+        );
+      }
+    }
+  }
+
 }

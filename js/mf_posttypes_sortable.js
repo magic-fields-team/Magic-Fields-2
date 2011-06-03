@@ -28,7 +28,8 @@ jQuery( document ).ready( function( $ ) {
   save_fields_order = function(group_id) {
     var data = {
       order     : $('#mf_order_fields').val(),
-      action    : 'mf_sort_fields',
+      action    : 'mf_call',
+      type      : 'mf_sort_field',
       group_id  : group_id
     }
 
@@ -38,7 +39,7 @@ jQuery( document ).ready( function( $ ) {
       data: data,
       success: function (msg) {
         $('#mf-ajax-loading-'+group_id).hide();
-        console.log(msg);
+        
         if ( msg == "1" ) {
         }else{
           alert('somethings wrong!, try again please');

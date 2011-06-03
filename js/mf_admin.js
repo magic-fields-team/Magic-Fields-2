@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
        type: 'POST',
        async: false,
        dataType: 'json',
-       data: "action=check_field_type&post_type="+name+"&post_type_id="+id,
+       data: "action=mf_call&type=check_name_post_type&post_type="+name+"&post_type_id="+id,
        success: function(response){
          $("#message_post_type").hide();
          if(response.success){
@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
          type: 'POST',
          async: false,
          dataType: 'json',
-         data: "action=check_custom_group&group_name="+name+"&post_type="+post_type+"&group_id="+group_id,
+         data: "action=mf_call&type=check_name_custom_group&group_name="+name+"&post_type="+post_type+"&group_id="+group_id,
          success: function(response){
            $("#message_mf_error").hide();
            if(response.success){
@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
          type: 'POST',
          async: false,
          dataType: 'json',
-         data: "action=mf_check_custom_field&field_name="+name+"&post_type="+post_type+"&field_id="+field_id,
+         data: "action=mf_call&type=check_name_custom_field&field_name="+name+"&post_type="+post_type+"&field_id="+field_id,
          success: function(response){
            $("#message_mf_error").hide();
            if(response.success){
@@ -107,14 +107,14 @@ jQuery(document).ready(function($) {
     type = $("#custom-taxonomy-type").val();
     taxonomy_id = $("#custom-taxonomy-id").val();
     var status = 0;
-    if(name){
+    if(type){
       jQuery.ajax({
          url: ajaxurl,
          type: 'POST',
          async: false,
          dataType: 'json',
-         data: "action=mf_check_custom_taxonomy&taxonomy_type="+type+"&taxonomy_id="+taxonomy_id,
-         success: function(response){
+         data: "action=mf_call&type=check_type_custom_taxonomy&taxonomy_type="+type+"&taxonomy_id="+taxonomy_id,
+        success: function(response){
            $("#message_mf_error").hide();
            if(response.success){
              status = 1;
@@ -145,7 +145,29 @@ jQuery(document).ready(function($) {
     url = 'admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=';
     window.location= url +  post_type;
   });
-  
+
+  /* change options of custom field */
+  $('#customfield-type').change( function(){
+    type = $(this).val();
+    if(type != ''){
+      jQuery.post(
+        ajaxurl,
+        {
+          'action':'mf_call',
+          'type': 'change_custom_field',
+          'field_type': type
+        },
+        function(response){
+          $('#options_field_legend').hide();
+          $("#options_field").empty().append(response);
+        }
+      );
+    }else{
+      $("#options_field_legend").show();
+      $("#options_field").empty();
+    }
+  });
+
 });
 
 confirm_message = function(message) {
