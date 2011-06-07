@@ -30,14 +30,18 @@ if( mf_mu2() ){
   define('MF_CACHE_URL', MF_FILES_URL.MF_CACHE_NAME.'/');
 }
 
-//Todo: poner aqui una opcion para ver si los post types son globales o no
-// solo seria cuestion de cambiar base_prefix por prefix y ya
+//detect if install MF on mode normal
+if( mf_mu_alone() ){
+  $mf_prefix = $wpdb->prefix;
+}else{
+  $mf_prefix = $wpdb->base_prefix;
+}
 
-define( 'MF_TABLE_POSTTYPES', $wpdb->base_prefix . 'mf_posttypes' );
-define( 'MF_TABLE_CUSTOM_TAXONOMY', $wpdb->base_prefix . 'mf_custom_taxonomy' );
-define( 'MF_TABLE_CUSTOM_FIELDS',$wpdb->base_prefix . 'mf_custom_fields' );
-define( 'MF_TABLE_CUSTOM_GROUPS',$wpdb->base_prefix . 'mf_custom_groups' );
-define( 'MF_TABLE_POST_META', $wpdb->prefix.'mf_post_meta' );
+define( 'MF_TABLE_POSTTYPES',       $mf_prefix . 'mf_posttypes' );
+define( 'MF_TABLE_CUSTOM_TAXONOMY', $mf_prefix . 'mf_custom_taxonomy' );
+define( 'MF_TABLE_CUSTOM_FIELDS',   $mf_prefix . 'mf_custom_fields' );
+define( 'MF_TABLE_CUSTOM_GROUPS',   $mf_prefix . 'mf_custom_groups' );
+define( 'MF_TABLE_POST_META',       $wpdb->prefix.'mf_post_meta' );
 
 //define name for settings MF
 define('MF_SETTINGS_KEY', 'mf_settings');

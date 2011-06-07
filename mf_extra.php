@@ -41,3 +41,16 @@ if ( !defined('DS') ){
   else 
     define('DS', '/');
 }
+
+if( !function_exists('mf_mu_alone') ){
+
+  function mf_mu_alone(){
+    $current = get_option('active_plugins');
+    $plugin = plugin_basename(MF_PATH.'/main.php');
+
+    if( in_array($plugin,$current) ) return true;
+
+    return false;
+  }
+
+}
