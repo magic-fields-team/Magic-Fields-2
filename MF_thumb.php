@@ -184,5 +184,3 @@ function mf_image_resize_dimensions($orig_w, $orig_h, $dest_w, $dest_h, $crop = 
 	return array( 0, 0, (int) $s_x, (int) $s_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
 
 }
-
-?>

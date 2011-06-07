@@ -35,7 +35,7 @@ function mf_form_checkbox($data){
     $label = $data['label'];
     $name = $data['name'];
     $check = ($data['value'])? 'checked="checked"' : '' ;
-    $description = $data['description'];
+    $description = htmlentities($data['description']);
     $extra = isset($data['extra'])? sprintf('<p><small>%s/small></p>',$data['extra']) :'';
   ?>
     <label for="<?php echo $id; ?>" ><?php echo $label; ?>:</label>

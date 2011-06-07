@@ -1,20 +1,17 @@
 <?php
 // use wp-load. Normally right here, but if it's not...
-if( file_exists('../../../../wp-load.php') )
-{
-        require_once('../../../../wp-load.php');
-        $loaded = true;
-} // ...then look over here
-elseif( file_exists('./mf-config.php') )
-{
-        include_once('./mf-config.php');
-        require_once(MF_WP_LOAD);
-        $loaded = true;
+if( file_exists('../../../../wp-load.php') ){
+  require_once('../../../../wp-load.php');
+  $loaded = true;
+}elseif( file_exists('./mf-config.php') ){
+  include_once('./mf-config.php');
+  require_once(MF_WP_LOAD);
+  $loaded = true;
 }
 
 global $mf_domain;
 if( $loaded !== true ){
-        die('Could not load wp-load.php, edit/add mf-config.php and define MF_WP_LOAD to point to a valid wp-load file.');
+  die('Could not load wp-load.php, edit/add mf-config.php and define MF_WP_LOAD to point to a valid wp-load file.');
 }
 
 /**

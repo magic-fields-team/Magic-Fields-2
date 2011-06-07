@@ -46,3 +46,11 @@ a.mf-delete, span.mf-delete a{ color: #BC0B0B; }
 { border:0; }
 
 .mf_form input[type="checkbox"] { width: auto;  }
+
+/* form setting mf */
+.mf_form_settings{ float: left;
+clear: right;
+overflow: hidden;
+margin: 0;
+width: 90%;
+padding: 10px;}

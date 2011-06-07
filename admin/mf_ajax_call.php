@@ -29,12 +29,14 @@ class mf_ajax_call{
   }
 
   public function check_name_post_type($data){
+    global $mf_domain;
+    
     $type = $data['post_type'];
     $id = $data['post_type_id'];
     $check = mf_posttype::check_post_type($type,$id);
     if($check){
       // exist type(name) in the system
-      $resp = array('success' => 0, 'msg' => __('The Type(name) of Post type exist,Please choose a different type(name).') );
+      $resp = array('success' => 0, 'msg' => __('The Type(name) of Post type exist,Please choose a different type(name).',$mf_domain) );
     }else{
       $resp = array('success' => 1);
     }
@@ -42,6 +44,8 @@ class mf_ajax_call{
   }
 
   public function check_name_custom_group($data){
+    global $mf_domain;
+    
     $name = $data['group_name'];
     $post_type = $data['post_type'];
     $id = $data['group_id'];
@@ -49,13 +53,15 @@ class mf_ajax_call{
     
     $check = mf_custom_group::check_group($name,$post_type,$id);
     if($check){
-      $resp = array('success' => 0, 'msg' => __('The name of Group exist in this post type, Please choose a different name.') );
+      $resp = array('success' => 0, 'msg' => __('The name of Group exist in this post type, Please choose a different name.',$mf_domain) );
     }
     
     echo json_encode($resp);
   }
 
   public function check_name_custom_field($data){
+    global $mf_domain;
+    
     $name = $data['field_name'];
     $post_type = $data['post_type'];
     $id = $data['field_id'];
@@ -63,18 +69,20 @@ class mf_ajax_call{
     
     $check = mf_custom_fields::check_group($name,$post_type,$id);
     if($check){
-      $resp = array('success' => 0, 'msg' => __('The name of Field exist in this post type, Please choose a different name.') );
+      $resp = array('success' => 0, 'msg' => __('The name of Field exist in this post type, Please choose a different name.',$mf_domain) );
     }
     echo json_encode($resp);
   }
 
   public function check_type_custom_taxonomy($data){
+    global $mf_domain;
+    
     $type = $data['taxonomy_type'];
     $id = $data['taxonomy_id'];
     $check = mf_custom_taxonomy::check_custom_taxonomy($type,$id);
     if($check){
       // exist type(name) in the system
-      $resp = array('success' => 0, 'msg' => __('The type(name) of custom taxonomy exist, Please choose a different type (name) .') );
+      $resp = array('success' => 0, 'msg' => __('The type(name) of custom taxonomy exist, Please choose a different type (name) .',$mf_domain) );
     }else{
       $resp = array('success' => 1);
     }

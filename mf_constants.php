@@ -1,5 +1,4 @@
 <?php
-
 if ( !defined('DS') ){
   if (strpos(php_uname('s'), 'Win') !== false )
     define('DS', '\\');
@@ -39,3 +38,6 @@ define( 'MF_TABLE_CUSTOM_TAXONOMY', $wpdb->prefix . 'mf_custom_taxonomy' );
 define( 'MF_TABLE_CUSTOM_FIELDS',$wpdb->prefix . 'mf_custom_fields' );
 define( 'MF_TABLE_CUSTOM_GROUPS',$wpdb->prefix . 'mf_custom_groups' );
 define( 'MF_TABLE_POST_META', $wpdb->prefix.'mf_post_meta' );
+
+//define name for settings MF
+define('MF_SETTINGS_KEY', 'mf_settings');

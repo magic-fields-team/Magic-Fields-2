@@ -30,4 +30,3 @@ if( count($info)){
   $data = array('image' => $image_thumb,'field_id' => $field_id,'image_value' => $image_id,'image_path' => $info[0]);
   echo json_encode($data);
 }
-?>

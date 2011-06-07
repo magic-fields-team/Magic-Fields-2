@@ -8,11 +8,9 @@ class mf_install {
     global $wpdb;
 
     require_once(ABSPATH.'wp-admin/includes/upgrade.php');
-  
-    $table_name = $wpdb->prefix."mf_posttypes";
     
     //checking if the table is already installed
-    if($wpdb->get_var("SHOW tables LIKE '{$table_name}'") != $table_name) {
+    if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_POSTTYPES}'") != MF_TABLE_POSTTYPES) {
       $sql = "CREATE TABLE ".$table_name. " (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         type varchar(20) NOT NULL,
@@ -124,4 +122,55 @@ class mf_install {
     }
 
   }
+
+  //delete cache
+  public function clear_cache(){
+    if (is_dir(MF_CACHE_DIR)) {
+      if ($dh = opendir(MF_CACHE_DIR)) {
+        while (($file = readdir($dh)) !== false) {
+          if(!is_dir($file) && !in_array($file,array('.','..','.DS_Store') ) ){
+            @unlink(MF_CACHE_DIR.$file);
+          }
+        }
+        closedir($dh);
+      }
+    }
+  }
+  
+  //unistall MF (delete thumbs, tables and settings)
+  public function uninstall(){
+    global $wpdb;
+
+    self::clear_cache();
+    delete_option(MF_SETTINGS_KEY);
+    //DB version
+    //delete_option('RC_CWP_BLOG_DB_VERSION');
+
+    $sql = "DELETE a.* FROM $wpdb->postmeta AS a, ".MF_TABLE_POST_META." AS b WHERE b.meta_id = a.meta_id";
+    $wpdb->query($sql);
+
+    $sql = "DROP TABLE " . MF_TABLE_POSTTYPES;
+    $wpdb->query($sql);
+    
+    $sql = "DROP TABLE " . MF_TABLE_CUSTOM_TAXONOMY;
+    $wpdb->query($sql);
+    
+    $sql = "DROP TABLE " . MF_TABLE_CUSTOM_FIELDS;
+    $wpdb->query($sql);
+
+    $sql = "DROP TABLE " . MF_TABLE_CUSTOM_GROUPS;
+    $wpdb->query($sql);
+
+    $sql = "DROP TABLE " . MF_TABLE_POST_META;
+    $wpdb->query($sql);
+    
+    $current = get_option('active_plugins');
+    $plugin = plugin_basename(MF_PATH.'/main.php');
+    array_splice($current, array_search( $plugin, $current), 1 );
+    do_action('deactivate_' . trim( $plugin ));
+    update_option('active_plugins', $current);
+
+    wp_redirect('options-general.php');
+  }
+
 }

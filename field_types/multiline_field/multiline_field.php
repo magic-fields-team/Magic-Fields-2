@@ -103,4 +103,3 @@ class multiline_field extends mf_custom_fields {
     return $output;
   }
 }
-?>
