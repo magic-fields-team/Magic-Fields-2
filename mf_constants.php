@@ -1,5 +1,4 @@
 <?php
-
 global $wpdb,$blog_id;
 
 //useful for get quickly the path for  images/javascript files and css files
