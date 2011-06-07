@@ -99,7 +99,6 @@ if( is_admin() ) {
      
   }
 
-
   /**
    * Magic Fields dispatcher
    */ 
@@ -186,6 +185,9 @@ if( is_admin() ) {
       return $fields;
   }
   
+}else{
+  /* load front-end functions */
+  require_once( 'mf_front_end.php' ); 
 }
 
 //Register Post Types and Custom Taxonomies
