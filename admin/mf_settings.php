@@ -25,15 +25,17 @@ class mf_settings extends mf_admin {
 
     if($data['uninstall_magic_field'] == 'uninstall'){
       mf_install::uninstall();
-    }
-    unset($data['uninstall_magic_field']);
+    }else{
+      unset($data['uninstall_magic_field']);
 
-    if($data['mf_settings']['extra']['clear_cache'] == 1){
-      mf_install::clear_cache();
-    }
-    unset($data['mf_settings']['extra']);
+      if($data['mf_settings']['extra']['clear_cache'] == 1){
+        mf_install::clear_cache();
+      }
+      unset($data['mf_settings']['extra']);
     
-    self::update($data['mf_settings']['general']);
+      self::update($data['mf_settings']['general']);
+      wp_redirect('options-general.php?page=mf_settings');
+    }
   }
 
   public function form_options($options){

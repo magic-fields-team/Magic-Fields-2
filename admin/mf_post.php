@@ -423,4 +423,37 @@ class mf_post extends mf_admin {
       }
     }
   }
+  
+  public function general_option_multiline(){
+    
+    /* load aditional options for multiline */  
+    add_filter('mce_buttons', 'register_media_button');
+    function register_media_button($buttons) {
+      array_push($buttons, "separator","add_image","add_video","add_audio","add_media");
+      return $buttons;
+    }
+    
+    function tmce_not_remove_p_and_br(){
+      ?>
+      <script type="text/javascript">
+        //<![CDATA[                                                                                     
+        jQuery('body').bind('afterPreWpautop', function(e, o){
+            o.data = o.unfiltered
+              .replace(/caption\]\[caption/g, 'caption] [caption')
+              .replace(/<object[\s\S]+?<\/object>/g, function(a) {
+                          return a.replace(/[\r\n]+/g, ' ');
+          });
+          }).bind('afterWpautop', function(e, o){
+            o.data = o.unfiltered;
+          });
+      //]]>                                                                                           
+      </script>
+      <?php
+    }
+    if( mf_settings::get('dont_remove_tags') == '1'){
+       add_action( 'admin_print_footer_scripts', 'tmce_not_remove_p_and_br', 50 );
+    }
+    
+  }
+  
 }

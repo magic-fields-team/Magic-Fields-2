@@ -156,6 +156,8 @@ if( is_admin() ) {
         $css_js = new mf_post();
         $css_js->load_js_css_base();
         $css_js->load_js_css_fields();
+        $css_js->general_option_multiline();
+        
       }
     }
   }

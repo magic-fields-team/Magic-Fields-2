@@ -88,14 +88,18 @@ class multiline_field extends mf_custom_fields {
 
     $output = '';
     $output .= '<div class="multiline_custom_field">';
+      if( mf_settings::get('hide_visual_editor') == '1') $field['options']->hide_visual = 1;
+
     if($field['options']->hide_visual == 0 && user_can_richedit() ){
       $output .= sprintf('<div class="tab_multi_mf">');
       $output .= sprintf('<a onclick="del_editor(\'%s\');" class="edButtonHTML_mf">HTML</a>',$field['input_id']);
       $output .= sprintf('<a onclick="add_editor(\'%s\');" class="edButtonHTML_mf current" >Visual</a>',$field['input_id']);
       $output .= sprintf('</div>');
       $class = 'pre_editor add_editor';
-      //falta agregar validacion para dejar p y br
-      $value = apply_filters('the_editor_content', $value);
+      
+      if(mf_settings::get('dont_remove_tags') != '1'){
+        $value = apply_filters('the_editor_content', $value);
+      }
     }
     $output .= sprintf('<textarea %s class="mf_editor %s" tabindex="3"  id="%s" name="%s" rows="%s" cols="%s" %s >%s</textarea>',$field['input_validate'],$class,$field['input_id'],$field['input_name'],$field['options']->height,$field['options']->width,$max,$value);
     $output .= '</div>';
