@@ -10,22 +10,22 @@ class mf_install {
     require_once(ABSPATH.'wp-admin/includes/upgrade.php');
     
     //checking if the table is already installed
-    if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_POSTTYPES}'") != MF_TABLE_POSTTYPES) {
-      $sql = "CREATE TABLE ".$table_name. " (
+
+    if($wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_POSTTYPES) ) != MF_TABLE_POSTTYPES) {
+      $sql = "CREATE TABLE ".MF_TABLE_POSTTYPES. " (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         type varchar(20) NOT NULL,
         name varchar(50) NOT NULL,
         description text,
         arguments text,
         active tinyint(1) DEFAULT 1,
-        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
       ";
-
       dbDelta($sql);
     }
 
     // Table custom taxonomy
-    if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_TAXONOMY}'") != MF_TABLE_CUSTOM_TAXONOMY) {
+    if($wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_CUSTOM_TAXONOMY) ) != MF_TABLE_CUSTOM_TAXONOMY) {
       $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_TAXONOMY. " (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         type varchar(20) NOT NULL,
@@ -33,14 +33,13 @@ class mf_install {
         description text,
         arguments text,
         active tinyint(1) DEFAULT 1,
-        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
       ";
-
       dbDelta($sql);
     }
     
     // Table custom fields
-    if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_FIELDS}'") != MF_TABLE_CUSTOM_FIELDS) {
+    if($wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_CUSTOM_FIELDS) ) != MF_TABLE_CUSTOM_FIELDS) {
       $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_FIELDS. " (
         id int(19) NOT NULL AUTO_INCREMENT,
         name varchar(150) NOT NULL,
@@ -54,14 +53,13 @@ class mf_install {
         duplicated tinyint(1),
         active tinyint(1) DEFAULT 1,
         options text,
-        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
       ";
-
       dbDelta($sql);
     }
 
     // Table custom groups
-    if($wpdb->get_var("SHOW tables LIKE '{MF_TABLE_CUSTOM_GROUPS}'") != MF_TABLE_CUSTOM_GROUPS) {
+    if($wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_CUSTOM_GROUPS) ) != MF_TABLE_CUSTOM_GROUPS) {
       $sql = "CREATE TABLE ".MF_TABLE_CUSTOM_GROUPS. " (
         id integer NOT NULL AUTO_INCREMENT,
         name varchar(255) NOT NULL,
@@ -69,14 +67,14 @@ class mf_install {
         post_type varchar(255) NOT NULL,
         duplicated tinyint(1) DEFAULT 0,
         expanded tinyint(1) DEFAULT 0,
-        PRIMARY KEY (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
       ";
-
       dbDelta($sql);
+
     }
 
     // Table MF Post Meta
-    if( $wpdb->get_var("SHOW tables LIKE '{MF_TABLE_POST_META}'") != MF_TABLE_POST_META ) {
+    if( $wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_POST_META) ) != MF_TABLE_POST_META ) {
       $sql = "CREATE TABLE ".MF_TABLE_POST_META." ( 
         meta_id INT NOT NULL, 
         field_name VARCHAR(255) NOT NULL, 
@@ -87,6 +85,22 @@ class mf_install {
 
       dbDelta($sql);
     }
+    
+    if (get_option(MF_DB_VERSION_KEY) == '') update_option(MF_DB_VERSION_KEY, 1);
+
+    if (get_option(MF_DB_VERSION_KEY) < MF_DB_VERSION){
+      self::upgrade();
+      update_option(MF_DB_VERSION_KEY, MF_DB_VERSION);
+    }
+    
+    
+  }
+  
+  public function upgrade(){
+  
+    //update of DB WHERE
+    // use MF_DB_VERSION
+
   }
 
   public function folders(){
