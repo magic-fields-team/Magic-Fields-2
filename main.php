@@ -51,7 +51,7 @@ function __autoload( $name ) {
 
   //field types
   if( file_exists( MF_PATH.'/field_types/'.$name.'/'.$name.'.php' ) ) {
-    //require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php'); 
+    require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php'); 
   }
 }
 
