@@ -151,14 +151,28 @@ class mf_install {
     }
   }
   
+  public function delete_files(){
+    if (is_dir(MF_FILES_DIR)) {
+      if ($dh = opendir(MF_FILES_DIR)) {
+        while (($file = readdir($dh)) !== false) {
+          if(!is_dir($file) && !in_array($file,array('.','..','.DS_Store') ) ){
+            @unlink(MF_FILES_DIR.$file);
+          }
+        }
+        closedir($dh);
+      }
+    }
+  }
+  
   //unistall MF (delete thumbs, tables and settings)
   public function uninstall(){
     global $wpdb;
 
     self::clear_cache();
+    self::delete_files();
     delete_option(MF_SETTINGS_KEY);
     //DB version
-    //delete_option('RC_CWP_BLOG_DB_VERSION');
+    delete_option(MF_DB_VERSION_KEY);
 
     $sql = "DELETE a.* FROM $wpdb->postmeta AS a, ".MF_TABLE_POST_META." AS b WHERE b.meta_id = a.meta_id";
     $wpdb->query($sql);
