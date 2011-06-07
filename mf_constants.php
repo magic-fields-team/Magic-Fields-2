@@ -3,12 +3,7 @@ global $wpdb,$blog_id;
 
 //useful for get quickly the path for  images/javascript files and css files
 //return something like: http://wordpress.local/wp-content/plugins/Magic-Fields/
-if( mf_mu2() ){
-  preg_match('/wp-content\/plugins\/(.*)(mf_constants\.php)$/',__FILE__,$mfpath);
-  define('MF_BASENAME',plugins_url().'/'.$mfpath[1]);
-}else{
-  define('MF_BASENAME',plugins_url().'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__)));
-}
+define('MF_BASENAME',plugins_url().'/'.str_replace(basename(__FILE__),"",plugin_basename(__FILE__)));
 define('MF_URL',MF_BASENAME);
 
 //return something like: /Users/user/sites/wordpres/wp-content/plugins/Magic-Fields

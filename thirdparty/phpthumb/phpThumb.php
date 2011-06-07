@@ -42,8 +42,8 @@ if(isset($current_blog)){
   $image_name_clean = preg_replace('/blogs.dir\/(\d+)\//','',$image_name_clean);
 }
 //Getting the original size of the image
-
-$file = WP_CONTENT_DIR.DS.$image_name_clean;
+$image_name_clean = preg_replace('/'.MF_FILES_NAME.'\//','',$image_name_clean);
+$file = MF_FILES_DIR.$image_name_clean;
 
 if(file_exists($file) && (empty($_GET['w']) || empty($_GET['h']))){
 	$size = @getimagesize($file);
