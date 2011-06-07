@@ -90,14 +90,3 @@ function mf_form_hidden($data){
   <?php
 }
 
-/** 
- * aux function 
- **/
-if (!function_exists('pr')) {
-  function pr($data){
-    echo "<pre>";
-    print_r($data);
-    echo "</pre>";
-  }
-}
-

@@ -324,7 +324,14 @@ class mf_posttype extends mf_admin {
   }
 
   function form_post_type($data){
-    global $mf_domain, $supports;
+    global $mf_domain;
+    
+    $supports = array(
+      'title','editor','author',
+      'thumbnail','excerpt','trackbacks',
+      'custom_fields','comments','revisions',
+      'page_attributes'
+    );
 
     print '<div class="wrap">';
     print '<div id="message_post_type" class="error below-h2" style="display:none;"><p></p></div>';

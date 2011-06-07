@@ -34,7 +34,8 @@ $mf_pt_register = array();
 
 /**
  * Constants
- */ 
+ */
+require_once( 'mf_extra.php' ); 
 require_once( 'mf_constants.php' );
 
 //auto loading files
@@ -60,6 +61,11 @@ function __autoload( $name ) {
  * Activation and Deactivation
  */
 register_activation_hook( __FILE__, array('mf_install', 'install' ) ); 
+
+//MF in mode plusing multinetwork
+if( mf_mu2() ){
+  mf_install::install();
+}
 
 
 if( is_admin() ) {

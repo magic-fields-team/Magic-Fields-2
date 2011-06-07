@@ -6,9 +6,8 @@ class mf_install {
 
   function install () {
     global $wpdb;
-
-    require_once(ABSPATH.'wp-admin/includes/upgrade.php');
     
+    require_once(ABSPATH.'wp-admin/includes/upgrade.php');
     //checking if the table is already installed
 
     if($wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_POSTTYPES) ) != MF_TABLE_POSTTYPES) {
