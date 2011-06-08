@@ -276,6 +276,8 @@ class mf_custom_fields extends mf_admin {
       $data['core']['custom_group_id'] = $custom_group_id;
     }
 
+    $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
+
     $sql = sprintf(
       "INSERT INTO %s ".
       "(name,label,description,post_type,custom_group_id,type,requiered_field,duplicated,options) ".
@@ -308,6 +310,8 @@ class mf_custom_fields extends mf_admin {
       $custom_group_id = $this->get_default_custom_group($data['core']['post_type']);
       $data['core']['custom_group_id'] = $custom_group_id;
     }
+
+    $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
 
     $sql = sprintf(
      "UPDATE %s ".
