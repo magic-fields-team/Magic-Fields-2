@@ -142,6 +142,9 @@ if( is_admin() ) {
       wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js', array( 'jquery' ) );
       wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js', array( 'jquery' ) );
       wp_enqueue_script( 'mf_admin',MF_BASENAME.'js/mf_admin.js', array( 'jquery.validate', 'jquery.metadata', 'jquery' ) );
+      if( isset($_GET['mf_action']) && in_array($_GET['mf_action'],array('add_field','edit_field') )  ){
+        wp_enqueue_script( 'jquery.slug', MF_BASENAME.'js/third_party/jquery.slug.js', array('mf_admin') );
+      }
 
       //and this scripts only will be added on the post types section
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_posttype" ) {

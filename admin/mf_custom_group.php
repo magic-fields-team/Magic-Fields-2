@@ -178,13 +178,13 @@ class mf_custom_group extends mf_admin {
           'value'       =>  0
          ),
         'expanded'    =>  array(
-          'type'        =>  'checkbox',
+          'type'        =>  'hidden',
           'id'          =>  'custom_group_expanded',
           'label'       =>  __('Show as Expanded:',$mf_domain),
           'name'        =>  'mf_group[core][expanded]',
           'description' =>  __( 'Display the full expanded group editing interface instead of the group summary',$mf_domain),
           'extra'       => __('Note: the group can still be collapsed by the user, this just determines the default state on load', $mf_domain ),
-          'value'       =>  0
+          'value'       =>  1
         )   
       )
     );
@@ -200,7 +200,7 @@ class mf_custom_group extends mf_admin {
       <h2><?php _e('Create Custom Group', $mf_domain);?></h2>
 
 
-     <form id="addCustomGroup" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate">
+     <form id="addCustomGroup" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate mf_form_admin">
       <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_group">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
@@ -227,9 +227,12 @@ class mf_custom_group extends mf_admin {
       	</p>
       </div>
       <div class="widefat mf_form_right">
-        <h4>Aqui un texto esplicando tal vez que es un grupo</h4>
-        <div  id="options_field">
-          <p>texto texto</p>
+        <h4>Para que me sirve un grupo?</h4>
+        <div id="options_field" class="group_side">
+          <p>Un grupo nos permite agrupar una serie de custom field y tener un mejor manejo de los custom field</p>
+          <p>Los grupos tienen la gran utilidad de que se puede duplicar, esto es, se crea un nueva instancia del grupo (con todos los custom fields que contiene el grupo)</p>
+          <p>Otra caracteristica de los grupos duplicados es que podemos ordenarlos y tener un control de que grupo queremos que se muestre primero</p>
+          <p><img src="<?php echo MF_URL; ?>images/admin/group.jpg"/></p>
         </div>
       </div>
     </div>

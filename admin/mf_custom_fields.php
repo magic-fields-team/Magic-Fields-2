@@ -36,7 +36,7 @@ class mf_custom_fields extends mf_admin {
   }
 
 
-  public function get_options($options = NULL){
+  public function get_options($options = NULL,$name){
     global $mf_domain;
 
     if($this->has_properties){
@@ -48,8 +48,14 @@ class mf_custom_fields extends mf_admin {
         }
       }
       $this->form_options();
+      printf('<p>%s</p>',$this->description);
+      printf('<p>%s:</p>',__('Preview',$mf_domain));
+      printf('<p><img src="%sfield_types/%s/preview.jpg" /></p>',MF_URL,$name);
     }else{
       _e("This field no has properties",$mf_domain);
+      printf('<p>%s</p>',$this->description);
+      printf('<p>%s:</p>',__('Preview',$mf_domain));
+      printf('<p><img src="%sfield_types/%s/preview.jpg" /></p>',MF_URL,$name);
     }
 
     return false;
@@ -401,16 +407,6 @@ class mf_custom_fields extends mf_admin {
           'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
           'div_class'   => 'form-requierd'
         ),
-        'name'  => array(
-          'type'        =>  'text',
-          'id'          =>  'customfield-name',
-          'label'       =>  __('Name',$mf_domain),
-          'name'        =>  'mf_field[core][name]',
-          'description' =>  __( 'The name only accept letters and numbers (lowercar)', $mf_domain),
-          'div_class'   =>  'form-required',
-          'class'       => "{ validate:{ required:true, maxlength:150, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 150 characters' )."' }}}",
-          'value'       =>  ''
-        ),
         'label'  => array(
           'type'        =>  'text',
           'id'          =>  'customfield-label',
@@ -421,6 +417,16 @@ class mf_custom_fields extends mf_admin {
           'div_class'   =>  'form-required',
           'value'       =>  ''
 
+        ),
+        'name'  => array(
+          'type'        =>  'text',
+          'id'          =>  'customfield-name',
+          'label'       =>  __('Name',$mf_domain),
+          'name'        =>  'mf_field[core][name]',
+          'description' =>  __( 'The name only accept letters and numbers (lowercar)', $mf_domain),
+          'div_class'   =>  'form-required',
+          'class'       => "{ validate:{ required:true, maxlength:150, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 150 characters' )."' }}}",
+          'value'       =>  ''
         ),
         'description' =>  array(
           'type'        =>  'text',
@@ -460,13 +466,19 @@ class mf_custom_fields extends mf_admin {
 
   function form_custom_field( $data ) {
     global $mf_domain;
+    
+    $name_group = '';
+    if($data['core']['custom_group_id']['value']){
+      $group = $this->get_group( $data['core']['custom_group_id']['value'] );
+      $name_group = $group['name'];
+    }
+    printf('<input type="hidden" id="name_group_slug" value="%s" ',$name_group);
     ?>
     <div class="wrap">
       <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
       <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
 
-
-     <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate">
+     <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate mf_form_admin">
       <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_field">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
@@ -503,7 +515,7 @@ class mf_custom_fields extends mf_admin {
            if( $data['core']['id']['value'] ){
              $name = sprintf('%s_field',$data['core']['type']['value']);
              $mf_field = new $name();
-             $mf_field->get_options($data['option']);
+             $mf_field->get_options($data['option'],$name);
            } ?>
         </div>
       </div>

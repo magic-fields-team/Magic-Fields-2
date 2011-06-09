@@ -37,7 +37,7 @@ class audio_field extends mf_custom_fields {
     }
 
     $out  = '<div class="image_layout">';
-    $out .= sprintf('<div class="image_photo"><div id="obj-%s" class="audio_wrap">',$field['input_id']);
+    $out .= sprintf('<div class="audio_player image_photo"><div id="obj-%s" class="audio_wrap">',$field['input_id']);
     $out .= $value;
     $out .= '</div>';
     $out .= sprintf('<div id="photo_edit_link_%s"  %s class="photo_edit_link">',$field['input_id'],$field_style);
@@ -45,7 +45,7 @@ class audio_field extends mf_custom_fields {
     $out .= sprintf('<a href="#remove" class="remove remove_audio" id="remove-%s" >%s</a>',$field['input_id'],__('Delete',$mf_domain));
     $out .= '</div>';
     $out .='</div>';
-    $out .= '<div class="image_input">';
+    $out .= '<div class="image_input audio_frame">';
     $out .= '<div class="mf_custom_field">';
     $out .= sprintf('<div id="response-%s" style="display:none;" ></div>',$field['input_id']);
     $out .= sprintf('<input type="hidden" value="%s" name="%s" id="%s" >',$field['input_value'],$field['input_name'],$field['input_id']);

@@ -54,3 +54,27 @@ overflow: hidden;
 margin: 0;
 width: 90%;
 padding: 10px;}
+
+/* custom group div right*/
+div.group_side{ text-align: justify;}
+div.group_side img { display: block; margin-left: auto; margin-right:auto;}
+div.mf_form_right h4 { font-style: italic;}
+
+.mf_form_admin .error { color: #cc0000; }
+.mf_form_admin label.error {
+  margin-left: 4px;
+  margin-top: 2px;
+  overflow: hidden;
+  zoom: 100%;
+  color: red;
+  padding: 0px 6px 0px 24px;
+  line-height: 20px;
+  font-size: 10px;
+  height: auto;
+  display: block;
+  /*background: #FFFFCC url(../images/error-magicfields.png) no-repeat 4px 1px;*/
+  background: url(../images/error-magicfields.png) no-repeat 4px 1px;
+  margin-right: 18px;
+  /*border: 1px solid #DCCD4D;*/
+}
+div#options_field img { display: block; margin-left: auto; margin-right:auto;}

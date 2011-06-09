@@ -256,12 +256,19 @@ textarea.mf_editor { width: 99%; padding: 8px;}
   min-height: 78px;
   text-align: center;
 }
+
 .image_layout .image_input {
   float: left;
   margin-top: 10px;
   height: 40px;
+  margin-bottom: 10px;
   /*width: 520px;*/
 }
+.audio_frame{
+  margin-top: 0 !important;
+}
+div.audio_player{ margin-top: 12px !important; }
+
 .photo_edit_link a.mf-file-view {
 background-image: url(../images/mf-file-view.png);
 padding-left: 20px;

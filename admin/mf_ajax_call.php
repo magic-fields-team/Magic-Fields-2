@@ -109,7 +109,7 @@ class mf_ajax_call{
     if( isset($data['field_type']) && ($data['field_type'] != NULL) ){
       $name = sprintf('%s_field',$data['field_type']);
       $mf_field = new $name();
-      $mf_field->get_options();
+      $mf_field->get_options(array(),$name);
     }
   }
 

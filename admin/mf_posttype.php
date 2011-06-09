@@ -342,7 +342,7 @@ class mf_posttype extends mf_admin {
     endif;
     print '</div>';
     ?>
-     <form id="addPostType" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=save_post_type" class="validate">
+     <form id="addPostType" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=save_post_type" class="validate mf_form_admin">
 
       <!-- Nonces -->
       <?php wp_nonce_field('form_post_type_posttype');?>

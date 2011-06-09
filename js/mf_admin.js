@@ -168,7 +168,31 @@ jQuery(document).ready(function($) {
     }
   });
 
+  $('#customfield-label').change(function(e){
+    name = $("#customfield-name").val();
+    if(name == ''){
+      suggestCustomFieldName();
+    }
+  });
+
 });
+
+function suggestCustomFieldName(){
+
+  var desc = jQuery('#customfield-label').val();
+  desc = desc.replace(/\s?\([^\)]*\)/gi, "");     
+  var nv = jQuery.slug(desc, { sep: "_" });
+  var name_group = jQuery('#name_group_slug').val();
+
+  if(name_group != ""){
+    var prefix = jQuery.slug(name_group, { sep: "_" });
+    if (prefix != "" && prefix != "_") {
+      nv = prefix + "_" + nv;
+    }
+
+  }
+  jQuery('#customfield-name').val(nv);
+}
 
 confirm_message = function(message) {
 

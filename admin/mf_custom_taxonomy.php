@@ -177,7 +177,7 @@ class mf_custom_taxonomy extends mf_admin{
     endif;
     print '</div>';
     ?>
-     <form id="addCustomTaxonomy" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=save_custom_taxonomy" class="validate">
+     <form id="addCustomTaxonomy" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_taxonomy&mf_action=save_custom_taxonomy" class="validate mf_form_admin">
        
       <?php
         //nonce 
@@ -199,11 +199,12 @@ class mf_custom_taxonomy extends mf_admin{
         
         <!-- post types -->
         <!-- TODO: validate -->
-        <div class="form-field mf_label_checkbox mf_form ">
+        <div class="form-field mf_label_checkbox mf_form form_required">
           <?php _e( 'Post types:', $mf_domain ) ?>
           <?php
           $post_types= $this->mf_get_post_types(); 
           ?>
+          <?php $i = 1; ?>
           <?php foreach($post_types as $pt){ ?>
             <?php if($pt->name != 'attachment'){ ?>
               <?php 
@@ -211,9 +212,14 @@ class mf_custom_taxonomy extends mf_admin{
                 if(in_array($pt->name,$data['taxonomy']['post_type'])){
                   $check = 'checked="checked"';
                 }
+                $val = 'a';
+                if( $i == 1){
+                $val = sprintf("{validate:{required:true,messages:{required:'%s'}}}",__('This Field is required, least one post type',$mf_domain));
+                }
+                $i++;
               ?>
               <p>
-                <input name="mf_custom_taxonomy[post_types][]" id="custom-taxonomy-post-type-<?php echo  $pt->name; ?>" type="checkbox" value="<?php echo $pt->name; ?>" <?php echo $check; ?> >
+                <input name="mf_custom_taxonomy[post_types][]" id="custom-taxonomy-post-type-<?php echo  $pt->name; ?>" type="checkbox" value="<?php echo $pt->name; ?>" <?php echo $check; ?> class="<?php echo $val; ?>" >
                 <label for="custom-taxonomy-post-type-<?php echo  $pt->name; ?>"><?php echo $pt->label; ?></label>
               </p>
             <?php } ?>
