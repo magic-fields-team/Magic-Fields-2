@@ -52,7 +52,7 @@ class file_field extends mf_custom_fields {
     $out .= '<div class="image_input">';
     $out .= '<div class="mf_custom_field">';
     $out .= sprintf('<div id="response-%s" style="display:none;" ></div>',$field['input_id']);
-    $out .= sprintf('<input type="hidden" value="%s" name="%s" id="%s" >',$field['input_value'],$field['input_name'],$field['input_id']);
+    $out .= sprintf('<input type="hidden" value="%s" name="%s" id="%s" %s >',$field['input_value'],$field['input_name'],$field['input_id'],$field['input_validate']);
     $out .= $this->upload($field['input_id'],'file','mf_file_callback_upload');
     $out .= '</div></div>';
     $out .= '</div>';

@@ -80,7 +80,7 @@ class datepicker_field extends mf_custom_fields {
   
     $output .= sprintf('<div id="format_date_field_%s" style="display:none;">%s</div>',$field['input_id'],$format);
     $output .= sprintf('<input id="display_date_field_%s" value="%s" type="text" class="datepicker_mf" readonly="readonly" />',$field['input_id'],$value);
-    $output .= sprintf('<input id="date_field_%s" value="%s" name="%s" type="hidden" />',$field['input_id'],$value_raw,$field['input_name']);
+    $output .= sprintf('<input id="date_field_%s" value="%s" name="%s" type="hidden" %s />',$field['input_id'],$value_raw,$field['input_name'],$field['input_validate']);
     $output .= sprintf('<input type="button" value="Pick..." id="pick_%s" class="datebotton_mf button" />',$field['input_id']);
     $output .= sprintf('<input type="button" id="today_%s" value="Today" alt="%s" rel="%s" class="todaybotton_mf button"/>',$field['input_id'],$today,$today_field);
     $output .= sprintf('<input 	type="button" id="blank_%s"value="Blank" class="blankBotton_mf button"/>',$field['input_id']);

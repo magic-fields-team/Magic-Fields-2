@@ -161,7 +161,7 @@ jQuery(document).ready(function($) {
   //add validation for fields
   $('.mf_message_error .error_magicfields').hide();
   $.metadata.setType("attr", "validate");
-  
+  //$.validator.messages.required = "dedee";
     $("#post").validate({
       errorClass: "error_magicfields",
       invalidHandler: function(form, validator) { 

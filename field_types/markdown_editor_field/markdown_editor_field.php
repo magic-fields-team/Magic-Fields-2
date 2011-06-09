@@ -31,7 +31,7 @@ class markdown_editor_field extends mf_custom_fields {
   public function display_field($field, $group_index = 1, $field_index =1){
     $out = '';
     
-    $out .= sprintf('<textarea class="markdowntextboxinterface" id="%s" name="%s">%s</textarea>',$field['input_id'],$field['input_name'],$field['input_value']);
+    $out .= sprintf('<textarea class="markdowntextboxinterface" id="%s" name="%s" %s >%s</textarea>',$field['input_id'],$field['input_name'],$field['input_validate'],$field['input_value']);
     return $out;
   }
     

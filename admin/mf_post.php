@@ -158,10 +158,18 @@ class mf_post extends mf_admin {
              $field['options'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
              $field['input_validate'] = ($field['requiered_field']) ? 'validate="required:true"' : '';
 
+
              print $f->display_field( $field,$group_index, $field_index);
              print '</div><div class="clear"></div>';
              if( $field['requiered_field'] ){
-               print '<div class="mf_message_error"><label for="' . $field['input_id']. '" class="error_magicfields error">';
+               $id_validate = array('image_media','image','audio','file','color_picker','datepicker','markdown_editor','multiline');
+               $validate_name = ( in_array($field['type'],$id_validate) )? $field['input_id'] : $field['input_name'];
+               if($field['type'] == 'color_picker') $validate_name = 'colorpicker_value_'.$validate_name;
+               if($field['type'] == 'datepicker' ){
+                 $validate_name = 'date_field_' . $validate_name;
+               }
+               if( isset($field['options']->options) && $field['type'] != 'radiobutton_list' ) $validate_name .= '[]';
+               print '<div class="mf_message_error"><label for="' . $validate_name. '" class="error_magicfields error">';
                _e("This field is required",$mf_domain);
                print '</label></div>';
              }

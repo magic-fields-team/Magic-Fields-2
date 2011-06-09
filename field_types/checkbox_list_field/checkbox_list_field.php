@@ -67,7 +67,7 @@ class checkbox_list_field extends mf_custom_fields {
     foreach($options as $option){
       $check = in_array($option, $values) ? 'checked="checked"' : '';
       $output .= sprintf('<label for="%s_%s" class="selectit mf-checkbox-list">',$field['input_id'],$option);
-      $output .= sprintf('<input tabindex="3" class="checkbox_list_mf" id="%s_%s" name="%s[]" value="%s" type="checkbox" %s />',$field['input_id'],$option,$field['input_name'],$option,$check);
+      $output .= sprintf('<input tabindex="3" class="checkbox_list_mf" id="%s_%s" name="%s[]" value="%s" type="checkbox" %s %s />',$field['input_id'],$option,$field['input_name'],$option,$check,$field['input_validate']);
       $output .= esc_attr($option);
       $output .= '</label>';
     }

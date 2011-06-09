@@ -72,7 +72,7 @@ class radiobutton_list_field extends mf_custom_fields {
       }
    
       $output .= '<label class="mf-radio-field">';
-      $output .=  sprintf('<input type="radio" value="%s" name="%s" %s>%s', $option, $field['input_name'], $checked, $option);
+      $output .=  sprintf('<input type="radio" value="%s" name="%s" %s %s >%s', $option, $field['input_name'], $checked,$field['input_validate'], $option);
       $output .= '</label>';
     }
 

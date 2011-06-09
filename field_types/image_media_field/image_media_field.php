@@ -107,7 +107,7 @@ class image_media_field extends mf_custom_fields {
     $out .= '<div class="image_input">';
     $out .= '<div class="mf_custom_field">';
     $out .= sprintf('<div id="response-%s" style="display:none;" ></div>',$field['input_id']);
-    $out .= sprintf('<input type="hidden" value="%s" name="%s" id="%s" >',$field['input_value'],$field['input_name'],$field['input_id']);
+    $out .= sprintf('<input type="hidden" value="%s" name="%s" id="%s" %s >',$field['input_value'],$field['input_name'],$field['input_id'],$field['input_validate']);
     $link = sprintf('media-upload.php?post_id=0&#038;type=image&#038;TB_iframe=1');
     $out .= sprintf('<a class="button thickbox update_field_media_upload"  id="thumb_%s" href="%s">%s</a>',$field['input_id'],$link,__('Set Image',$mf_domain));
     $out .= '</div></div>';
