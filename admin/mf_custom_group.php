@@ -92,7 +92,7 @@ class mf_custom_group extends mf_admin {
       $data['core']['label'],
       $data['core']['post_type'],
       $data['core']['duplicate'],
-      $data['core']['expanded']
+      1
     );
     $wpdb->query($sql);
   }
@@ -115,7 +115,7 @@ class mf_custom_group extends mf_admin {
       $data['core']['name'],
       $data['core']['label'],
       $data['core']['duplicate'],
-      $data['core']['expanded'],
+      1,
       $data['core']['id']
     );
     
@@ -197,7 +197,12 @@ class mf_custom_group extends mf_admin {
     ?>
     <div class="wrap">
       <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
+      <div id="icon-themes" class="icon32"><br></div>
+      <?php if( !$data['core']['id']['value'] ): ?>
       <h2><?php _e('Create Custom Group', $mf_domain);?></h2>
+      <?php else: ?>
+    <h2><?php _e('Edit Custom Group', $mf_domain);?> - <?php echo $data['core']['label']['value']; ?></h2>
+      <?php endif; ?>
 
 
      <form id="addCustomGroup" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate mf_form_admin">
@@ -223,16 +228,18 @@ class mf_custom_group extends mf_admin {
         <?php endforeach;?>
       	<p class="submit">
       	  <a style="color:black" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php echo $data['core']['post_type']['value'];?>" class="button">Cancel</a>
-      	  <input type="submit" class="button" name="submit" id="submit" value="Save Custom Group">
+      	  <input type="submit" class="button button-primary" name="submit" id="submit" value="Save Custom Group">
       	</p>
       </div>
-      <div class="widefat mf_form_right">
-        <h4>Para que me sirve un grupo?</h4>
-        <div id="options_field" class="group_side">
-          <p>Un grupo nos permite agrupar una serie de custom field y tener un mejor manejo de los custom field</p>
-          <p>Los grupos tienen la gran utilidad de que se puede duplicar, esto es, se crea un nueva instancia del grupo (con todos los custom fields que contiene el grupo)</p>
-          <p>Otra caracteristica de los grupos duplicados es que podemos ordenarlos y tener un control de que grupo queremos que se muestre primero</p>
-          <p><img src="<?php echo MF_URL; ?>images/admin/group.jpg"/></p>
+      <div class="widefat mf_form_right stuffbox metabox-holder">
+        <h3><?php _e('About group',$mf_domain); ?></h3>
+        <div class="inside">
+          <div id="options_field" class="group_side">
+            <p>Un grupo nos permite agrupar una serie de custom field y tener un mejor manejo de los custom field</p>
+            <p>Los grupos tienen la gran utilidad de que se puede duplicar, esto es, se crea un nueva instancia del grupo (con todos los custom fields que contiene el grupo)</p>
+            <p>Otra caracteristica de los grupos duplicados es que podemos ordenarlos y tener un control de que grupo queremos que se muestre primero</p>
+            <p><img src="<?php echo MF_URL; ?>images/admin/group.jpg"/></p>
+          </div>
         </div>
       </div>
     </div>

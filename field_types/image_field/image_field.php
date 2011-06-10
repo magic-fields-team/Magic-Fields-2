@@ -46,7 +46,7 @@ class image_field extends mf_custom_fields {
           'label'       =>  __('Max height',$mf_domain),
           'name'        =>  'mf_field[option][max_height]',
           'default'     =>  '',
-          'description' =>  '',
+          'description' =>  'value for thumbnail image',
           'value'       =>  '',
           'div_class'   =>  '',
           'class'       =>  ''
@@ -57,7 +57,7 @@ class image_field extends mf_custom_fields {
           'label'       =>  __('Max Width',$mf_domain),
           'name'        =>  'mf_field[option][max_width]',
           'default'     =>  '',
-          'description' =>  '',
+          'description' =>  'value for thumbnail image',
           'value'       =>  '',
           'div_class'   =>  '',
           'class'       =>  ''

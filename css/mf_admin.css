@@ -19,10 +19,15 @@
 .mf_label_checkbox label{ padding-left: 10px;}
 .mf_form p { color: #666; font-size: 12px; font-style: italic; font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; margin: 2px 0 5px 10px; }
 .mf_form label {color: #222; text-shadow: white 0 1px 0; padding: 2px; font-size: 12px;font-weight: normal;}
-div.mf_form_right { float: left; clear: right; overflow: hidden; margin: 0; width: 50%; padding: 10px; }
-div.mf_form_right div { padding-left: 10px; }
+div.mf_form_right { float: left; clear: right; overflow: hidden; margin: 0; width: 50%; padding: 0 !important; }
+div.mf_form_right div.inside { padding: 10px; }
+div.mf_form_right div.inside p, div.mf_form_right div.inside label{ font-size: 11px }
+div.mf_form_right div.inside textarea { height: 100px;}
+div.mf_form_right div.inside input, div.mf_form_right div.inside textarea { margin-top: 7px; }
 div.options_label label{ width: 130px; float: left; }
-div.options_label input{ width: 200px;}
+div.options label{ width: 140px; float: left; }
+div.options_label input,div.options input{ width: 250px;}
+
 
 /** Sortable Post Type **/
 .mf-order-icon { cursor:move; }
@@ -77,4 +82,11 @@ div.mf_form_right h4 { font-style: italic;}
   margin-right: 18px;
   /*border: 1px solid #DCCD4D;*/
 }
-div#options_field img { display: block; margin-left: auto; margin-right:auto;}
+div#options_field img { display: block; margin-left: auto; margin-right:auto; border: #D9D9DA solid 2px; padding:2px;}
+ul.options-tabs li{ display: inline;}
+ul.options-tabs li.tabs a { color: #333; }
+
+div.options,div.options_label{ padding-top: 10px; }
+div.options legend, div.options_label legend{ font-style: italic; color: #5A5A5A; padding-bottom: 2px; }
+form#addCustomGroup,form#addCustomField{ padding-top: 10px; }
+div.mf_form_right div.categorydiv div.tabs-panel { height: auto; margin-top: 4px; }

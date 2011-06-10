@@ -335,6 +335,7 @@ class mf_posttype extends mf_admin {
 
     print '<div class="wrap">';
     print '<div id="message_post_type" class="error below-h2" style="display:none;"><p></p></div>';
+    print '<div id="icon-edit" class="icon32"><br /></div>';
     if( !$data['core']['id']['value'] ):
       print '<h2>'.__( 'Add Post Type', $mf_domain ).'</h2>';
     else:
@@ -363,7 +364,7 @@ class mf_posttype extends mf_admin {
 
 	<!-- supports -->
 	<div class="form-field mf_label_checkbox mf_form">
-	  <?php _e( 'Supports:', $mf_domain ) ?>
+	  <?php _e( 'Supports', $mf_domain ) ?>
 	  <?php foreach($supports as $support){ ?>
 	    <?php
 	      $check = '';
@@ -381,7 +382,7 @@ class mf_posttype extends mf_admin {
 
 	<!-- taxonomies -->
 	<div class="form-field mf_label_checkbox mf_form">
-	  <?php _e( 'Taxonomies:', $mf_domain ) ?>
+	  <?php _e( 'Taxonomies', $mf_domain ) ?>
 	  <?php
 	  $taxonomies=get_taxonomies(array( 'public'   => true ),'objects');
 	  ?>
@@ -410,57 +411,56 @@ class mf_posttype extends mf_admin {
 	<!-- / Submit -->
     </div>
 
-    <div class="widefat mf_form_right">
-      <a id="options" href="#"><?php _e( 'Advanced Options', $mf_domain ) ?></a> | <a id="options_label" href="#"><?php _e( 'Advance Label', $mf_domain ) ?></a>
+    <div class="widefat mf_form_right stuffbox metabox-holder">
+      <h3><?php _e('Options',$mf_domain); ?></h3>
+      <div class="inside  categorydiv">
+        <ul id="category-tabs" class="category-tabs options-tabs">
+          <li class="tabs">
+            <a id="options" href="#" ><?php _e( 'Advanced Options', $mf_domain ) ?></a>
+          </li>
+          <li class="">
+            <a id="options_label" href="#"><?php _e( 'Advance Label', $mf_domain ) ?></a>
+          </li>
+        </ul>
+        <div class="tabs-panel">
 
-      <div class="options">
-	<fieldset>
-	  <legend><?php _e( 'Advanced Options', $mf_domain ) ?></legend>
-	  <!-- options -->
-	  <?php foreach($data['option'] as $option){ ?>
-	    <div class="form-field mf_label_checkbox mf_form">
-	      <?php
-		if($option['type'] == 'text'){
+          <div class="options">
+            <fieldset>
+              <legend><?php _e( 'Advanced Options', $mf_domain ) ?></legend>
+              <!-- options -->
+              <?php foreach($data['option'] as $option){ ?>
+              <div class="form-field mf_label_checkbox mf_form">
+                <?php
+                if($option['type'] == 'text'){
 		  mf_form_text($option);
 		}elseif($option['type'] == 'checkbox'){
 		  mf_form_checkbox($option);
 		}
 	      ?>
-	    </div>
-	  <?php } ?>
-	  <!-- / options -->
-	</fieldset>
+              </div>
+              <?php } ?>
+              <!-- / options -->
+            </fieldset>
+          </div>
+
+          <div class="options_label" style="display: none;">
+	    <fieldset>
+	      <?php mf_form_checkbox($data['suggest_labels']);?>
+	    </fieldset>
+
+	    <fieldset>
+	      <legend><?php _e( 'Label Options', $mf_domain ) ?></legend>
+	      <!-- labels -->
+	      <?php foreach($data['label'] as $label){ ?>
+	        <div class="form-field mf_label_checkbox mf_form">
+	          <?php mf_form_text($label); ?>
+	        </div>
+	      <?php } ?>
+              <!-- / labels -->
+            </fieldset>
+          </div>
+        </div>
       </div>
-
-      <div class="options_label" style="display: none">
-	<fieldset>
-	  <?php mf_form_checkbox($data['suggest_labels']);?>
-	</fieldset>
-
-	  <fieldset>
-	    <legend><?php _e( 'Label Options', $mf_domain ) ?></legend>
-	    <!-- labels -->
-	    <?php foreach($data['label'] as $label){ ?>
-	    <div class="form-field mf_label_checkbox mf_form">
-	      <?php mf_form_text($label); ?>
-	    </div>
-	  <?php } ?>
-	  <!-- / labels -->
-	  </fieldset>
-      </div>
-
-      <script>
-      jQuery(document).ready(function(){
-	jQuery('#options_label').click(function(){
-	  jQuery('.options_label').show();
-	  jQuery('.options').hide();
-	});
-	jQuery('#options').click(function(){
-	  jQuery('.options').show();
-	  jQuery('.options_label').hide();
-	});
-       });
-      </script>
     </div>
      </form>
     <?php

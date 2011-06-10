@@ -39,6 +39,12 @@ class mf_custom_fields extends mf_admin {
   public function get_options($options = NULL,$name){
     global $mf_domain;
 
+        print '<div class="desc_field">';
+    printf('<p>%s</p>',$this->description);
+    printf('<p>%s:</p>',__('Preview',$mf_domain));
+    printf('<p><img src="%sfield_types/%s/preview.jpg" /></p>',MF_URL,$name);
+    print '</div>';
+
     if($this->has_properties){
       //aqui deberiamos saber si el campos ya esta en el sistema y pedir los datos actuales
       // por el momento solo renderamos el formulario sin datos
@@ -47,16 +53,9 @@ class mf_custom_fields extends mf_admin {
           @$this->options['option'][$k]['value'] = $v;
         }
       }
-      $this->form_options();
-      printf('<p>%s</p>',$this->description);
-      printf('<p>%s:</p>',__('Preview',$mf_domain));
-      printf('<p><img src="%sfield_types/%s/preview.jpg" /></p>',MF_URL,$name);
-    }else{
-      _e("This field no has properties",$mf_domain);
-      printf('<p>%s</p>',$this->description);
-      printf('<p>%s:</p>',__('Preview',$mf_domain));
-      printf('<p><img src="%sfield_types/%s/preview.jpg" /></p>',MF_URL,$name);
+      $this->form_options();  
     }
+
 
     return false;
   }
@@ -394,19 +393,6 @@ class mf_custom_fields extends mf_admin {
           'name' => 'mf_field[core][custom_group_id]',
           'value' => $custom_group_id
         ),
-        'type'  => array(
-          'type'        =>  'select',
-          'id'          =>  'customfield-type',
-          'label'       =>  __('Type of Custom Field',$mf_domain),
-          'name'        =>  'mf_field[core][type]',
-          'default'     =>  '',
-          'options'      =>  $custom_fields,
-          'description' =>  __( 'Select the type of custom field', $mf_domain ),
-          'value'       =>  '',
-          'add_empty'   =>  true,
-          'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
-          'div_class'   => 'form-requierd'
-        ),
         'label'  => array(
           'type'        =>  'text',
           'id'          =>  'customfield-label',
@@ -437,6 +423,19 @@ class mf_custom_fields extends mf_admin {
           'id'          => 'customfield-description',
           'class'       => '',
           'div_class'   => ''
+        ),
+        'type'  => array(
+          'type'        =>  'select',
+          'id'          =>  'customfield-type',
+          'label'       =>  __('Type of Custom Field',$mf_domain),
+          'name'        =>  'mf_field[core][type]',
+          'default'     =>  '',
+          'options'      =>  $custom_fields,
+          'description' =>  __( 'Select the type of custom field', $mf_domain ),
+          'value'       =>  '',
+          'add_empty'   =>  true,
+          'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
+          'div_class'   => 'form-requierd'
         ),
         'requiered_field'    =>  array(
           'type'        =>  'checkbox',
@@ -472,11 +471,16 @@ class mf_custom_fields extends mf_admin {
       $group = $this->get_group( $data['core']['custom_group_id']['value'] );
       $name_group = $group['name'];
     }
-    printf('<input type="hidden" id="name_group_slug" value="%s" ',$name_group);
+    printf('<input type="hidden" id="name_group_slug" value="%s" >',$name_group);
     ?>
     <div class="wrap">
       <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
-      <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
+      <div id="icon-edit-pages" class="icon32 icon32-posts-page"><br></div>
+      <?php if( !$data['core']['id']['value'] ): ?>
+       <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
+    <?php else: ?>
+    <h2><?php _e('Edit Custom Field', $mf_domain); echo ' - '.$data['core']['label']['value'];?></h2>
+      <?php endif; ?>
 
      <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate mf_form_admin">
       <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_field">
@@ -500,12 +504,13 @@ class mf_custom_fields extends mf_admin {
           <?php endif;?>
         <?php endforeach;?>
         <p class="submit">
-          <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
-          <input type="submit" class="button" name="submit" id="submit" value="Save Custom Field">
+          <a style="color:black" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php echo $data['core']['post_type']['value'];?>" class="button">Cancel</a>
+          <input type="submit" class="button button-primary" name="submit" id="submit" value="Save Custom Field">
         </p>
       </div>
-      <div class="widefat mf_form_right">
-        <h4>Options of field</h4>
+      <div class="widefat mf_form_right stuffbox metabox-holder">
+        <h3>Options of field</h3>
+        <div class="inside">
         <?php $legend_class = ($data['core']['id']['value'])? sprintf('style="display:none;"') : ''; ?>
         <div  id="options_field_legend" <?php echo $legend_class; ?> >
           <p>By default on this box will be displayed a information about custom fields, after the  custom field be selected, this box will be displayed some extra options of the field (if required) or a information about the selected field</p>
@@ -518,6 +523,7 @@ class mf_custom_fields extends mf_admin {
              $mf_field->get_options($data['option'],$name);
            } ?>
         </div>
+      </div>
       </div>
     </div>
 </form>
