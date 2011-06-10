@@ -230,13 +230,13 @@ class mf_custom_taxonomy extends mf_admin{
         <!-- Submit -->
         <p class="submit">
           <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
-          <input type="submit" class="button" name="submit" id="submit" value="Save Custom Taxonomy">
+          <input type="submit" class="button button-primary" name="submit" id="submit" value="Save Custom Taxonomy">
         </p>
         <!-- / Submit -->
     </div>
     
     <div class="widefat mf_form_right stuffbox metabox-holder">
-      <h3><?php _e('options',$mf_domain); ?></h3>
+      <h3><?php _e('Options',$mf_domain); ?></h3>
       <div class="inside  categorydiv">
         <ul id="category-tabs" class="category-tabs options-tabs">
           <li class="tabs">

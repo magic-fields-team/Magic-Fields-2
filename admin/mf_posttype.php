@@ -406,7 +406,7 @@ class mf_posttype extends mf_admin {
 	<!-- Submit -->
 	<p class="submit">
 	  <a style="color:black" href="admin.php?page=mf_dispatcher" class="button">Cancel</a>
-	  <input type="submit" class="button" name="submit" id="submit" value="Save Post type">
+	  <input type="submit" class="button button-primary" name="submit" id="submit" value="Save Post type">
 	</p>
 	<!-- / Submit -->
     </div>
