@@ -140,7 +140,9 @@ class mf_posttype extends mf_admin {
           'label' => __( 'Capability type', $mf_domain ),
           'name' => 'mf_posttype[option][capability_type]',
           'value' => 'post',
-          'description' => __( 'Capability type (post,page)', $mf_domain )
+          'description' => __( 'Capability type (post,page) in Singular', $mf_domain ),
+          'class' => "{ validate:{ maxlength:40, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."',  maxlength:'".__( 'This Field must have less than 40 characters' )."' }}}",
+          'div_class' => 'form-required'
         ),
         'hierarchical' => array(
           'id' => 'posttype-hierarchical',

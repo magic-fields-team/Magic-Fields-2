@@ -42,13 +42,49 @@ class mf_register{
       }
  
       if($option['rewrite'] && $option['rewrite_slug'])
-        $option['rewrite'] = array( 'slug' => $option['rewrite_slug'] );
+        $option['rewrite'] = array( 'slug' => $option['rewrite_slug'],'with_front' => true );
 
       
       unset($option['rewrite_slug']);
       array_push($mf_pt_register,$name);
+
+      if($option['menu_position']){
+        $option['menu_position'] = (int)$option['menu_position'];
+      }
+
+      //check Capability type
+      trim($option['capability_type']);
+      if(empty($option['capability_type'])){
+        $option['capability_type'] = 'post';
+      }elseif( !in_array($option['capability_type'],array('post','page')) ){
+        $option['capabilities'] = $this->_add_cap($option['capability_type']);
+      }
+      
       register_post_type($name,$option);
     }
+    
+  }
+
+  public function _add_cap($name){
+
+    $caps = array(
+      'publish_posts'      => sprintf('publish_%ss',$name),
+      'edit_posts'         => sprintf('edit_%ss',$name),
+      'edit_others_posts'  => sprintf('edit_others_%ss',$name),
+      'read_private_posts' => sprintf('read_private_%ss',$name),
+      'edit_post'          => sprintf('edit_%s',$name),
+      'delete_post'        => sprintf('delete_%s',$name),
+      'read_post'          => sprintf('read_%s',$name)
+    );
+    $role = get_role('administrator');
+
+    if( !in_array($caps['edit_post'],array_keys($role->capabilities)) ){
+      foreach($caps as $cap){
+        $role->add_cap($cap);
+      }
+    }
+
+    return $caps;
     
   }
 
