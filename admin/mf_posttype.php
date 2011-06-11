@@ -274,6 +274,15 @@ class mf_posttype extends mf_admin {
           'value' => __('No posts found in Trash',$mf_domain),
           'description' => __( 'the not found in trash text.', $mf_domain ),
           'rel' =>  'No %s found in Trash'
+        ),
+        'menu_name' => array(
+          'id' => 'posttype-label-menu_name',
+          'type' => 'text',
+          'label' => __( 'Menu name', $mf_domain ),
+          'name' => 'mf_posttype[label][menu_name]',
+          'value' => __('Post',$mf_domain),
+          'description' => __( 'The name of menu.', $mf_domain ),
+          'rel' =>  '%s'
         )
       )
     );
@@ -490,8 +499,38 @@ class mf_posttype extends mf_admin {
           //reload form and show warning
         }
       }
+      $name = trim($mf['option']['capability_type']);
+      if( !in_array($name,array('post','page')) && !empty($name) ){
+        //register capabilities for admin
+        $this->_add_cap($name);
+      }
     }
     $this->mf_redirect(null,null,array('message' => 'success'));
+  }
+
+  /**
+   * Add a news Capabilities for Administrator
+   *
+   */
+  public function _add_cap($name){
+
+    $caps = array(
+      'publish_posts'      => sprintf('publish_%ss',$name),
+      'edit_posts'         => sprintf('edit_%ss',$name),
+      'edit_others_posts'  => sprintf('edit_others_%ss',$name),
+      'read_private_posts' => sprintf('read_private_%ss',$name),
+      'edit_post'          => sprintf('edit_%s',$name),
+      'delete_post'        => sprintf('delete_%s',$name),
+      'read_post'          => sprintf('read_%s',$name)
+    );
+    $role = get_role('administrator');
+
+    if( !in_array($caps['edit_post'],array_keys($role->capabilities)) ){
+      foreach($caps as $cap){
+        $role->add_cap($cap);
+      }
+    }
+    
   }
 
   /**
@@ -600,6 +639,123 @@ class mf_posttype extends mf_admin {
       
     $check = $wpdb->get_var($query);
     return $check;
+  }
+
+  public function export_post_type(){
+    global $mf_pt_register;
+
+    if(!isset($_GET['post_type']) ){
+      $this->mf_flash( 'Oops! something was wrong, you will be redirected a safe place in a few seconds' );
+    }
+
+    //post_type_exists
+    
+    $post_type = $_GET['post_type'];
+    $data = array(
+      'name'      => $post_type,
+      'post_type' => array(),
+      'groups'    => array(),
+      'taxonomy'  => array()
+    );
+
+    
+
+    if( in_array($post_type,$mf_pt_register) ){
+      $p = $this->get_post_type($post_type);
+    }else{
+      global $_wp_post_type_features;
+      $tmp = get_post_types( array('public' => true,'name' => $post_type) , 'onbject', 'and' );
+
+      $tmp = $tmp[$post_type];
+
+      $rewrite = 0; $rewrite_slug = '';
+      if( is_array($tmp->rewrite) ){
+        $rewrite = 1;
+        $rewrite_slug = $tmp->rewrite['slug'];
+      }
+
+      $p = array(
+        'core' => array(
+          'type'        => $post_type,
+          'label'       => $tmp->label,
+          'labels'      => $tmp->labels->name,
+          'description' => $tmp->description
+        ),
+        'support' => $_wp_post_type_features[$post_type],
+        'option' => array(
+          'public'              => ($tmp->public)? 1 : 0,
+          'publicly_queryable'  => ($tmp->publicly_queryable)? 1 : 0,
+          'exclude_from_search' => ($tmp->exclude_from_search)? 1 : 0,
+          'show_ui'             => ($tmp->show_ui)? 1 : 0,
+          'show_in_menu'        => ($tmp->show_in_menu)? 1 : 0,
+          'menu_position'       => $tmp->menu_position,
+          'capability_type'     => $tmp->capability_type,
+          'hierarchical'        => ($tmp->hierarchical)? 1 : 0,
+          'rewrite'             => $rewrite,
+          'rewrite_slug'        => $rewrite_slug,
+          'query_var'           => ($tmp->query_var)? 1 : 0,
+          'can_export'          => ($tmp->can_export)? 1 : 0,
+          'show_in_nav_menus'   => ($tmp->show_in_nav_menus)? 1 : 0
+        ),
+        'label' => array(
+          'name'               => $tmp->labels->name,
+          'singular_name'      => $tmp->labels->singular_name,
+          'add_new'            => $tmp->labels->add_new,
+          'add_new_item'       => $tmp->labels->add_new_item,
+          'edit_item'          => $tmp->labels->edit_item,
+          'new_item'           => $tmp->labels->new_item,
+          'view_item'          => $tmp->labels->view_item,
+          'search_items'       => $tmp->labels->search_items,
+          'not_found_in_trash' => $tmp->labels->not_found_in_trash,
+          'menu_name'          => $tmp->labels->menu_name
+        )
+      );
+    }
+
+    //taxonomy
+    $taxs = get_object_taxonomies($post_type);
+    if( isset($p['taxonomy']) ){
+      foreach($taxs as $tax){
+        if( !in_array($tax,array('nav_menu','post_format')) && !in_array($tax,array_keys($p['taxonomy'])) ){
+          $p['taxonomy'][$tax] = 1;
+        }
+      }
+    }else{
+      foreach($taxs as $tax){
+        if( !in_array($tax,array('nav_menu','post_format')) ){
+            $p['taxonomy'][$tax] = 1;
+        }
+      } 
+    }
+    
+    
+    if( isset($p['taxonomy']) ){
+      foreach($p['taxonomy'] as $tax_name => $t){
+        if($custom_taxonomy = $this->get_custom_taxonomy_by_type($tax_name)){
+          $data['taxonomy'][] = $custom_taxonomy;
+        }
+        
+      }
+    }
+    
+
+    //groups
+    $groups = $this->get_groups_by_post_type($post_type);
+    foreach($groups as $group_id => $group){
+      $fields = $this->get_custom_fields_by_group($group['id']);
+      $groups[$group_id]['fields'] = $fields;
+    }
+    $data['groups'] = $groups;
+    
+    //post type
+    $data['post_type'] = $p;
+    
+    header('Content-type: binary');
+    header('Content-Disposition: attachment; filename="'.$post_type.'.pnl"');
+    print serialize($data);
+    //print json_encode($data);
+    //pr($data);
+    die;
   }
 
 }

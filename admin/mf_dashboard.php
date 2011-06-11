@@ -52,6 +52,7 @@ class mf_dashboard extends mf_admin {
             <strong><?php echo $pt->label; ?></strong>
             <div class="row-actions">
               <span class="edit">
+                <a href="admin.php?page=mf_dispatcher&noheader=true&mf_section=mf_posttype&mf_action=export_post_type&post_type=<?php echo $pt->name;?> "><?php _e('Export',$mf_domain); ?></a> |
                 <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a> 
               </span>
               <?php if(in_array($pt->name,$mf_pt_register)): ?>

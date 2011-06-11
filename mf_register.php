@@ -9,6 +9,7 @@ class mf_register{
   function __construct(){
     add_action('init', array( &$this, 'mf_register_custom_taxonomies' ) );
     add_action('init', array( &$this, 'mf_register_post_types' ) );
+    
   }
 
   // register post type
@@ -16,7 +17,7 @@ class mf_register{
     global $mf_pt_register;
 
     $post_types = $this->_get_post_types();
-
+    
     foreach($post_types as $p){
       $p = json_decode($p['arguments'],true);
 
@@ -57,35 +58,28 @@ class mf_register{
       if(empty($option['capability_type'])){
         $option['capability_type'] = 'post';
       }elseif( !in_array($option['capability_type'],array('post','page')) ){
-        $option['capabilities'] = $this->_add_cap($option['capability_type']);
+        $option['capabilities'] = $this->_get_cap($option['capability_type']);
       }
-      
+
       register_post_type($name,$option);
+     
     }
     
   }
 
-  public function _add_cap($name){
+  public function _get_cap($name){
 
     $caps = array(
-      'publish_posts'      => sprintf('publish_%ss',$name),
+      'edit_post'          => sprintf('edit_%s',$name),
+      'read_post'          => sprintf('read_%s',$name),
+      'delete_post'        => sprintf('delete_%s',$name),
       'edit_posts'         => sprintf('edit_%ss',$name),
       'edit_others_posts'  => sprintf('edit_others_%ss',$name),
-      'read_private_posts' => sprintf('read_private_%ss',$name),
-      'edit_post'          => sprintf('edit_%s',$name),
-      'delete_post'        => sprintf('delete_%s',$name),
-      'read_post'          => sprintf('read_%s',$name)
+      'publish_posts'      => sprintf('publish_%ss',$name),
+      'read_private_posts' => sprintf('read_private_%ss',$name)
     );
-    $role = get_role('administrator');
 
-    if( !in_array($caps['edit_post'],array_keys($role->capabilities)) ){
-      foreach($caps as $cap){
-        $role->add_cap($cap);
-      }
-    }
-
-    return $caps;
-    
+      return $caps;
   }
 
   public function mf_register_custom_taxonomies(){

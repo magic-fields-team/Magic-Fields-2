@@ -53,7 +53,7 @@ class mf_custom_taxonomy extends mf_admin{
     $this->form_custom_taxonomy($data);
   }
 
-    /**
+  /**
    * get a specific post type
    */
   public function get_custom_taxonomy($custom_taxonomy_id){

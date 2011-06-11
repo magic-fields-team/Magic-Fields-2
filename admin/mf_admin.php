@@ -91,6 +91,28 @@ class mf_admin {
     return $post_types;
   }
 
+  /**
+   * get a specific post type
+   */
+  public function get_custom_taxonomy_by_type($type_taxonomy){
+    global $wpdb;
+
+    $query = sprintf(
+      "SELECT * FROM %s WHERE type = '%s'",
+      MF_TABLE_CUSTOM_TAXONOMY,
+      $type_taxonomy
+    );
+
+    $custom_taxonomy = $wpdb->get_row( $query, ARRAY_A );
+    if($custom_taxonomy){
+      $id = $custom_taxonomy['id'];
+      $custom_taxonomy = json_decode($custom_taxonomy['arguments'],true);
+      $custom_taxonomy['core']['id'] = $id;
+      return $custom_taxonomy;
+    }
+    return false;
+  }
+
    /**
    * return all custom_taxonomy
    */
