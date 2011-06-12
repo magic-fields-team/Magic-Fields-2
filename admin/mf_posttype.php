@@ -531,50 +531,7 @@ class mf_posttype extends mf_admin {
       }
     }
     
-  }
-
-  /**
-   * Save a new post
-   */
-  public function new_posttype($data){
-    global $wpdb;
-
-    $sql = sprintf(
-      "INSERT INTO " . MF_TABLE_POSTTYPES .
-      " (type, name, description, arguments, active)" .
-      " values" .
-      " ('%s', '%s', '%s', '%s', '%s')",
-      $data['core']['type'],
-      $data['core']['label'],
-      $data['core']['description'],
-      json_encode($data),
-      1
-    );
-
-    $wpdb->query($sql);
-    $postTypeId = $wpdb->insert_id;
-    return $postTypeId;
-  }
-
-  /**
-   * Update Post type data
-   */
-  public function update_post_type($data){
-    global $wpdb;
-
-    $sql = sprintf(
-      "Update " . MF_TABLE_POSTTYPES .
-      " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
-      " WHERE id = %s",
-      $data['core']['type'],
-      $data['core']['label'],
-      $data['core']['description'],
-      json_encode($data),
-      $data['core']['id']
-    );
-
-    $wpdb->query($sql);
-  }
+  }  
 
   /**
    * get a specific post type using the post_type_id or the post_type_name
@@ -756,6 +713,68 @@ class mf_posttype extends mf_admin {
     //print json_encode($data);
     //pr($data);
     die;
+  }
+
+  public function import_form_post_type(){
+    global $mf_domain;
+    ?>
+    <div class="wrap">
+      <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
+      <div id="icon-tools" class="icon32"><br></div>
+      <h2><?php _e('Import a Post Type', $mf_domain);?></h2>
+
+      <form id="import_post_type" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=upload_import_post_type" enctype="multipart/form-data">
+        <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_group">
+          <div class="form-field mf_form">
+    <label for="import-file" ><?php _e('File'); ?>:</label>
+    <input type="file" id="import-file" name="file" >
+    <p><?php _e('File with information about post type',$mf_domain);?></p>
+    <div class="clear"></div>
+          </div>
+          <div class="form-field mf_form ">
+            <label for="import_overwrite"><?php _e('Overwrite',$mf_domain); ?></label>
+            <input name="mf_post_type[import][overwrite]" id="import_overwrite_" type="hidden" value="0">
+            <input name="mf_post_type[import][overwrite" id="import_overwrite" type="checkbox" value="1">
+            <div class="clear"></div>
+            <p><?php _e('Overwrite existing post type?',$mf_domain); ?> </p>
+          </div>
+        
+      	<p class="submit">
+    <a style="color:black" href="admin.php?page=mf_dispatcher" class="button"><?php _e('Cancel',$mf_domain); ?></a>
+    <input type="submit" class="button button-primary" name="submit" id="submit" value="<?php _e('Import',$mf_domain); ?>">
+      	</p>
+      </div>
+      <div class="widefat mf_form_right stuffbox metabox-holder">
+        <h3><?php _e('Import a Post Type',$mf_domain); ?></h3>
+        <div class="inside">
+          <div id="options_field" class="group_side">
+    <p>Esta funcionalidad nos permite importar toda la informacion de un post type</p>
+            <p>Se importan los grupos y custom fields que contiene asi como las custom taxonomy que estan relacionadad con este post type</p>
+    <p>Por defualt crear un nuevo post type, si existe un post type con el mismo nombre se agregara con un post fijo para poderlo diferenciar, si se marca la opcion overwrite el sistema sobreescribe la informacion de post type y agregara los custom grupos y custom fields a los ya existentes, si algun custom gruop o custom field ya esta registrado en el post type este se sobreescribira</p>
+            <p><img src="<?php echo MF_URL; ?>images/admin/import.jpg"/></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</form>
+  <?php
+  }
+
+  public function upload_import_post_type(){
+
+    if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
+      $file_path = $_FILES['file']['tmp_name'];
+      $overwrite = $_POST['mf_post_type']['import']['overwrite'];
+      $this->import($file_path,$overwrite);
+      unlink($filePath);
+      $this->mf_redirect(null,null,array('message' => 'success'));
+    }else{
+      //mensaje de error
+      die(__('Error uploading file!', $mf_domain));
+    }
+
+    die;
+
   }
 
 }

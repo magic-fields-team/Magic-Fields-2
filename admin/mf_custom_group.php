@@ -75,52 +75,7 @@ class mf_custom_group extends mf_admin {
     
     //redirect to dashboard fields
     $this->mf_redirect('mf_custom_fields','fields_list',array('message' => 'success','post_type' => $mf['core']['post_type']));
-  }
-
-  /**
-   * Add a new custom group
-   */
-  public function new_custom_group($data){
-    global $wpdb;
-   
-    $sql = sprintf(
-      "INSERT INTO %s ".
-      "(name,label,post_type,duplicated,expanded) ".
-      "VALUES ('%s','%s','%s',%s,%s)",
-      MF_TABLE_CUSTOM_GROUPS,
-      $data['core']['name'],
-      $data['core']['label'],
-      $data['core']['post_type'],
-      $data['core']['duplicate'],
-      1
-    );
-    $wpdb->query($sql);
-  }
-
-  /**
-   * Update a custom group
-   */
-  public function update_custom_group($data){
-    global $wpdb;
-
-    //ToDo: falta sanitizar variables
-    // podriamos crear un mettodo para hacerlo
-    // la funcion podria pasarle como primer parametro los datos y como segundo un array con los campos que se va a sanitizar o si se quiere remplazar espacios por _ o quitar caracteres extraños
-
-    $sql = sprintf(
-      "UPDATE %s ".
-      "SET name = '%s', label ='%s',duplicated = %s, expanded = %s ".
-      "WHERE id = %s",
-      MF_TABLE_CUSTOM_GROUPS,
-      $data['core']['name'],
-      $data['core']['label'],
-      $data['core']['duplicate'],
-      1,
-      $data['core']['id']
-    );
-    
-    $wpdb->query($sql);
-  }
+  }  
 
   public function get_custom_fields_post_type($post_type){
     GLOBAL $wpdb;
@@ -175,7 +130,8 @@ class mf_custom_group extends mf_admin {
           'label'       =>  __('Can be duplicated',$mf_domain),
           'name'        =>  'mf_group[core][duplicate]',
           'description' =>  __('this group is duplicable?',$mf_domain),
-          'value'       =>  0
+          'value'       =>  0,
+          'div_class'   => ''
          ),
         'expanded'    =>  array(
           'type'        =>  'hidden',
@@ -184,7 +140,8 @@ class mf_custom_group extends mf_admin {
           'name'        =>  'mf_group[core][expanded]',
           'description' =>  __( 'Display the full expanded group editing interface instead of the group summary',$mf_domain),
           'extra'       => __('Note: the group can still be collapsed by the user, this just determines the default state on load', $mf_domain ),
-          'value'       =>  1
+          'value'       =>  1,
+          'div_class'   => ''
         )   
       )
     );

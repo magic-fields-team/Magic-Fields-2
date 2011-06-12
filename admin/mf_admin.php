@@ -5,7 +5,7 @@
 class mf_admin {
 
   public $name = 'mf_admin';
-  
+
   function _get_url(  $section = 'mf_dashboard', $action = 'main', $vars = array( ) ){
     $url = home_url();
 
@@ -23,15 +23,15 @@ class mf_admin {
         $url .= '&'.$param.'='.$value;
       }
     }
-    
+
     return $url;
   }
-  
+
   /**
-   * is a wrapper of wp_safe_redirect 
+   * is a wrapper of wp_safe_redirect
    */
   function mf_redirect( $section = 'mf_dashboard', $action = 'main', $vars = array( ) ) {
-    
+
     $url = $this->_get_url(  $section , $action , $vars );
     wp_safe_redirect($url);
     exit;
@@ -41,17 +41,17 @@ class mf_admin {
    * Display a friendly message of error
    *
    * @param string message the messages to will be displayed
-   * @param mixed  can be a array or a string  
+   * @param mixed  can be a array or a string
    * @param string the css class to will be added into the message (e.j  'error','info','ok','alert')
    */
 
-  function mf_flash( $message = 'Return dashoard', $url = array('section' => 'mf_dashboard', 'action' => 'main', 'vars' => ''), $type = 'error') { 
+  function mf_flash( $message = 'Return dashoard', $url = array('section' => 'mf_dashboard', 'action' => 'main', 'vars' => ''), $type = 'error') {
     if( is_array($url) ) {
       $url = $this->_get_url(  $url['section'] , $url['action'] , $url['vars'] );
-    } 
-    
+    }
+
     printf(' <div class="wrap"><div id="message" class="%s below-h2"><p><a href="%s">%s</a></p></div> </div>', $type, $url, $message );
-    
+
     //
     if(!WP_DEBUG){
       printf('<script type="text/javascript">
@@ -61,21 +61,21 @@ class mf_admin {
         setTimeout(js_mf_redirect,5000);
         </script>',$url);
     }
-    
+
     die;
   }
 
   /**
    * return all post types
    *
-   *  This function is a wrapper of  wordpress's get_post_types function 
+   *  This function is a wrapper of  wordpress's get_post_types function
    *  here be  filter  a non-related post types of magic fields
-   * 
-   *  @return array 
+   *
+   *  @return array
    */
   public function mf_get_post_types( $args = array('public' => true), $output = 'object', $operator = 'and' ){
     global $wpdb;
-    
+
     $post_types = get_post_types( $args, $output, $operator );
 
     foreach ( $post_types as $key => $type ) {
@@ -92,7 +92,7 @@ class mf_admin {
   }
 
   /**
-   * get a specific post type
+   * get a specific custom_taxonomy
    */
   public function get_custom_taxonomy_by_type($type_taxonomy){
     global $wpdb;
@@ -118,7 +118,7 @@ class mf_admin {
    */
   public function get_custom_taxonomies(){
     global $wpdb;
-    
+
     $query = sprintf('SELECT * FROM %s ORDER BY id',MF_TABLE_CUSTOM_TAXONOMY);
     $custom_taxonomies = $wpdb->get_results( $query, ARRAY_A );
     return $custom_taxonomies;
@@ -147,11 +147,27 @@ class mf_admin {
   }
 
   /**
-   * Return id of default group for post type 
+   * retun a group
+   */
+  public function get_group_by_name($name_group,$post_type){
+    global $wpdb;
+
+    $query = sprintf(
+      'SELECT * FROM %s WHERE name = "%s" AND post_type = "%s" ',
+      MF_TABLE_CUSTOM_GROUPS,
+      $name_group,
+      $post_type
+    );
+    $group = $wpdb->get_row( $query, ARRAY_A);
+    return $group;
+  }
+
+  /**
+   * Return id of default group for post type
    */
   public function get_default_custom_group($post_type){
     global $wpdb;
-    
+
     $query = sprintf("SELECT id FROM %s WHERE name = '__default' AND post_type = '%s' ",MF_TABLE_CUSTOM_GROUPS,$post_type);
     $group = $wpdb->get_col($query);
 
@@ -165,7 +181,7 @@ class mf_admin {
           'post_type' => $post_type
         ),
         array(
-          '%s', 
+          '%s',
           '%s',
           '%s'
         )
@@ -174,21 +190,21 @@ class mf_admin {
     }else{
       $custom_group_id = $group[0];
     }
- 
+
     return $custom_group_id;
 
   }
 
-  /** 
+  /**
    * Return True if the group has at least one custom field
-   * 
+   *
    * return @bool
    **/
   public static function group_has_fields($group_id) {
     global $wpdb;
 
     $sql = $wpdb->prepare("SELECT COUNT(1) FROM ".MF_TABLE_CUSTOM_FIELDS. " WHERE custom_group_id = %d",$group_id);
-  
+
     return $wpdb->get_var( $sql ) > 0;
   }
 
@@ -217,7 +233,7 @@ class mf_admin {
   }
 
   /**
-   * return a group
+   * return a field
    */
   public function get_custom_field($custom_field_id){
     global $wpdb;
@@ -227,6 +243,21 @@ class mf_admin {
     return $field;
   }
 
+  /**
+   * return a field by name and post type
+   */
+  public function get_custom_field_by_name($name_custom_field, $post_type){
+    global $wpdb;
+
+    $query = sprintf(
+      'SELECT * FROM %s WHERE name = "%s" AND post_type = "%s" ',
+      MF_TABLE_CUSTOM_FIELDS,
+      $name_custom_field,
+      $post_type
+    );
+    $field = $wpdb->get_row( $query, ARRAY_A);
+    return $field;
+  }
   
   public function mf_resolve_linebreaks($data = NULL){
     $data = preg_replace(array("/\r\n/","/\r/","/\n/"),"\\n",$data);
@@ -234,15 +265,15 @@ class mf_admin {
   }
 
   public function js_css_post($post_type){
-    
+
     $fields = $this->get_unique_custom_fields_by_post_type($post_type);
-    
+
     foreach($fields as $field) {
       //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
       $type = $field."_field";
       $type = new $type();
       $properties = $type->get_properties();
-         
+
       if ( $properties['js'] ) {
         wp_enqueue_script(
           'mf_field_'.$field,
@@ -251,7 +282,7 @@ class mf_admin {
           null,
           true
         );
-            
+
         /* idear forma por si se necesita mas de dos js*/
         if( isset($properties['js_internal']) ){
           wp_enqueue_script(
@@ -265,26 +296,409 @@ class mf_admin {
       }
 
       if ( $properties['css'] ) {
-        wp_enqueue_style( 
+        wp_enqueue_style(
           'mf_field_'.$field,
           MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.css'
         );
       }
-      
+
       if ( !empty($properties['css_dependencies'] )) {
         foreach($properties['css_dependencies'] as $css_script) {
           wp_enqueue_style($css_script);
         }
       }
-          
+
       /* load css internal */
       if(isset($properties['css_internal'])){
-        wp_enqueue_style( 
+        wp_enqueue_style(
           'mf_field_'.preg_replace('/\./','_',$properties['css_internal']),
           MF_BASENAME.'field_types/'.$field.'_field/'.$properties['css_internal']
         );
       }
     }
+  }
+
+  public function import($file_path,$overwrite){
+
+    $data = unserialize(file_get_contents($file_path));
+
+    $name       = $data['name'];
+    $post_type  = $data['post_type'];
+    $groups     = $data['groups'];
+    $taxonomies = $data['taxonomy'];
+
+    /* variables of debugin
+    $name = $data['name'].'bla';
+    $overwrite = 1;
+    $post_type['core']['type'] = $name;
+    */
+
+    /* begin register post type */
+    if( in_array($name,array('post','page')) ){
+      if(!$overwrite){
+        $i = 2;
+        $temp_name = $name . "_1";
+        while ($this->get_post_type($temp_name)){
+          $temp_name = $name. "_" . $i++;
+        }
+        $name = $temp_name;
+        $post_type['core']['type'] = $temp_name;
+        $post_type['core']['label'] = $temp_name;
+        $post_type['label']['name'] = $temp_name;
+        $post_type['core']['id'] = NULL;
+
+        /*save post type*/
+        $this->new_posttype($post_type);
+      }
+    }else{
+      if($overwrite){
+        $tmp = $this->get_post_type($name);
+        if($tmp){
+          $post_type['core']['id'] = $tmp['core']['id'];
+          $this->update_post_type($post_type);
+        }else{
+          $post_type['core']['id'] = NULL;
+          $this->new_posttype($post_type);
+        }
+      }else{
+        if($this->get_post_type($name)){
+          $i = 2;
+          $temp_name = $name . "_1";
+          while ($this->get_post_type($temp_name)){
+            $temp_name = $name. "_" . $i++;
+          }
+          $name = $temp_name;
+          $post_type['core']['type'] = $temp_name;
+          $post_type['core']['label'] = $temp_name;
+          $post_type['label']['name'] = $temp_name;
+          $post_type['label']['menu_name'] = $temp_name;
+        }
+        
+        $post_type['core']['id'] = NULL;
+
+        $this->new_posttype($post_type);
+      }
+    }
+    /* end register post type */
+
+    /* begin register custom groups and custom fields */
+    foreach($groups as $group){
+      $fields = $group['fields'];
+      unset($group['fields']);
+      $group['post_type'] = $name;
+
+      if($overwrite){
+        $tmp_group = $this->get_group_by_name($group['name'],$name);
+        if($tmp_group){
+          $group_id = $tmp_group['id'];
+          $group['id'] = $group_id;
+          $group['duplicate'] = $group['duplicated'];
+          unset($tmp_group);
+          $tmp_group['core'] = $group;
+          $this->update_custom_group($tmp_group);
+          
+          foreach($fields as $field){
+            $tmp_field = $this->get_custom_field_by_name($field['name'],$name);
+
+            if($tmp_field){
+              $field['id'] = $tmp_field['id'];
+              $field['duplicate'] = $field['duplicated'];
+              unset($tmp_field);
+              $tmp_field['core'] = $field;
+              $tmp_field['option'] = $field['options'];
+              $this->update_custom_field($tmp_field);
+            }else{
+              $field['duplicate'] = $field['duplicated'];
+              unset($tmp_field);
+              $tmp_field['core'] = $field;
+              $tmp_field['option'] = $field['options'];
+              $this->new_custom_field($tmp_field);
+            }
+         
+          }
+
+        }else{
+          $group['duplicate'] = $group['duplicated'];
+          $tmp_group['core'] = $group;
+          $group_id = $this->new_custom_group($tmp_group);
+          foreach($fields as $field){
+            $field['custom_group_id'] = $group_id;
+            $field['duplicate'] = $field['duplicated'];
+            $tmp_field['core'] = $field;
+            $tmp_field['option'] = $field['options'];
+            $this->new_custom_field($tmp_field);
+          }
+        }
+      }else{
+        $group['duplicate'] = $group['duplicated'];
+        $group['post_type'] = $name;
+        $tmp_group['core'] = $group;
+        $group_id = $this->new_custom_group($tmp_group);
+        foreach($fields as $field){
+          $field['post_type'] = $name;
+          $field['custom_group_id'] = $group_id;
+          $field['duplicate'] = $field['duplicated'];
+          $tmp_field['core'] = $field;
+          $tmp_field['option'] = $field['options'];
+          $this->new_custom_field($tmp_field);
+        }
+      }
+
+    }
+    /* end register custom groups and custom fields */
+
+    /* begin register custom taxonomies */
+    foreach($taxonomies as $taxonomy){
+      if($overwrite){
+        $t_type = $taxonomy['core']['type'];
+        
+        $tmp_taxonomy = $this->get_custom_taxonomy_by_type($t_type);
+
+        if($tmp_taxonomy){
+          $taxonomy['core']['id'] = $tmp_taxonomy['core']['id'];
+          $taxonomy['post_types'] = array($name);
+          $this->update_custom_taxonomy($taxonomy);
+        }else{
+          $taxonomy['core']['id'] = NULL;
+          $taxonomy['post_types'] = array($name);
+          $this->new_custom_taxonomy($taxonomy);
+        }
+
+      }else{
+        $t_type = $taxonomy['core']['type'];
+        
+        $tmp_taxonomy = $this->get_custom_taxonomy_by_type($t_type);
+        
+        if($tmp_taxonomy){
+          $i = 2;
+          $temp_name = $t_type . "_1";
+          while ($this->get_custom_taxonomy_by_type($temp_name)){
+            $temp_name = $t_type. "_" . $i++;
+          }
+          $t_type = $temp_name;
+          $taxonomy['core']['id'] = NULL;
+          $taxonomy['core']['type'] = $t_type;
+          $taxonomy['core']['name'] = $t_type;
+          $taxonomy['post_types'] = array($name);
+          $this->new_custom_taxonomy($taxonomy);
+
+        }else{
+          $taxonomy['core']['id'] = NULL;
+          $taxonomy['post_types'] = array($name);
+          $this->new_custom_taxonomy($taxonomy);
+        }
+      }
+      
+    }
+    /* end register custom taxonomies */
+
+  }
+
+  /* function save and update for post type */
+
+  /**
+   * Save a new post
+   */
+  public function new_posttype($data){
+    global $wpdb;
+
+    $sql = sprintf(
+      "INSERT INTO " . MF_TABLE_POSTTYPES .
+      " (type, name, description, arguments, active)" .
+      " values" .
+      " ('%s', '%s', '%s', '%s', '%s')",
+      $data['core']['type'],
+      $data['core']['label'],
+      $data['core']['description'],
+      json_encode($data),
+      1
+    );
+
+    $wpdb->query($sql);
+    $postTypeId = $wpdb->insert_id;
+    return $postTypeId;
+  }
+
+  /**
+   * Update Post type data
+   */
+  public function update_post_type($data){
+    global $wpdb;
+
+    $sql = sprintf(
+      "Update " . MF_TABLE_POSTTYPES .
+      " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
+      " WHERE id = %s",
+      $data['core']['type'],
+      $data['core']['label'],
+      $data['core']['description'],
+      json_encode($data),
+      $data['core']['id']
+    );
+
+    $wpdb->query($sql);
+  }
+
+  /* function for save and update custom groups */
+
+  /**
+   * Add a new custom group
+   */
+  public function new_custom_group($data){
+    global $wpdb;
+   
+    $sql = sprintf(
+      "INSERT INTO %s ".
+      "(name,label,post_type,duplicated,expanded) ".
+      "VALUES ('%s','%s','%s',%s,%s)",
+      MF_TABLE_CUSTOM_GROUPS,
+      $data['core']['name'],
+      $data['core']['label'],
+      $data['core']['post_type'],
+      $data['core']['duplicate'],
+      1
+    );
+    $wpdb->query($sql);
+    
+    $postTypeId = $wpdb->insert_id;
+    return $postTypeId;
+  }
+
+  /**
+   * Update a custom group
+   */
+  public function update_custom_group($data){
+    global $wpdb;
+
+    //ToDo: falta sanitizar variables
+    // podriamos crear un mettodo para hacerlo
+    // la funcion podria pasarle como primer parametro los datos y como segundo un array con los campos que se va a sanitizar o si se quiere remplazar espacios por _ o quitar caracteres extraños
+
+    $sql = sprintf(
+      "UPDATE %s ".
+      "SET name = '%s', label ='%s',duplicated = %s, expanded = %s ".
+      "WHERE id = %s",
+      MF_TABLE_CUSTOM_GROUPS,
+      $data['core']['name'],
+      $data['core']['label'],
+      $data['core']['duplicate'],
+      1,
+      $data['core']['id']
+    );
+    
+    $wpdb->query($sql);
+  }
+
+  /* funciton for save and update custom field */
+  public function new_custom_field($data){
+    global $wpdb;
+
+    if( !isset($data['option']) ) $data['option'] = array();
+
+    //check group
+    if(!$data['core']['custom_group_id']){
+      $custom_group_id = $this->get_default_custom_group($data['core']['post_type']);
+      $data['core']['custom_group_id'] = $custom_group_id;
+    }
+
+    $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
+
+    $sql = sprintf(
+      "INSERT INTO %s ".
+      "(name,label,description,post_type,custom_group_id,type,requiered_field,duplicated,options) ".
+      "VALUES ('%s','%s','%s','%s',%s,'%s',%s,%s,'%s')",
+      MF_TABLE_CUSTOM_FIELDS,
+      $data['core']['name'],
+      $data['core']['label'],
+      $data['core']['description'],
+      $data['core']['post_type'],
+      $data['core']['custom_group_id'],
+      $data['core']['type'],
+      $data['core']['requiered_field'],
+      $data['core']['duplicate'],
+      json_encode($data['option'])
+    );
+
+    $wpdb->query($sql);
+  }
+
+  /**
+   * Update a custom field
+   */
+  public function update_custom_field($data){
+    global $wpdb;
+
+    if( !isset($data['option']) ) $data['option'] = array();
+
+    //check group
+    if(!$data['core']['custom_group_id']){
+      $custom_group_id = $this->get_default_custom_group($data['core']['post_type']);
+      $data['core']['custom_group_id'] = $custom_group_id;
+    }
+
+    $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
+
+    $sql = sprintf(
+     "UPDATE %s ".
+     "SET name = '%s', label = '%s', description = '%s',type = '%s', requiered_field = %d, ".
+     "duplicated = %d, options = '%s' ".
+     "WHERE id = %d",
+     MF_TABLE_CUSTOM_FIELDS,
+     $data['core']['name'],
+     $data['core']['label'],
+     $data['core']['description'],
+     $data['core']['type'],
+     $data['core']['requiered_field'],
+     $data['core']['duplicate'],
+     json_encode($data['option']),
+     $data['core']['id']
+    );
+    $wpdb->query($sql);
+  }
+
+  /* function for save and update custom taxonomies */
+  
+  /**
+   * Save a new custom taxonomy
+   */
+  public function new_custom_taxonomy($data){
+    global $wpdb;
+
+    $sql = sprintf(
+      "INSERT INTO " . MF_TABLE_CUSTOM_TAXONOMY .
+      " (type, name, description, arguments, active)" .
+      " values" .
+      " ('%s', '%s', '%s', '%s', '%s')",
+      $data['core']['type'],
+      $data['core']['name'],
+      $data['core']['description'],
+      json_encode($data),
+      1
+    );
+
+    $wpdb->query($sql);
+    $custom_taxonomy_id = $wpdb->insert_id;
+    return $custom_taxonomy_id;
+  }
+
+  /**
+   * Update a custom taxonomy
+   */
+  public function update_custom_taxonomy($data){
+    global $wpdb;
+
+    $sql = sprintf(
+      "Update " . MF_TABLE_CUSTOM_TAXONOMY .
+      " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
+      " WHERE id = %s",
+      $data['core']['type'],
+      $data['core']['name'],
+      $data['core']['description'],
+      json_encode($data),
+      $data['core']['id']
+    );
+
+    $wpdb->query($sql);
   }
 
 }
