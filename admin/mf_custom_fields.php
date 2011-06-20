@@ -127,7 +127,7 @@ class mf_custom_fields extends mf_admin {
     ?>
       <div class="message-box info">
         <p>
-          This post type haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a> or
+          This post type haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a> or
           you can create a group <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type=<?php print $post_type->name;?>">here</a>
         </p>
       </div>
@@ -205,7 +205,7 @@ class mf_custom_fields extends mf_admin {
      <?php else:?>
       <div class="message-box info">
         <p>
-          This group haven\'t any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a>
+          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a>
         </p>
       </div>
      <?php endif; ?>

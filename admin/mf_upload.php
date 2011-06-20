@@ -14,6 +14,10 @@ if( $loaded !== true ){
   die('Could not load wp-load.php, edit/add mf-config.php and define MF_WP_LOAD to point to a valid wp-load file.');
 }
 
+if ( !current_user_can('upload_files') ){
+  die(__("You do not have sufficient permissions to access this page.",$mf_domain));
+}
+
 /**
 *  Check the mime type of the file for 
 *  avoid upload any dangerous file.
@@ -62,26 +66,30 @@ if( isset($_POST['fileframe']) ){
 
     if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
       if(valid_mime($_FILES['file']['type'],$_POST['type'])){
-        $special_chars = array(' ','`','"','\'','\\','/'," ","#","$","%","^","&","*","!","~","‘","\"","’","'","=","?","/","[","]","(",")","|","<",">",";","\\",",","+","-");
-        $filename = str_replace($special_chars,'',$_FILES['file']['name']);
-        $filename = time() . $filename;
 
-        @move_uploaded_file( $_FILES['file']['tmp_name'], MF_FILES_DIR . $filename );
-        @chmod(MF_FILES_DIR . $filename, 0644);
-        $info = pathinfo(MF_FILES_DIR . $filename);
-
-        $resp = array(
-          'error' => false, 
-          'name' => $filename,
-          'ext' => $info['extension'],
-          'field_id'  => $_POST['input_name'],
-          'file_path' => MF_FILES_DIR . $filename,
-          'file_url' => MF_FILES_URL . $filename,
-          'encode_file_url' => urlencode(MF_FILES_URL . $filename),
-          'phpthumb' => PHPTHUMB,
-          'msg' => __("Successful upload",$mf_domain)
-        );
-     
+        if ( !wp_verify_nonce($_POST['checking'],'nonce_upload_file') ){
+          $resp['msg'] = __('Sorry, your nonce did not verify.',$mf_domain);
+        }else{
+          $special_chars = array(' ','`','"','\'','\\','/'," ","#","$","%","^","&","*","!","~","‘","\"","’","'","=","?","/","[","]","(",")","|","<",">",";","\\",",","+","-");
+          $filename = str_replace($special_chars,'',$_FILES['file']['name']);
+          $filename = time() . $filename;
+          
+          @move_uploaded_file( $_FILES['file']['tmp_name'], MF_FILES_DIR . $filename );
+          @chmod(MF_FILES_DIR . $filename, 0644);
+          $info = pathinfo(MF_FILES_DIR . $filename);
+          
+          $resp = array(
+            'error' => false, 
+            'name' => $filename,
+            'ext' => $info['extension'],
+            'field_id'  => $_POST['input_name'],
+            'file_path' => MF_FILES_DIR . $filename,
+            'file_url' => MF_FILES_URL . $filename,
+            'encode_file_url' => urlencode(MF_FILES_URL . $filename),
+            'phpthumb' => PHPTHUMB,
+            'msg' => __("Successful upload",$mf_domain)
+          );
+        }
       }else{
         $resp['msg'] = __("Failed to upload the file!",$mf_domain);
       }
@@ -149,6 +157,7 @@ function transferring(dots){
 <form name="iform" action="" method="post" enctype="multipart/form-data">
   <label for="file" class="label-file"><?php _e('File', $mf_domain); ?>:</label><br />
   <input id="file" type="file" name="file" onchange="upload()" class="mf-file" />
+  <?php wp_nonce_field('nonce_upload_file','checking'); ?> 
   <input type="hidden" name="input_name" value="<?php echo $_GET["input_name"]?>" />
   <input type="hidden" name="callback" value="<?php echo $_GET["callback"]?>" />
   <input type="hidden" name="fileframe" value="true" />

@@ -26,12 +26,14 @@ jQuery(document).ready(function($) {
     $('.options').hide();
     $('.options-tabs li').removeClass('tabs');
     $(this).parent('li').addClass('tabs');
+    return false;
   });
   $('#options').click(function(){
     $('.options').show();
     $('.options_label').hide();
     $('.options-tabs li').removeClass('tabs');
     $(this).parent('li').addClass('tabs');
+    return false;
   });
 
 });

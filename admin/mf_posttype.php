@@ -689,12 +689,12 @@ class mf_posttype extends mf_admin {
     if( isset($p['taxonomy']) ){
       foreach($p['taxonomy'] as $tax_name => $t){
         if($custom_taxonomy = $this->get_custom_taxonomy_by_type($tax_name)){
+          unset($p['taxonomy'][$tax_name]);
           $data['taxonomy'][] = $custom_taxonomy;
         }
         
       }
     }
-    
 
     //groups
     $groups = $this->get_groups_by_post_type($post_type);
@@ -724,6 +724,7 @@ class mf_posttype extends mf_admin {
       <h2><?php _e('Import a Post Type', $mf_domain);?></h2>
 
       <form id="import_post_type" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=upload_import_post_type" enctype="multipart/form-data">
+      <?php wp_nonce_field('nonce_upload_file_import','checking'); ?>
         <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_group">
           <div class="form-field mf_form">
     <label for="import-file" ><?php _e('File'); ?>:</label>
@@ -761,6 +762,12 @@ class mf_posttype extends mf_admin {
   }
 
   public function upload_import_post_type(){
+    global $mf_domain;
+
+    if ( empty($_POST) || !wp_verify_nonce($_POST['checking'],'nonce_upload_file_import') ){
+      print 'Sorry, your nonce did not verify.';
+      exit;
+    }
 
     if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
       $file_path = $_FILES['file']['tmp_name'];
