@@ -1,15 +1,15 @@
 jQuery.mf_bind('add',function(){
   if('undefined' != typeof tinyMCEPreInit){
-    jQuery(":input[type='textarea'].add_editor").each( function(index,value){
+    jQuery(".multiline_custom_field .add_editor_mf").each( function(index,value){
       var editor_text = jQuery(this).attr('id');
       tinyMCE.execCommand('mceAddControl', true, editor_text); 
-      jQuery(this).removeClass('add_editor');
+      jQuery(this).removeClass('add_editor_mf');
     });
   }
 });
 jQuery.mf_bind('before_sort', function(){
   if('undefined' != typeof tinyMCEPreInit){
-    jQuery("#"+sort_group_id+" :input[type='textarea'].pre_editor").each( function(){
+    jQuery("#"+sort_group_id+" .multiline_custom_field .pre_editor").each( function(){
       var editor_text = jQuery(this).attr('id');
       if(tinyMCE.get(editor_text)){
         tinyMCE.execCommand('mceRemoveControl', false, editor_text);
@@ -20,7 +20,7 @@ jQuery.mf_bind('before_sort', function(){
 });
 jQuery.mf_bind('after_sort', function(){
   if('undefined' != typeof tinyMCEPreInit){
-    jQuery("#"+sort_group_id+" :input[type='textarea'].temp_remove_editor").each( function(){
+    jQuery("#"+sort_group_id+" .multiline_custom_field .temp_remove_editor").each( function(){
       var editor_text = jQuery(this).attr('id');
       tinyMCE.execCommand('mceAddControl', false, editor_text);
       jQuery('#'+editor_text).removeClass('temp_remove_editor');
@@ -30,7 +30,7 @@ jQuery.mf_bind('after_sort', function(){
 
 jQuery.mf_bind('before_save',function(){
   if('undefined' != typeof tinyMCEPreInit){
-    jQuery(":input[type='textarea'].pre_editor").each(function(){
+    jQuery(".multiline_custom_field .pre_editor").each(function(){
       var editor_text = jQuery(this).attr('id');
       jQuery(jQuery('#'+editor_text)).attr('value', tinyMCE.get(editor_text).getContent());
     });

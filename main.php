@@ -69,6 +69,9 @@ if( mf_mu2() ){
 
 
 if( is_admin() ) {
+
+  //load_plugin_textdomain($mf_domain    , '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
+load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
   //check folders
   add_action('admin_notices', array('mf_install', 'folders'));  
   
@@ -165,6 +168,7 @@ if( is_admin() ) {
         wp_enqueue_script( 'mf_sortable_fields', MF_BASENAME.'js/mf_posttypes_sortable.js', array( 'jquery-ui-sortable' ) );
   
       }
+
 
       //Adding Css files for the post-new.php section (where is created a new post in wp)
       if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {

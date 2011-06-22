@@ -95,7 +95,7 @@ class multiline_field extends mf_custom_fields {
       $output .= sprintf('<a onclick="del_editor(\'%s\');" class="edButtonHTML_mf">HTML</a>',$field['input_id']);
       $output .= sprintf('<a onclick="add_editor(\'%s\');" class="edButtonHTML_mf current" >Visual</a>',$field['input_id']);
       $output .= sprintf('</div>');
-      $class = 'pre_editor add_editor';
+      $class = 'pre_editor add_editor_mf';
       
       if(mf_settings::get('dont_remove_tags') != '1'){
         $value = apply_filters('the_editor_content', $value);

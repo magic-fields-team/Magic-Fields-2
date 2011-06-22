@@ -26,6 +26,10 @@ function get ($field_name, $group_index=1, $field_index=1 ,$post_id=NULL) {
 
 }
 
+/**
+ * Return a number of duplicate field 
+ * 
+ */
 function get_count_field( $field_name , $group_index = 1 , $post_id = NULL){
   global $post;
 
