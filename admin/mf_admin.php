@@ -405,13 +405,13 @@ class mf_admin {
               $field['duplicate'] = $field['duplicated'];
               unset($tmp_field);
               $tmp_field['core'] = $field;
-              $tmp_field['option'] = $field['options'];
+              $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
               $this->update_custom_field($tmp_field);
             }else{
               $field['duplicate'] = $field['duplicated'];
               unset($tmp_field);
               $tmp_field['core'] = $field;
-              $tmp_field['option'] = $field['options'];
+              $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
               $this->new_custom_field($tmp_field);
             }
          
@@ -425,7 +425,7 @@ class mf_admin {
             $field['custom_group_id'] = $group_id;
             $field['duplicate'] = $field['duplicated'];
             $tmp_field['core'] = $field;
-            $tmp_field['option'] = $field['options'];
+            $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
             $this->new_custom_field($tmp_field);
           }
         }
@@ -439,7 +439,7 @@ class mf_admin {
           $field['custom_group_id'] = $group_id;
           $field['duplicate'] = $field['duplicated'];
           $tmp_field['core'] = $field;
-          $tmp_field['option'] = $field['options'];
+          $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
           $this->new_custom_field($tmp_field);
         }
       }

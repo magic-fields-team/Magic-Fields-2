@@ -83,7 +83,7 @@ class related_type_field extends mf_custom_fields {
 
     $value = $field['input_value'];
 
-    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s" />',$field['input_id'],$field['input_name']);
+    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s" >',$field['input_id'],$field['input_name']);
     foreach($options as $option) {
       $check = ($option->ID == $value) ? 'selected="selected"' : '';
 

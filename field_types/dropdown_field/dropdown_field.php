@@ -83,7 +83,7 @@ class dropdown_field extends mf_custom_fields {
     $output = '<div class="mf-dropdown-box">';
 
     $multiple = ($is_multiple) ? 'multiple="multiple"' : '';
-    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s[]" %s />',$field['input_id'],$field['input_name'],$multiple);
+    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s[]" %s >',$field['input_id'],$field['input_name'],$multiple);
     foreach($options as $option) {
       $check = in_array($option,$values) ? 'selected="selected"' : '';
 
