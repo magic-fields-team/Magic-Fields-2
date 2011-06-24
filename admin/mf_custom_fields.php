@@ -94,10 +94,15 @@ class mf_custom_fields extends mf_admin {
     print '<h2>';
     print $post_type->label;
     print '  ';
-
+    
+    print '<span style="font-size:small">';
+    printf('<a href="admin.php?page=mf_dispatcher&noheader=true&mf_section=mf_posttype&mf_action=export_post_type&post_type=%s ">%s</a>',$post_type->name,__('Export',$mf_domain) );
+    print '</span>';
+    
     if(in_array($post_type->name,$mf_pt_register)):
       print '<span style="font-size:small">';
-      printf('<a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=%s">Edit</a> |',$post_type->name);
+    print ' | ';
+      printf('<a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=edit_post_type&post_type=%s">Edit</a> | ',$post_type->name);
       $link = "admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=delete_post_type&post_type={$post_type->name}";
       $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
       printf('<a class="mf-delete mf_confirm" alt="%s" href="%s">Delete</a>',__("This action can't be undone, are you sure?", $mf_domain ),$link);
@@ -158,17 +163,17 @@ class mf_custom_fields extends mf_admin {
      <table class="widefat fixed" id="mf_sortable" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="order" class="manage-column column-title" width="10%"></th>
-          <th scope="col" id="label" class="manage-column column-title" width="25%"><?php _e('Label',$mf_domain); ?></th>
-          <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
-          <th scope="col" id="type" class="manage-column column-title" width="20%"><?php _e('Type',$mf_domain); ?></th>
+          <th scope="col" id="order" class="manage-column column-title" width="5%"></th>
+          <th scope="col" id="label" class="manage-column column-title" width="35%"><?php _e('Label',$mf_domain); ?></th>
+          <th scope="col" id="name" class="manage-column column-title" width="35%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
+          <th scope="col" id="type" class="manage-column column-title" width="25%"><?php _e('Type',$mf_domain); ?></th>
         </tr>
       </thead>
       <tfoot>
          <tr>
-          <th scope="col" id="order" class="manage-column column-title" width="10%"></th>
-          <th scope="col" id="label" class="manage-column column-title" width="10%"><?php _e('Label',$mf_domain); ?></th>
-          <th scope="col" id="name" class="manage-column column-title" width="25%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
+          <th scope="col" id="order" class="manage-column column-title" width="5%"></th>
+          <th scope="col" id="label" class="manage-column column-title" width="35%"><?php _e('Label',$mf_domain); ?></th>
+          <th scope="col" id="name" class="manage-column column-title" width="35%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
           <th scope="col" id="type" class="manage-column column-title" width="25%"><?php _e('Type',$mf_domain); ?></th>
         </tr>
       </tfood>

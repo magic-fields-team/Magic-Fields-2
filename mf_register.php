@@ -60,7 +60,9 @@ class mf_register{
       }elseif( !in_array($option['capability_type'],array('post','page')) ){
         $option['capabilities'] = $this->_get_cap($option['capability_type']);
       }
-
+      
+      //description
+      $option['description'] = $p['core']['description'];
       register_post_type($name,$option);
      
     }
