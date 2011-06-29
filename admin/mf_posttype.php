@@ -595,6 +595,10 @@ class mf_posttype extends mf_admin {
       $query = sprintf("%s AND id != %s",$query,$id);
       
     $check = $wpdb->get_var($query);
+
+    if( in_array($post_type,array('post','page') ) )
+      $check = 1;
+
     return $check;
   }
 
