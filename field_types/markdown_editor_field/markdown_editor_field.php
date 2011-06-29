@@ -25,7 +25,7 @@ class markdown_editor_field extends mf_custom_fields {
   
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple markdown_editor input",$mf_domain);
+    $this->description = __("A markdown editor",$mf_domain);
   }
 
   public function display_field($field, $group_index = 1, $field_index =1){

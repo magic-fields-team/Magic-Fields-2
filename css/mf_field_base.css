@@ -143,6 +143,9 @@ float: left;
   padding-left: 28px;
   background-position: 6px 4px; 
 }
+/* textbox field*/
+.text_field_mf input { width: 50%; }
+
 
 /* checkbox list*/
 label.mf-checkbox-list{font-weight: normal !important; margin-left: 2px !important;}

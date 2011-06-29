@@ -12,7 +12,7 @@ class checkbox_list_field extends mf_custom_fields {
   
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple checkbox_list_field input",$mf_domain);
+    $this->description = __("Checkbox list let a user select ONE or MORE options of a limited number of choices.",$mf_domain);
   }
   
   public function _options(){
@@ -59,10 +59,9 @@ class checkbox_list_field extends mf_custom_fields {
     if($check_post_id){
       $values = ($field['input_value']) ? (is_serialized($field['input_value']))? unserialize($field['input_value']): (array)$field['input_value'] : array() ;
     }else{
-      $values = (array)$field['options']->default_value;
+      $values = (array)preg_split("/\\n/",$field['options']->default_value);
     }
     $options = preg_split("/\\n/",$field['options']->options);
-    
     $output = '<div class="mf-checkbox-list-box" >';
     foreach($options as $option){
       $check = in_array($option, $values) ? 'checked="checked"' : '';

@@ -32,16 +32,6 @@ class textbox_field extends mf_custom_fields {
     
     $data = array(
       'option'  => array(
-        'size'  => array(
-          'type'        =>  'text',
-          'id'          =>  'textbox_size',
-          'label'       =>  __('Size',$mf_domain),
-          'name'        =>  'mf_field[option][size]',
-          'description' =>  '',
-          'value'       =>  '25',
-          'div_class'    => '',
-          'class'       => ''
-        ),
         'evalueate'  => array(
           'type'        =>  'checkbox',
           'id'          =>  'textbox_evaluate',
@@ -52,9 +42,35 @@ class textbox_field extends mf_custom_fields {
           'value'       =>  1,
           'div_class'    => '',
           'class'       => ''
+        ),
+        'size'  => array(
+          'type'        =>  'text',
+          'id'          =>  'textbox_size',
+          'label'       =>  __('Max Length',$mf_domain),
+          'name'        =>  'mf_field[option][size]',
+          'description' =>  'Only if evaluate max length is checked',
+          'value'       =>  '25',
+          'div_class'    => '',
+          'class'       => ''
         )
       )
     );
     return $data;
   }
+  
+  public function display_field( $field, $group_index = 1, $field_index = 1 ) {
+    global $mf_domain;
+
+    $output = '';
+    $max = '';
+    if( $field['options']->evalueate && ($field['options']->size > 0) ){
+      $max = sprintf('maxlength="%s"',$field['options']->size);
+    }
+
+    $output .= '<div class="text_field_mf" >';
+    $output .= sprintf('<input %s type="text" name="%s" placeholder="%s" value="%s" %s />',$field['input_validate'], $field['input_name'], $field['label'], $field['input_value'], $max );
+    $output .= '</div>';
+    return $output;
+  }
+
  }

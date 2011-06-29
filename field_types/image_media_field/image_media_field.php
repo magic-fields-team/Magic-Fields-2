@@ -20,7 +20,7 @@ class image_media_field extends mf_custom_fields {
 
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple image media input",$mf_domain);
+    $this->description = __("Selects an image of the Media Library of wordpress",$mf_domain);
   }
   
   public function _options(){
@@ -67,7 +67,7 @@ class image_media_field extends mf_custom_fields {
           'label'       =>  __('Custom',$mf_domain),
           'name'        =>  'mf_field[option][custom]',
           'default'     =>  '',
-          'description' =>  '',
+          'description' =>  'value for thumbnail image (eg zc=1,q=100 or zc=0&q=50 )',
           'value'       =>  '',
           'div_class'   =>  '',
           'class'       =>  ''
