@@ -381,7 +381,14 @@ class mf_post extends mf_admin {
     }
 
     $fields = $this->get_unique_custom_fields_by_post_type($post_type);
+
+    /* add tiny_mce script */
+    /* only add of editor support no exits for the post type*/
+    if( in_array('multiline',$fields)  && !post_type_supports($post_type,'editor') ){
+      add_action( 'admin_print_footer_scripts', 'wp_tiny_mce', 25 );
+    }
     
+
     foreach($fields as $field) {
       //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
       $type = $field."_field";

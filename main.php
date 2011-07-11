@@ -128,6 +128,12 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     //call_user_func( array( $section, $action ) );
   }
 
+//Register Post Types and Custom Taxonomies
+$mf_register = new mf_register();
+
+//Adding metaboxes, and hooks for save the data when is created a new post
+$mf_post = new mf_post();
+
   /**
    * Init Hook
    */
@@ -204,9 +210,3 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
   /* load front-end functions */
   require_once( 'mf_front_end.php' ); 
 }
-
-//Register Post Types and Custom Taxonomies
-$mf_register = new mf_register();
-
-//Adding metaboxes, and hooks for save the data when is created a new post
-$mf_post = new mf_post();
