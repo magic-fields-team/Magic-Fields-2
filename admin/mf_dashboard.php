@@ -82,7 +82,7 @@ class mf_dashboard extends mf_admin {
     ?>
       <div class="message-box info">
       <p>
-        ooh, you do  haven't created any Custom Taxonomy,  try creating one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy">here</a>
+        ooh, you do  haven't created any Custom Taxonomy,  try creating one <a href="<?php print bloginfo('url');?>/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy">here</a>
       </p>
       </div>
 
