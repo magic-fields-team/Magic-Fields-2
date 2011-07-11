@@ -27,32 +27,31 @@ class mf_dashboard extends mf_admin {
     <table class="widefat fixed" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="title" class="manage-column column-title" width="30%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Type',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Description',$mf_domain); ?></th>
+          <th scope="col" id="title" class="manage-column column-title" width="40%"><?php _e( 'Label ',$mf_domain); ?><small>(<?php _e('Menu name',$mf_domain); ?>)</small></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="30%"><?php _e( 'Type',$mf_domain); ?></th>
+          <th scope="col" id="type_desc" class="manage-column column-title" width="30%"><?php _e( 'Description',$mf_domain); ?></th>
         </tr> 
       </thead>
       <tfoot>
         <tr>
-          <th scope="col" id="title" class="manage-column column-title" width="30%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Type',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="35%"><?php _e( 'Description',$mf_domain); ?></th>
+          <th scope="col" id="title" class="manage-column column-title" width="40%"><?php _e( 'Label ',$mf_domain); ?><small>(<?php _e('Menu name',$mf_domain); ?>)</small></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="30%"><?php _e( 'Type',$mf_domain); ?></th>
+          <th scope="col" id="type_desc" class="manage-column column-title" width="30%"><?php _e( 'Description',$mf_domain); ?></th>
         </tr>
       </tfoot>
       <tbody>
         <?php 
           $counter = 0;
-          foreach($posttypes as  $pt): 
+  foreach($posttypes as  $pt):
           $alternate = ($counter % 2 ) ? "alternate" : "";
           $counter++;
         ?>
 
         <tr class="<?php print $alternate;?> iedit">
           <td>
-            <strong><?php echo $pt->label; ?></strong>
+            <strong><?php echo $pt->label; ?></strong><small> ( <?php echo $pt->labels->menu_name; ?> )</small>
             <div class="row-actions">
               <span class="edit">
-                <a href="admin.php?page=mf_dispatcher&noheader=true&mf_section=mf_posttype&mf_action=export_post_type&post_type=<?php echo $pt->name;?> "><?php _e('Export',$mf_domain); ?></a> |
                 <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php print $pt->name;?>">Edit Fields/Groups</a> 
               </span>
               <?php if(in_array($pt->name,$mf_pt_register)): ?>
@@ -83,7 +82,7 @@ class mf_dashboard extends mf_admin {
     ?>
       <div class="message-box info">
       <p>
-        ooh, you do  haven't created any Custom Taxonomy,  try creating one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy">here</a>
+        ooh, you do  haven't created any Custom Taxonomy,  try creating one <a href="<?php print bloginfo('url');?>/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=add_custom_taxonomy">here</a>
       </p>
       </div>
 
@@ -91,32 +90,30 @@ class mf_dashboard extends mf_admin {
     <table class="widefat fixed" cellspacing="0">
       <thead>
         <tr>
-          <th scope="col" id="id" class="manage-column column-title" width="5%"><?php _e( 'id',$mf_domain); ?></th>
-          <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'description',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Actions',$mf_domain); ?></th>
+          <th scope="col" id="title" class="manage-column column-title" width="40%"><?php _e( 'Label ',$mf_domain); ?><small>(<?php _e('Menu name',$mf_domain); ?>)</small></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="30%"><?php _e( 'Type',$mf_domain); ?></th>
+          <th scope="col" id="type_desc" class="manage-column column-title" width="30%"><?php _e( 'Description',$mf_domain); ?></th>
         </tr> 
       </thead>
       <tfoot>
         <tr>
-          <th scope="col" id="id" class="manage-column column-title" width="5%"><?php _e( 'id',$mf_domain); ?></th>
-          <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Title/Singular',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'description',$mf_domain); ?></th>
-          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Actions',$mf_domain); ?></th>
+          <th scope="col" id="title" class="manage-column column-title" width="15%"><?php _e( 'Label ',$mf_domain); ?><small>(<?php _e('Menu name',$mf_domain); ?>)</small></th>
+          <th scope="col" id="type_name" class="manage-column column-title" width="40%"><?php _e( 'Type',$mf_domain); ?></th>
+          <th scope="col" id="type_desc" class="manage-column column-title" width="40%"><?php _e( 'Description',$mf_domain); ?></th>
         </tr>
       </tfoot>
       <tbody>
         <?php if($custom_taxonomies):?>
           <?php 
             $counter = 0;
-            foreach($custom_taxonomies as $tax): 
+             foreach($custom_taxonomies as $tax):
              $alternate = ($counter % 2 ) ? "alternate" : "";
              $counter++;
+             $tmp = json_decode($tax['arguments']);
           ?>
         <tr class="<?php print $alternate;?> iedit">
-          <td><?php echo $tax['id']; ?></td>
           <td>
-            <?php echo $tax['name']; ?>
+            <strong><?php echo $tax['name']; ?></strong> <small>( <?php echo $tmp->label->menu_name; ?> )</small>
             <div class="row-actions">
               <span class="edit"> 
                 <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=edit_custom_taxonomy&custom_taxonomy_id=<?php echo $tax['id']; ?>">Edit Custom Taxonomy</a> |
@@ -130,9 +127,8 @@ class mf_dashboard extends mf_admin {
               </span>
             </div>
           </td>
+          <td> <?php echo $tax['type']; ?></td>
           <td><?php echo $tax['description']; ?></td>
-          <td>
-          </td>
         </tr>
           <?php endforeach; ?>
         <?php endif; ?>

@@ -12,7 +12,7 @@ class radiobutton_list_field extends mf_custom_fields {
   
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple Radio button list input",$mf_domain);
+    $this->description = __("Radio button list that allows the user to choose only one of a predefined set of options.",$mf_domain);
   }
   
   public function _options(){

@@ -19,7 +19,7 @@ class multiline_field extends mf_custom_fields {
 
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Multiline field",$mf_domain);
+    $this->description = __("An additional visual editor",$mf_domain);
   }
   
   public function _options() {
@@ -54,11 +54,11 @@ class multiline_field extends mf_custom_fields {
           'id'          =>  'multiline_hide_visual',
           'label'       =>  __('Hide Visual Editor for this field',$mf_domain),
           'name'        =>  'mf_field[option][hide_visual]',
-          'description' =>  '',
+          'description' =>  __('If set, Hide Visual Editor for this field',$mf_domain),
           'value'       =>  '',
           'div_class'   => '',
           'class'       => ''
-        ),
+        )/*,
         'max_length'  => array(
           'type'        =>  'checkbox',
           'id'          =>  'multiline_max_length',
@@ -68,7 +68,7 @@ class multiline_field extends mf_custom_fields {
           'value'       =>  '',
           'div_class'   => '',
           'class'       => ''
-        )
+          )*/
       )
     );
 

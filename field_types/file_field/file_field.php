@@ -20,7 +20,7 @@ class file_field extends mf_custom_fields {
   
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple file input",$mf_domain);
+    $this->description = __("Simple input file",$mf_domain);
   }
 
   public function display_field( $field, $group_index = 1, $field_index = 1){

@@ -310,8 +310,8 @@ class mf_custom_taxonomy extends mf_admin{
           'label'       => __( 'Type', $mf_domain ),
           'name'        => 'mf_custom_taxonomy[core][type]',
           'value'       => '',
-          'description' => __( 'Name of the object type for the taxonomy object.', $mf_domain ),
-          'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
+          'description' => __( 'Name of the object type for the taxonomy object. <br /><small>Name must not contain capital letters or spaces</small>', $mf_domain ),
+          'class'       => "{validate:{required:true, lowercase:true ,messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'". __('This Field is required',$mf_domain)."'}}}",
           'div_class'   => 'form-required'
         ),
         'name' => array(

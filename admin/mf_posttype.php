@@ -595,6 +595,10 @@ class mf_posttype extends mf_admin {
       $query = sprintf("%s AND id != %s",$query,$id);
       
     $check = $wpdb->get_var($query);
+
+    if( in_array($post_type,array('post','page') ) )
+      $check = 1;
+
     return $check;
   }
 
@@ -749,9 +753,9 @@ class mf_posttype extends mf_admin {
         <h3><?php _e('Import a Post Type',$mf_domain); ?></h3>
         <div class="inside">
           <div id="options_field" class="group_side">
-    <p>Esta funcionalidad nos permite importar toda la informacion de un post type</p>
-            <p>Se importan los grupos y custom fields que contiene asi como las custom taxonomy que estan relacionadad con este post type</p>
-    <p>Por defualt crear un nuevo post type, si existe un post type con el mismo nombre se agregara con un post fijo para poderlo diferenciar, si se marca la opcion overwrite el sistema sobreescribe la informacion de post type y agregara los custom grupos y custom fields a los ya existentes, si algun custom gruop o custom field ya esta registrado en el post type este se sobreescribira</p>
+            <p><?php _e('This functionality allows us to import all the information of a post type',$mf_domain); ?></p>
+            <p><?php _e('Also they are imported the groups, custom fields and custom taxonomies that contains the post type',$mf_domain); ?></p>
+            <p><?php _e('For defualt to create a new post type, if it exists a post type with the same name was added with a prefix to be able to differentiate it, if the option  overwrite is checked the system overwrite the information of post type and  It will add the custom groups and custom fields to the already existing ones, If some custom group or custom field already this registered It will be overwrite',$mf_domain); ?></p>
             <p><img src="<?php echo MF_URL; ?>images/admin/import.jpg"/></p>
           </div>
         </div>

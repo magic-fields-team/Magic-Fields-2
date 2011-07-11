@@ -91,7 +91,7 @@ class mf_settings extends mf_admin {
         'dont_remove_tags'	=> array(
           'id'          =>  'dont_remove_tags',
           'type'        =>  'checkbox',
-          'label'       =>  __('Do not remove tags tmce. (multiline)',$mf_domain),
+          'label'       =>  __('Do not remove tags TinyMCE. (multiline)',$mf_domain),
           'name'        =>  "mf_settings[general][dont_remove_tags]",
           'value'       =>  0,
           'description' => __( 'Stop removing the <p> and <br /> tags when saving and show them in the HTML editor', $mf_domain )

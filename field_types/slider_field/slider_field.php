@@ -28,7 +28,7 @@ class slider_field extends mf_custom_fields {
 
   public function _update_description(){
     global $mf_domain;
-    $this->description = __("Simple slider input",$mf_domain);
+    $this->description = __("The slider allows you to render a slider whose position represents a value in a range you specify.",$mf_domain);
   }
   
   public function _options(){

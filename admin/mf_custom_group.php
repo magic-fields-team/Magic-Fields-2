@@ -192,9 +192,9 @@ class mf_custom_group extends mf_admin {
         <h3><?php _e('About group',$mf_domain); ?></h3>
         <div class="inside">
           <div id="options_field" class="group_side">
-            <p>Un grupo nos permite agrupar una serie de custom field y tener un mejor manejo de los custom field</p>
-            <p>Los grupos tienen la gran utilidad de que se puede duplicar, esto es, se crea un nueva instancia del grupo (con todos los custom fields que contiene el grupo)</p>
-            <p>Otra caracteristica de los grupos duplicados es que podemos ordenarlos y tener un control de que grupo queremos que se muestre primero</p>
+            <p><?php _e('A group allows us to group a series of custom fields and to have a better managing of the custom fields',$mf_domain); ?></p>
+            <p><?php _e('The groups have the great usefulness of which it is possible to duplicate, this is, one creates new instance of the group (with all the custom fields that the group contains)',$mf_domain); ?></p>
+            <p><?php _e('Another characteristic of the duplicated groups is that we them can arrange and have a control of which group we want that it show to be first',$mf_domain); ?></p>
             <p><img src="<?php echo MF_URL; ?>images/admin/group.jpg"/></p>
           </div>
         </div>
