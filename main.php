@@ -68,6 +68,13 @@ if( mf_mu2() ){
 }
 
 
+//Register Post Types and Custom Taxonomies
+$mf_register = new mf_register();
+
+//Adding metaboxes, and hooks for save the data when is created a new post
+$mf_post = new mf_post();
+
+
 if( is_admin() ) {
 
   //load_plugin_textdomain($mf_domain    , '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
@@ -128,11 +135,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     //call_user_func( array( $section, $action ) );
   }
 
-//Register Post Types and Custom Taxonomies
-$mf_register = new mf_register();
 
-//Adding metaboxes, and hooks for save the data when is created a new post
-$mf_post = new mf_post();
 
   /**
    * Init Hook

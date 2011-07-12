@@ -352,7 +352,7 @@ class mf_custom_fields extends mf_admin {
           'value'       =>  ''
         ),
         'description' =>  array(
-          'type'        =>  'text',
+          'type'        =>  'textarea',
           'label'       =>  __('Help text',$mf_domain),
           'name'        =>  'mf_field[core][description]',
           'description' =>  __( 'Tell to the user about what is the field', $mf_domain ),
@@ -431,6 +431,10 @@ class mf_custom_fields extends mf_admin {
           <?php elseif( $core['type'] == "select" ):?>
             <div class="form-field mf_form <?php echo $core['div_class']; ?>">
               <?php mf_form_select($core); ?>
+            </div>
+            <?php elseif( $core['type'] == "textarea" ):?>
+            <div class="form-field mf_form helptext-form <?php echo $core['div_class']; ?>">
+              <?php mf_form_textarea($core); ?>
             </div>
           <?php elseif( $core['type'] == "checkbox" ):?>
             <fieldset>

@@ -81,7 +81,7 @@ class multiline_field extends mf_custom_fields {
 
     $class = '';
     $max = '';
-    if( $field['options']->max_length ){
+    if( isset($field['options']->max_length) ){
       $max = sprintf('maxlength="%d"',$field['options']->height*$field['options']->width);
     }
     $value = $field['input_value'];
