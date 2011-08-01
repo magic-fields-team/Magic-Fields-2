@@ -7,7 +7,7 @@
 
 ##Description
 
-This new version of Magic Fields is not usable for the moment.
+pending
 
 ##Thanks To:
 * http://bassistance.de  for his awesome [Jquery Validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/,"jQuery Validate")
