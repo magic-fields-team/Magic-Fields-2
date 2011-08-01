@@ -1,7 +1,6 @@
 # Magic Fields
 
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk"), [David Valdez](http://gnuget.org "Gnuget")
-* Contributors: [Astrata Software](http://astrata.mx) 
 * Tested up to: Wordpress 3.1.2
 * Stable tag: 2.0-Alpha
 * Description: We need a a best description here :p
