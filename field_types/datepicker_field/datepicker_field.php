@@ -67,7 +67,7 @@ class datepicker_field extends mf_custom_fields {
 
   public function display_field($field, $group_index = 1, $field_index =1){
 
-    $format = $field['options']->format;
+    $format = $field['options']['format'];
     $value = $value_raw = '';
     if($field['input_value']){
       $value_raw = $field['input_value'];

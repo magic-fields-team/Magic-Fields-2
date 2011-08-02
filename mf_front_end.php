@@ -455,7 +455,7 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
     case 'image': 
       if($image_array){
         if( !empty($value) ){
-          $options = json_decode(_resolve_linebreaks($options),true);
+          $options = unserialize($options);
           unset($options['css_class']);
           $options = _processed_params($options);
           $result['original'] = MF_FILES_URL . $value;
@@ -483,7 +483,7 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
     case 'image_media':
       if($image_array){
         if( !empty($value) ){
-          $options = json_decode(_resolve_linebreaks($options),true);
+          $options = unserialize($options);
           unset($options['css_class']);
           $options = _processed_params($options);
           
@@ -538,7 +538,7 @@ function get_data( $field_name, $group_index=1, $field_index=1, $post_id ){
   
   if( empty($result) ) return NULL;
 
-  $result['options'] = json_decode(_resolve_linebreaks($result['options']),true);
+  $result['options'] = unserialize($result['options']);
 
   if(is_serialized($result['meta_value'])){
     $result['meta_value'] = unserialize( $result['meta_value'] );

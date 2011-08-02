@@ -74,9 +74,9 @@ class related_type_field extends mf_custom_fields {
   public function display_field( $field, $group_index = 1, $field_index = 1 ) {
     $output = '';
 
-    $type        = $field['options']->post_type;
-    $order       = $field['options']->order;
-    $field_order = $field['options']->field_order;
+    $type        = $field['options']['post_type'];
+    $order       = $field['options']['order'];
+    $field_order = $field['options']['field_order'];
 
     $options = get_posts( sprintf("post_type=%s&numberposts=-1&order=%s&orderby=%s",$type,$order,$field_order) );
     $output = '<div class="mf-dropdown-box">';

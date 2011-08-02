@@ -77,7 +77,7 @@ class slider_field extends mf_custom_fields {
       $check_post_id = $_REQUEST['post'];
     } 
     
-    $value = $field['options']->value_min;
+    $value = $field['options']['value_min'];
     if( $check_post_id ) {
       $value = (!empty($field['input_value'])) ? $field['input_value'] : 0;
     }
@@ -86,10 +86,10 @@ class slider_field extends mf_custom_fields {
     $output .= sprintf(
       '<div id="slider_%s" class="mf_slider_field" data="{min:\'%s\', max:\'%s\', value:\'%s\', stepping:\'%d\'}"></div>',
       $field['input_id'], 
-      $field['options']->value_min, 
-      $field['options']->value_max,
+      $field['options']['value_min'], 
+      $field['options']['value_max'],
       $value,
-      $field['options']->stepping
+      $field['options']['stepping']
     );
     $output .= sprintf('<input type="hidden" name="%s" id="%s" value="%s" />', $field['input_name'], $field['input_id'], $value );
 

@@ -155,9 +155,8 @@ class mf_post extends mf_admin {
              $field['input_name'] = sprintf("magicfields[%s][%d][%d]",$field['name'],$group_index,$field_index);
              $field['input_id'] = sprintf("%s_%s_%s",$field['name'],$group_index,$field_index);
              $field['input_value'] = $value;
-             $field['options'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+             $field['options'] = unserialize($field['options']);
              $field['input_validate'] = ($field['requiered_field']) ? 'validate="required:true"' : '';
-
 
              print $f->display_field( $field,$group_index, $field_index);
              print '</div><div class="clear"></div>';
@@ -168,7 +167,7 @@ class mf_post extends mf_admin {
                if($field['type'] == 'datepicker' ){
                  $validate_name = 'date_field_' . $validate_name;
                }
-               if( isset($field['options']->options) && $field['type'] != 'radiobutton_list' ) $validate_name .= '[]';
+               if( isset($field['options']['options']) && $field['type'] != 'radiobutton_list' ) $validate_name .= '[]';
                print '<div class="mf_message_error"><label for="' . $validate_name. '" class="error_magicfields error">';
                _e("This field is required",$mf_domain);
                print '</label></div>';

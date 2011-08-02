@@ -547,7 +547,7 @@ class mf_posttype extends mf_admin {
     $post_type = $wpdb->get_row( $query, ARRAY_A );
     if($post_type){
       $post_type_id = $post_type['id'];
-      $post_type = json_decode($post_type['arguments'],true);
+      $post_type = unserialize($post_type['arguments']);
       $post_type['core']['id'] = $post_type_id;
       return $post_type;
     }
@@ -714,8 +714,6 @@ class mf_posttype extends mf_admin {
     header('Content-type: binary');
     header('Content-Disposition: attachment; filename="'.$post_type.'.pnl"');
     print serialize($data);
-    //print json_encode($data);
-    //pr($data);
     die;
   }
 

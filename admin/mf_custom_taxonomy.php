@@ -62,7 +62,7 @@ class mf_custom_taxonomy extends mf_admin{
     $query = sprintf('SELECT * FROM %s WHERE id = %s',MF_TABLE_CUSTOM_TAXONOMY,$custom_taxonomy_id);
     $custom_taxonomy = $wpdb->get_row( $query, ARRAY_A );
     if($custom_taxonomy){
-      $custom_taxonomy = json_decode($custom_taxonomy['arguments'],true);
+      $custom_taxonomy = unserialize($custom_taxonomy['arguments']);
       $custom_taxonomy['core']['id'] = $custom_taxonomy_id;
       return $custom_taxonomy;
     }
@@ -92,49 +92,6 @@ class mf_custom_taxonomy extends mf_admin{
       }
     }
     $this->mf_redirect(null,null,array('message' => 'success'));
-  }
-
-  /**
-   * Save a new custom taxonomy
-   */
-  public function new_custom_taxonomy($data){
-    global $wpdb;
-
-    $sql = sprintf(
-      "INSERT INTO " . MF_TABLE_CUSTOM_TAXONOMY .
-      " (type, name, description, arguments, active)" .
-      " values" .
-      " ('%s', '%s', '%s', '%s', '%s')",
-      $data['core']['type'],
-      $data['core']['name'],
-      $data['core']['description'],
-      json_encode($data),
-      1
-    );
-
-    $wpdb->query($sql);
-    $custom_taxonomy_Id = $wpdb->insert_id;
-    return $custom_taxonomy_id;
-  }
-
-  /**
-   * Update a custom taxonomy
-   */
-  public function update_custom_taxonomy($data){
-    global $wpdb;
-
-    $sql = sprintf(
-      "Update " . MF_TABLE_CUSTOM_TAXONOMY .
-      " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
-      " WHERE id = %s",
-      $data['core']['type'],
-      $data['core']['name'],
-      $data['core']['description'],
-      json_encode($data),
-      $data['core']['id']
-    );
-
-    $wpdb->query($sql);
   }
 
   /**

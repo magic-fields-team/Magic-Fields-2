@@ -106,7 +106,7 @@ class mf_admin {
     $custom_taxonomy = $wpdb->get_row( $query, ARRAY_A );
     if($custom_taxonomy){
       $id = $custom_taxonomy['id'];
-      $custom_taxonomy = json_decode($custom_taxonomy['arguments'],true);
+      $custom_taxonomy = unserialize($custom_taxonomy['arguments'],true);
       $custom_taxonomy['core']['id'] = $id;
       return $custom_taxonomy;
     }
@@ -405,13 +405,13 @@ class mf_admin {
               $field['duplicate'] = $field['duplicated'];
               unset($tmp_field);
               $tmp_field['core'] = $field;
-              $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+              $tmp_field['option'] = unserialize( $field['options'] );
               $this->update_custom_field($tmp_field);
             }else{
               $field['duplicate'] = $field['duplicated'];
               unset($tmp_field);
               $tmp_field['core'] = $field;
-              $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+              $tmp_field['option'] = unserialize( $field['options'] );
               $this->new_custom_field($tmp_field);
             }
          
@@ -425,7 +425,7 @@ class mf_admin {
             $field['custom_group_id'] = $group_id;
             $field['duplicate'] = $field['duplicated'];
             $tmp_field['core'] = $field;
-            $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+            $tmp_field['option'] = unserialize( $field['options'] );
             $this->new_custom_field($tmp_field);
           }
         }
@@ -439,7 +439,7 @@ class mf_admin {
           $field['custom_group_id'] = $group_id;
           $field['duplicate'] = $field['duplicated'];
           $tmp_field['core'] = $field;
-          $tmp_field['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+          $tmp_field['option'] = unserialize( $field['options'] );
           $this->new_custom_field($tmp_field);
         }
       }
@@ -510,7 +510,7 @@ class mf_admin {
       $data['core']['type'],
       $data['core']['label'],
       $data['core']['description'],
-      json_encode($data),
+      serialize($data),
       1
     );
 
@@ -532,7 +532,7 @@ class mf_admin {
       $data['core']['type'],
       $data['core']['label'],
       $data['core']['description'],
-      json_encode($data),
+      serialize($data),
       $data['core']['id']
     );
 
@@ -616,7 +616,7 @@ class mf_admin {
       $data['core']['type'],
       $data['core']['requiered_field'],
       $data['core']['duplicate'],
-      json_encode($data['option'])
+      serialize($data['option'])
     );
 
     $wpdb->query($sql);
@@ -650,7 +650,7 @@ class mf_admin {
      $data['core']['type'],
      $data['core']['requiered_field'],
      $data['core']['duplicate'],
-     json_encode($data['option']),
+     serialize($data['option']),
      $data['core']['id']
     );
     $wpdb->query($sql);
@@ -672,11 +672,11 @@ class mf_admin {
       $data['core']['type'],
       $data['core']['name'],
       $data['core']['description'],
-      json_encode($data),
+      serialize($data),
       1
     );
 
-    $wpdb->query($sql);
+    $wpdb->query($sql); 
     $custom_taxonomy_id = $wpdb->insert_id;
     return $custom_taxonomy_id;
   }
@@ -694,7 +694,7 @@ class mf_admin {
       $data['core']['type'],
       $data['core']['name'],
       $data['core']['description'],
-      json_encode($data),
+      serialize($data),
       $data['core']['id']
     );
 

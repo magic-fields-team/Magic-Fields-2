@@ -109,11 +109,11 @@ class mf_dashboard extends mf_admin {
              foreach($custom_taxonomies as $tax):
              $alternate = ($counter % 2 ) ? "alternate" : "";
              $counter++;
-             $tmp = json_decode($tax['arguments']);
+             $tmp = unserialize($tax['arguments']);
           ?>
         <tr class="<?php print $alternate;?> iedit">
           <td>
-            <strong><?php echo $tax['name']; ?></strong> <small>( <?php echo $tmp->label->menu_name; ?> )</small>
+            <strong><?php echo $tax['name']; ?></strong> <small>( <?php echo $tmp['label']['menu_name']; ?> )</small>
             <div class="row-actions">
               <span class="edit"> 
                 <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_taxonomy&mf_action=edit_custom_taxonomy&custom_taxonomy_id=<?php echo $tax['id']; ?>">Edit Custom Taxonomy</a> |

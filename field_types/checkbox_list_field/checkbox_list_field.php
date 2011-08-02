@@ -59,12 +59,19 @@ class checkbox_list_field extends mf_custom_fields {
     if($check_post_id){
       $values = ($field['input_value']) ? (is_serialized($field['input_value']))? unserialize($field['input_value']): (array)$field['input_value'] : array() ;
     }else{
-      $values = (array)preg_split("/\\n/",$field['options']->default_value);
+      $values = (array)preg_split("/\\n/",$field['options']['default_value']);
     }
-    $options = preg_split("/\\n/",$field['options']->options);
+    $options = preg_split("/\\n/",$field['options']['options']);
     $output = '<div class="mf-checkbox-list-box" >';
+      
+      foreach($values as &$val){
+        $val = trim($val);
+      }
+      
     foreach($options as $option){
+      $option = trim($option);
       $check = in_array($option, $values) ? 'checked="checked"' : '';
+
       $output .= sprintf('<label for="%s_%s" class="selectit mf-checkbox-list">',$field['input_id'],$option);
       $output .= sprintf('<input tabindex="3" class="checkbox_list_mf" id="%s_%s" name="%s[]" value="%s" type="checkbox" %s %s />',$field['input_id'],$option,$field['input_name'],$option,$check,$field['input_validate']);
       $output .= esc_attr($option);

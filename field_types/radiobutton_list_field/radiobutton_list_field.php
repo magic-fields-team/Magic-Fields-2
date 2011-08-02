@@ -58,14 +58,15 @@ class radiobutton_list_field extends mf_custom_fields {
 
     $value = array();
     if( $check_post_id ) {
-        $value = $field['input_value'];
+        $value = trim($field['input_value']);
     } else {
-        $value = $field['options']->default_value;
+        $value = trim($field['options']['default_value']);
     }
 
-    $options = preg_split( "/\\n/", $field['options']->options);
+    $options = preg_split( "/\\n/", $field['options']['options']);
     
     foreach( $options as $option ) {
+      $option = trim($option);
       $checked = ''; 
       if( $option == $value ) {
         $checked =  'checked="checked"';

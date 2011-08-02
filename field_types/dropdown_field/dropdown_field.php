@@ -61,7 +61,7 @@ class dropdown_field extends mf_custom_fields {
   
   public function display_field( $field, $group_index = 1, $field_index = 1 ) {
     $output = '';
-    $is_multiple = ($field['options']->multiple) ? true : false;
+    $is_multiple = ($field['options']['multiple']) ? true : false;
 
     $check_post_id = null;
     if(!empty($_REQUEST['post'])) {
@@ -73,18 +73,20 @@ class dropdown_field extends mf_custom_fields {
     if($check_post_id) {
       $values = ($field['input_value']) ? (is_serialized($field['input_value']))? unserialize($field['input_value']): (array)$field['input_value'] : array() ;
     }else{
-      $values[] = $field['options']->default_value;
+      $values[] = $field['options']['default_value'];
     }
  
+    foreach($values as &$val){
+      $val = trim($val);
+    }
 
-
-    $options = preg_split("/\\n/", $field['options']->options);
-
+    $options = preg_split("/\\n/", $field['options']['options']);
     $output = '<div class="mf-dropdown-box">';
 
     $multiple = ($is_multiple) ? 'multiple="multiple"' : '';
     $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s[]" %s >',$field['input_id'],$field['input_name'],$multiple);
     foreach($options as $option) {
+      $option = trim($option);
       $check = in_array($option,$values) ? 'selected="selected"' : '';
 
       $output .= sprintf('<option value="%s" %s >%s</option>',

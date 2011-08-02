@@ -63,8 +63,8 @@ class textbox_field extends mf_custom_fields {
 
     $output = '';
     $max = '';
-    if( $field['options']->evalueate && ($field['options']->size > 0) ){
-      $max = sprintf('maxlength="%s"',$field['options']->size);
+    if( $field['options']['evalueate'] && ($field['options']['size'] > 0) ){
+      $max = sprintf('maxlength="%s"',$field['options']['size']);
     }
 
     $output .= '<div class="text_field_mf" >';

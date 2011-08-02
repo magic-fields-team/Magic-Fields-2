@@ -19,7 +19,7 @@ class mf_register{
     $post_types = $this->_get_post_types();
     
     foreach($post_types as $p){
-      $p = json_decode($p['arguments'],true);
+      $p = unserialize($p['arguments']);
 
       $name = $p['core']['type'];
       $option = $p['option'];
@@ -88,7 +88,7 @@ class mf_register{
 
     $taxonomies = $this->_get_custom_taxonomies();
     foreach($taxonomies as $tax){
-      $tax = json_decode($tax['arguments'],true);
+      $tax = unserialize($tax['arguments']);
       $name = $tax['core']['type'];
       $option = $tax['option'];
 

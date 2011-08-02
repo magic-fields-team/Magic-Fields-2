@@ -254,7 +254,7 @@ class mf_custom_fields extends mf_admin {
           $data['core'][$k]['value'] = $v;
         }
       }
-      $data['option'] = json_decode($this->mf_resolve_linebreaks( $field['options'] ));
+      $data['option'] = unserialize($field['options'] );
     }
     $this->form_custom_field($data);
     ?>
