@@ -149,8 +149,8 @@ class mf_posttype extends mf_admin {
           'type' => 'checkbox',
           'label' => __( 'Hierarchical', $mf_domain ),
           'name' => 'mf_posttype[option][hierarchical]',
-          'value' => 1,
-          'description' => __( 'Rewrite permalinks with this format. False to prevent rewrite.', $mf_domain )
+          'value' => 0,
+          'description' => __( 'Whether the post type is hierarchical. Allows Parent to be specified', $mf_domain )
         ),
         'rewrite' => array(
           'id' => 'posttype-rewrite',
@@ -340,8 +340,8 @@ class mf_posttype extends mf_admin {
     $supports = array(
       'title','editor','author',
       'thumbnail','excerpt','trackbacks',
-      'custom_fields','comments','revisions',
-      'page_attributes'
+      'custom-fields','comments','revisions',
+      'page-attributes'
     );
 
     print '<div class="wrap">';
@@ -385,7 +385,7 @@ class mf_posttype extends mf_admin {
 	    ?>
 	    <p>
 	    <input name="mf_posttype[support][<?php echo $support; ?>]" id="posttype-support-<?php echo $support; ?>" value="1" type="checkbox" <?php echo $check; ?> >
-	    <label for="posttype-support-<?php echo $support; ?>"><?php echo preg_replace('/_/',' ',$support); ?></label>
+	    <label for="posttype-support-<?php echo $support; ?>"><?php echo preg_replace('/-/',' ',$support); ?></label>
 	    </p>
 	  <?php } ?>
 	</div>
