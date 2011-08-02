@@ -1,6 +1,7 @@
 jQuery.mf_bind('add',function(){
-  jQuery('.markdowntextboxinterface').each(function(){
-  jQuery(this).markItUp(mySettings); 
+  jQuery('.markdowntextboxinterface_editor').each(function(){
+  jQuery(this).markItUp(mySettings);
+  jQuery(this).removeClass('markdowntextboxinterface_editor');
   });
 });
 
