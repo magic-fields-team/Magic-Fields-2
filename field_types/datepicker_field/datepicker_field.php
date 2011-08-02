@@ -41,7 +41,8 @@ class datepicker_field extends mf_custom_fields {
       'Y-m-d'     => '2008-04-20',
       'd-M-y'     => '20-Apr-08',
       'm.d.Y'     => '4.20.2008',
-      'm.d.y'     => '4.20.08'
+      'm.d.y'     => '4.20.08',
+      'd.m.Y'          => '20.04.2008'
     );
 
     $data = array(

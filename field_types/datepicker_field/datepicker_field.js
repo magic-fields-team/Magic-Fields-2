@@ -81,4 +81,8 @@ switch_formats = function(date){
     if(date == "m.d.y"){
         return "mm.dd.y";
     }
+    
+    if(date == "d.m.Y"){
+      return "dd.mm.yy";
+    }
 }
