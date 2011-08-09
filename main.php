@@ -55,6 +55,9 @@ function mf_autoload( $name ) {
     require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php'); 
   }
 }
+if (function_exists("__autoload")) {
+	spl_autoload_register("__autoload");
+}
 spl_autoload_register("mf_autoload");
 
 /**
