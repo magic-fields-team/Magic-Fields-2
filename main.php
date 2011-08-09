@@ -39,7 +39,7 @@ require_once( 'mf_extra.php' );
 require_once( 'mf_constants.php' );
 
 //auto loading files
-function __autoload( $name ) {
+function mf_autoload( $name ) {
   //main files
   if( file_exists( MF_PATH.'/'.$name.'.php' ) ) {
     require_once( MF_PATH.'/'.$name.'.php' );
@@ -55,7 +55,7 @@ function __autoload( $name ) {
     require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php'); 
   }
 }
-
+spl_autoload_register("mf_autoload");
 
 /**
  * Activation and Deactivation
