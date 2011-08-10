@@ -18,7 +18,7 @@ class mf_install {
         description text,
         arguments text,
         active tinyint(1) DEFAULT 1,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
       ";
       dbDelta($sql);
     }
@@ -32,7 +32,7 @@ class mf_install {
         description text,
         arguments text,
         active tinyint(1) DEFAULT 1,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
       ";
       dbDelta($sql);
     }
@@ -52,7 +52,7 @@ class mf_install {
         duplicated tinyint(1),
         active tinyint(1) DEFAULT 1,
         options text,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
       ";
       dbDelta($sql);
     }
@@ -66,7 +66,7 @@ class mf_install {
         post_type varchar(255) NOT NULL,
         duplicated tinyint(1) DEFAULT 0,
         expanded tinyint(1) DEFAULT 0,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
       ";
       dbDelta($sql);
 
@@ -80,7 +80,7 @@ class mf_install {
         field_count INT NOT NULL,  
         group_count  INT NOT NULL, 
         post_id INT NOT NULL
-      );";
+      ) SET ".$wpdb->charset." COLLATE ".$wpdb->collate.";";
 
       dbDelta($sql);
     }
