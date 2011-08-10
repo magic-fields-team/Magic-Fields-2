@@ -445,6 +445,10 @@ function aux_image($value,$params,$type = NULL){
 }
 
 function _processed_value($value, $type, $options = array(), $image_array = 0 ){
+		
+  if(is_serialized($options)){
+    $options= unserialize( $options );
+  }
 
   $result = '';
   switch($type){
@@ -455,7 +459,6 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
     case 'image': 
       if($image_array){
         if( !empty($value) ){
-          $options = unserialize($options);
           unset($options['css_class']);
           $options = _processed_params($options);
           $result['original'] = MF_FILES_URL . $value;
@@ -483,7 +486,6 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
     case 'image_media':
       if($image_array){
         if( !empty($value) ){
-          $options = unserialize($options);
           unset($options['css_class']);
           $options = _processed_params($options);
           
