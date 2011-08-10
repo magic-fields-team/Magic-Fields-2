@@ -214,6 +214,7 @@ function load_link_in_media_upload(){
       if(check == "" || check == undefined ){}else{
         set = parent.window.mf_js.mf_image_media_set;
         jQuery(this).before('<a href="#" class="mf_media_upload button" onclick="mf_set_image_field(\''+id+'\'); return false;">'+set+'</a>');
+        jQuery(this).parent().find("input:submit").remove();        
       }
     }
   });

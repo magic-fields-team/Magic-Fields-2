@@ -101,7 +101,7 @@ class multiline_field extends mf_custom_fields {
         $value = apply_filters('the_editor_content', $value);
       }
     }
-    $output .= sprintf('<textarea %s class="mf_editor %s" tabindex="3"  id="%s" name="%s" rows="%s" cols="%s" %s >%s</textarea>',$field['input_validate'],$class,$field['input_id'],$field['input_name'],$field['options']['height'],$field['options']['width'],$max,$value);
+    $output .= sprintf('<textarea %s class="mf_editor %s" id="%s" name="%s" rows="%s" cols="%s" %s >%s</textarea>',$field['input_validate'],$class,$field['input_id'],$field['input_name'],$field['options']['height'],$field['options']['width'],$max,$value);
     $output .= '</div>';
 
     return $output;
