@@ -153,6 +153,9 @@ class mf_custom_fields extends mf_admin {
 
       $name .= sprintf( '  <span class="mf_delete_group_field mf-delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
     }
+    else {
+      $name .= sprintf( '  <span class="mf_add_group_field">(<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s">create field</a>)</span>',$post_type->name );	
+    }
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
     ?>
@@ -210,7 +213,7 @@ class mf_custom_fields extends mf_admin {
      <?php else:?>
       <div class="message-box info">
         <p>
-          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a>
+          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?><?php if($group['label'] != "Magic Fields"){?>&custom_group_id=<?php print $group['id'];}?>">here</a>
         </p>
       </div>
      <?php endif; ?>
