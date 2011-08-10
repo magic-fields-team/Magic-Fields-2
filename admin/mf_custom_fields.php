@@ -210,7 +210,7 @@ class mf_custom_fields extends mf_admin {
      <?php else:?>
       <div class="message-box info">
         <p>
-          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>">here</a>
+          This group haven't any custom field yet,  create one <a href="/wp-admin/admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=<?php print $post_type->name;?>&custom_group_id=<?php print $group['id'];?>">here</a>
         </p>
       </div>
      <?php endif; ?>
