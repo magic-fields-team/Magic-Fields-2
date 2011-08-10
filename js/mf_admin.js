@@ -241,6 +241,7 @@ jQuery(document).ready(function($){
     if(check == ""){}else{
       set = parent.window.mf_js.mf_image_media_set;
       $(this).before('<a href="#"  class="mf_media_upload button" onclick="mf_set_image_field(\''+id+'\'); return false;">'+set+'</a>');
+      $(this).parent().find("input:submit").remove();        
     }
   });
   

@@ -80,7 +80,7 @@ class mf_install {
         field_count INT NOT NULL,  
         group_count  INT NOT NULL, 
         post_id INT NOT NULL
-      ) SET ".$wpdb->charset." COLLATE ".$wpdb->collate.";";
+      ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate.";";
 
       dbDelta($sql);
     }
