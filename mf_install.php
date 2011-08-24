@@ -8,6 +8,14 @@ class mf_install {
     global $wpdb;
     
     require_once(ABSPATH.'wp-admin/includes/upgrade.php');
+
+		// Get collation info
+		$charset_collate = "";
+		if ( ! empty($wpdb->charset) )
+			$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+		if ( ! empty($wpdb->collate) )
+			$charset_collate .= " COLLATE $wpdb->collate";
+
     //checking if the table is already installed
 
     if($wpdb->get_var( sprintf("SHOW tables LIKE '%s'",MF_TABLE_POSTTYPES) ) != MF_TABLE_POSTTYPES) {
@@ -18,7 +26,7 @@ class mf_install {
         description text,
         arguments text,
         active tinyint(1) DEFAULT 1,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
+        PRIMARY KEY id (id) ) $charset_collate
       ";
       dbDelta($sql);
     }
@@ -32,7 +40,7 @@ class mf_install {
         description text,
         arguments text,
         active tinyint(1) DEFAULT 1,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
+        PRIMARY KEY id (id) ) $charset_collate
       ";
       dbDelta($sql);
     }
@@ -52,7 +60,7 @@ class mf_install {
         duplicated tinyint(1),
         active tinyint(1) DEFAULT 1,
         options text,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
+        PRIMARY KEY id (id) ) $charset_collate
       ";
       dbDelta($sql);
     }
@@ -66,7 +74,7 @@ class mf_install {
         post_type varchar(255) NOT NULL,
         duplicated tinyint(1) DEFAULT 0,
         expanded tinyint(1) DEFAULT 0,
-        UNIQUE KEY id (id) ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate."
+        PRIMARY KEY id (id) ) $charset_collate
       ";
       dbDelta($sql);
 
@@ -79,8 +87,9 @@ class mf_install {
         field_name VARCHAR(255) NOT NULL, 
         field_count INT NOT NULL,  
         group_count  INT NOT NULL, 
-        post_id INT NOT NULL
-      ) DEFAULT CHARACTER SET ".$wpdb->charset." COLLATE ".$wpdb->collate.";";
+        post_id INT NOT NULL,
+      	PRIMARY KEY meta_id (meta_id) ) $charset_collate
+				";
 
       dbDelta($sql);
     }
