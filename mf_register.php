@@ -42,6 +42,10 @@ class mf_register{
         }
       }
  
+			if($option['has_archive'] && $option['has_archive_slug'])	
+				$option['has_archive'] = $option['has_archive_slug'];
+			
+			
       if($option['rewrite'] && $option['rewrite_slug'])
         $option['rewrite'] = array( 'slug' => $option['rewrite_slug'],'with_front' => true );
 
