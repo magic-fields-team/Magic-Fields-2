@@ -152,6 +152,14 @@ class mf_posttype extends mf_admin {
           'value' => 0,
           'description' => __( 'Whether the post type is hierarchical. Allows Parent to be specified', $mf_domain )
         ),
+				'has_archive' => array(
+					'id' => 'posttype-has-archive',
+					'type' => 'checkbox',
+					'label' => __( 'Has archive', $mf_domain ),
+					'name' => 'mf_posttype[option][has_archive]',
+					'value' => 0,
+					'description' => __( 'Enables post type archives. Will use string as archive slug. Will generate the proper rewrite rules if rewrite is enabled.', $mf_domain )
+					),
         'rewrite' => array(
           'id' => 'posttype-rewrite',
           'type' => 'checkbox',
