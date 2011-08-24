@@ -221,6 +221,15 @@ class mf_posttype extends mf_admin {
           'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
           'rel' => 'Add %s'
         ),
+			'all_items' => array(
+				'id' => 'posttype-label-all-items',
+				'type' => 'text',
+				'label' => __( 'All', $mf_domain ),
+				'name' => 'mf_posttype[label][all_items]',
+				'value' => __('All',$mf_domain),
+				'description' => __( 'The all items text used in the menu. Default is the Name label.', $mf_domain ),
+				'rel' => 'All %s'
+				),
         'add_new_item' => array(
           'id' => 'posttype-label-add-new-item',
           'type' => 'text',
@@ -266,6 +275,15 @@ class mf_posttype extends mf_admin {
           'description' => __( 'The search items text.', $mf_domain ),
           'rel' =>  'No %s found'
         ),
+				'not_found' => array(
+					'id' => 'posttype-label-not-found',
+					'type' => 'text',
+					'label' => __( 'Not found', $mf_domain ),
+					'name' => 'mf_posttype[label][not_found]',
+					'value' => __('No %s found',$mf_domain),
+					'description' => __( 'The not found text. Default is No posts found/No pages found', $mf_domain ),
+					'rel' =>  'No %s found'
+				),
         'not_found_in_trash' => array(
           'id' => 'posttype-label-not-found-in-trash',
           'type' => 'text',
@@ -275,6 +293,15 @@ class mf_posttype extends mf_admin {
           'description' => __( 'the not found in trash text.', $mf_domain ),
           'rel' =>  'No %s found in Trash'
         ),
+				'parent_item_colon' => array(
+					'id'          => 'posttype-label-parent-item-colon',
+					'type'        => 'text',
+					'label'       => __( 'Parent item colon', $mf_domain ),
+					'name'        => 'mf_posttype[label][parent_item_colon]',
+					'value'       => __('Parent Item:',$mf_domain),
+					'description' => __( 'The same as parent_item, but with colon:', $mf_domain ),
+					'rel'         => __('Parent',$mf_domain) . ' %s:'
+				),
         'menu_name' => array(
           'id' => 'posttype-label-menu_name',
           'type' => 'text',
