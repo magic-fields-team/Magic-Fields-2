@@ -2,7 +2,7 @@
 
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk"), [David Valdez](http://gnuget.org "Gnuget")
 * Tested up to: Wordpress 3.1.2
-* Stable tag: 2.0-Alpha
+* Stable tag: 2.0-Beta1
 * Description: We need a a best description here :p
 
 ##Description
