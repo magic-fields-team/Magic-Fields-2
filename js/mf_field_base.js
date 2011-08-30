@@ -161,31 +161,43 @@ jQuery(document).ready(function($) {
   //add validation for fields
   $('.mf_message_error .error_magicfields').hide();
   $.metadata.setType("attr", "validate");
-  //$.validator.messages.required = "dedee";
-    $("#post").validate({
-      errorClass: "error_magicfields",
-      invalidHandler: function(form, validator) { 
-          var errors = validator.numberOfInvalids();
-          if (errors) {
-            $('#mf-publish-errors').remove();
-            $('#publishing-action #ajax-loading').hide();
-            $('#publishing-action #publish').removeClass("button-primary-disabled");
-            $('#major-publishing-actions').append( $('<div id="mf-publish-errors">'+mf_js.mf_validation_error_msg+'</div>') ); 
-          }
-        
-        },
-	submitHandler: function(form) {
-          $('#mf-publish-errors').remove();
-          form.submit();
-        }
-    });
+  
+  //Validating the post
+  $("#post").validate({
+    errorClass: "error_magicfields",
+    invalidHandler: function(form, validator) { 
+      var errors = validator.numberOfInvalids();
+      if (errors) {
+        $('#mf-publish-errors').remove();
+        $('#publishing-action #ajax-loading').hide();
+        $('#publishing-action #publish').removeClass("button-primary-disabled");
+        $('#major-publishing-actions').append( $('<div id="mf-publish-errors">'+mf_js.mf_validation_error_msg+'</div>') ); 
+      }
+    },
+	  submitHandler: function(form) {
+      $('#mf-publish-errors').remove();
+        form.submit();
+      }
+  });
+  
   var mf_groups = $('.mf_group');
   mf_groups.find("input[type=text],textarea").live("keydown", fieldchange);
   mf_groups.find("input[type=checkbox],input[type=radio]").live("click", fieldchange);
   mf_groups.find("select").live("change", fieldchange);
-
+  
   //callback before save
   $("#publish").live('click',function(){ $.mf_bind('callback_before_save'); });
+
+  //Post saved as Draft don't require validations
+  $('#save-post').click(function(){
+    //bypass the validation calling directly the submit action from the dom
+    $('#post')[0].submit();
+
+    //hiding the error messages
+    //this messages  will be printed no matter if the validation was bypassed
+    $('.mf_message_error').hide();
+    mf_js.mf_validation_error_msg = "Saving a draft..";
+  });
 });
 
 deleteGroupDuplicate = function(div,div_group_id){
