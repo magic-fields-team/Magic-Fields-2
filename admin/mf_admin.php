@@ -7,7 +7,7 @@ class mf_admin {
   public $name = 'mf_admin';
 
   function _get_url(  $section = 'mf_dashboard', $action = 'main', $vars = array( ) ){
-    $url = home_url();
+    $url = site_url();
 
     //the admin area of Magic Fields always should pass through the dispatcher:
     $url .= '/wp-admin/admin.php?page=mf_dispatcher';
