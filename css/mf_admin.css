@@ -92,3 +92,8 @@ form#addCustomGroup,form#addCustomField,form#import_post_type{ padding-top: 10px
 div.mf_form_right div.categorydiv div.tabs-panel { height: auto; margin-top: 4px; }
 
 .helptext-form textarea{ height: 70px; }
+
+.wp_themeSkin.mceEditor {
+  display:block;
+  clear:both;
+}
