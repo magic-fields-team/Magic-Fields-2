@@ -270,12 +270,33 @@ class mf_custom_fields extends mf_admin {
     $mf = $_POST['mf_field'];
     if($mf['core']['id']){
       //update
+      $this->update_name_field($mf);
       $this->update_custom_field($mf);
     }else{
       //insert
       $this->new_custom_field($mf);
     }
     $this->mf_redirect('mf_custom_fields','fields_list',array('message' => 'success','post_type' => $mf['core']['post_type']));
+  }
+
+  public function update_name_field($mf){
+    global $wpdb;
+    $field = $this->get_custom_field($mf['core']['id']);
+
+    // change the name of field?
+    if( $mf['core']['name'] != $field['name'] ){
+      $query = sprintf(
+      "UPDATE %s pm, %s p ".
+      "SET pm.field_name = '%s' ".
+      "WHERE pm.field_name = '%s' AND p.post_type = '%s' AND pm.post_id = p.id",
+      MF_TABLE_POST_META,
+      $wpdb->posts,
+      $mf['core']['name'],
+      $field['name'],
+      $mf['core']['post_type']
+      );
+      $wpdb->query($query);
+    }
   }
 
   public function get_custom_fields_post_type($post_type){
