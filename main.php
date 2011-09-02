@@ -109,6 +109,21 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     add_submenu_page('mf_dispatcher', __('import',$mf_domain), __('Import',$mf_domain), 'edit_pages','mf_dispatcher&mf_section=mf_posttype&mf_action=import_form_post_type', 'mf_dispatcher');
   }
 
+  add_action( 'admin_menu', 'hide_panels' );
+  function hide_panels() {
+    //hidding the post or page panel
+    //accord with the settings
+
+    if( mf_settings::get('hide_post_panel') ) {
+      mf_admin::mf_unregister_post_type('post');
+    }
+
+    if( mf_settings::get('hide_page_panel') ) {
+      mf_admin::mf_unregister_post_type('page');
+    }
+
+  }
+
   //Adding metaboxes into the  pages for create posts 
   //Also adding code for save this data
   add_action( 'add_meta_boxes', 'mf_add_meta_boxes');
