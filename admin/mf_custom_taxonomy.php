@@ -249,6 +249,12 @@ class mf_custom_taxonomy extends mf_admin{
   public function fields_form(){
     global $mf_domain;
 
+    //if be editing the custom taxonomy, can't modify the type name
+    $type_readonly = FALSE;
+    if( $_GET['mf_action']  == 'edit_custom_taxonomy' ) {
+      $type_readonly = TRUE;
+    }
+
     $fields = array(
       'core' => array(
         'id' => array(
@@ -269,7 +275,8 @@ class mf_custom_taxonomy extends mf_admin{
           'value'       => '',
           'description' => __( 'Name of the object type for the taxonomy object. <br /><small>Name must not contain capital letters or spaces</small>', $mf_domain ),
           'class'       => "{validate:{required:true, lowercase:true ,messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'". __('This Field is required',$mf_domain)."'}}}",
-          'div_class'   => 'form-required'
+          'div_class'   => 'form-required',
+          'readonly'   => $type_readonly
         ),
         'name' => array(
           'id'          => 'custom-taxonomy-name',

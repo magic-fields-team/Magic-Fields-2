@@ -24,6 +24,12 @@ class mf_posttype extends mf_admin {
   public function fields_form() {
     global $mf_domain;
 
+    //if be editing the post type we can't modify the post type name
+    $type_readonly = FALSE;
+    if( $_GET['mf_action']  == 'edit_post_type' ) {
+      $type_readonly = TRUE;
+    }
+    
     $data = array(
       'suggest_labels'	=> array(
         'id'          =>  'suggest-labels',
@@ -48,9 +54,10 @@ class mf_posttype extends mf_admin {
           'label' => __( 'Type', $mf_domain ),
           'name' => 'mf_posttype[core][type]',
           'value' => '',
-          'description' => __( 'The type must have less than 20 characters and only are accepted lowercases letters and undescores.', $mf_domain ),
+          'description' => __( 'The type must have less than 20 characters and only are accepted lowercases letters and undescores. Once created the post type, the type cannot be changed', $mf_domain ),
           'class' => "{ validate:{ required:true, maxlength:20, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 20 characters' )."' }}}",
-          'div_class' => 'form-required'
+          'div_class' => 'form-required',
+          'readonly'   => $type_readonly
         ),
         'label' => array(
           'id' => 'posttype-label',
