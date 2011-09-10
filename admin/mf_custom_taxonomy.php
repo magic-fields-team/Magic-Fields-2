@@ -200,7 +200,7 @@ class mf_custom_taxonomy extends mf_admin{
             <a id="options" href="#" ><?php _e( 'Advanced Options', $mf_domain ) ?></a>
           </li>
           <li class="">
-            <a id="options_label" href="#"><?php _e( 'Advance Label', $mf_domain ) ?></a>
+            <a id="options_label" href="#"><?php _e( 'Advanced Label', $mf_domain ) ?></a>
           </li>
         </ul>
         <div class="tabs-panel">
