@@ -69,7 +69,7 @@ class mf_settings extends mf_admin {
         <?php _e('Type <strong>uninstall</strong> into the textbox, click <strong>Update Options</strong>, and all the tables created by this plugin will be deleted', $mf_domain); ?></label>
 
     <div class="clear"></div>
-      <input type="submit" value="Enviar" class="button" >
+      <input type="submit" value="Submit" class="button" >
       </form>
       </div>
     <?php
