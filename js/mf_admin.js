@@ -173,7 +173,7 @@ jQuery(document).ready(function($) {
 });
 
 function suggestCustomFieldName(){
-  if (jQuery('#customfield-label').length > 0) {
+  if (jQuery('#customfield-label').length > 0 && jQuery('#customfield-name').length > 0 && jQuery("#customfield-name").val() == '') {
     jQuery('#customfield-label').stringToSlug({
       space:'_',
       getPut:'#customfield-name', 
