@@ -7,7 +7,7 @@
 
 ##Description
 
-pending
+*Magic Fields V2 is not backward compatible with MF1*
 
 ##Thanks To:
 * http://bassistance.de  for his awesome [Jquery Validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/,"jQuery Validate")
