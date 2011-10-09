@@ -69,7 +69,7 @@ class mf_settings extends mf_admin {
         <?php _e('Type <strong>uninstall</strong> into the textbox, click <strong>Update Options</strong>, and all the tables created by this plugin will be deleted', $mf_domain); ?></label>
 
     <div class="clear"></div>
-      <input type="submit" value="Enviar" class="button" >
+      <input type="submit" value="Submit" class="button" >
       </form>
       </div>
     <?php
@@ -77,6 +77,12 @@ class mf_settings extends mf_admin {
 
   public function fields_form() {
     global $mf_domain;
+  
+    $options = get_option(MF_SETTINGS_KEY);
+    if( !is_array( $options ) )  {
+      $options = unserialize( $options );
+    }
+
     //en extra nunca se va a guardar el valor, solo es para procesar algo en el instante
     $data = array(
       'general' => array(
@@ -85,7 +91,7 @@ class mf_settings extends mf_admin {
           'type'        =>  'checkbox',
           'label'       =>  __('Hide Visual Editor (multiline)',$mf_domain),
           'name'        =>  "mf_settings[general][hide_visual_editor]",
-          'value'       =>  0,
+          'value'       =>  ( !empty( $options['hide_visual_editor'] ) )? $options['hide_visual_editor'] : 0,
           'description' => __( 'Hide All Visual Editor (multiline)', $mf_domain )
         ),
         'dont_remove_tags'	=> array(
@@ -93,8 +99,24 @@ class mf_settings extends mf_admin {
           'type'        =>  'checkbox',
           'label'       =>  __('Do not remove tags TinyMCE. (multiline)',$mf_domain),
           'name'        =>  "mf_settings[general][dont_remove_tags]",
-          'value'       =>  0,
+          'value'       =>  ( !empty( $options['dont_remove_tags'] ) ) ? $options['dont_remove_tags'] : 0,
           'description' => __( 'Stop removing the <p> and <br /> tags when saving and show them in the HTML editor', $mf_domain )
+        ),
+        'hide_post_panel'  =>  array(
+          'id'          =>  'hide_post_panel',
+          'type'        =>  'checkbox',
+          'label'       =>  __( 'Hide Wordpress Post panel' ),
+          'name'        =>  "mf_settings[general][hide_post_panel]",
+          'value'       =>  ( !empty( $options['hide_post_panel'] ) ) ? $options['hide_post_panel'] : 0,
+          'description' =>  __( 'Hide the post panel', $mf_domain )
+        ),
+        'hide_page_panel'  =>  array(
+          'id'          =>  'hide_page_panel',
+          'type'        =>  'checkbox',
+          'label'       =>  __( 'Hide Wordpress Page panel' ),
+          'name'        =>  "mf_settings[general][hide_page_panel]",
+          'value'       =>  ( !empty( $options['hide_page_panel'] ) ) ? $options['hide_page_panel'] : 0,
+          'description' =>  __( 'Hide the page panel', $mf_domain )
         )
       ),
       'extra' => array(

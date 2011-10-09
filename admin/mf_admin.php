@@ -701,4 +701,26 @@ class mf_admin {
     $wpdb->query($sql);
   }
 
+  function mf_unregister_post_type( $post_type ) {
+    /* Ideally we should just unset the post type from the array 
+       but wordpress 3.2.1 this doesn't work */
+
+    //global $wp_post_types;
+    //if ( isset( $wp_post_types[ $post_type ] ) ) {
+    // unset( $wp_post_types[ $post_type ] );
+    // return true;
+    //}
+
+    /* So, we are only remove the item from the menu (this is not a 
+       real unregister post_type but for at least we not will see 
+       the post or page menu)
+     */
+    if( $post_type == "post" ) {
+      remove_menu_page('edit.php');
+      return true;
+    }
+
+    remove_menu_page('edit.php?post_type='.$post_type );
+	  return true;
+  }
 }

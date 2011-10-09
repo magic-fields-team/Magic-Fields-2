@@ -42,8 +42,7 @@ class mf_register{
           $option['taxonomies'][] = $k;
         }
       }
- 
-			if($option['has_archive'] && $option['has_archive_slug'])	
+			if(isset($option['has_archive']) && $option['has_archive'] && isset($option['has_archive_slug']) && $option['has_archive_slug'])	
 				$option['has_archive'] = $option['has_archive_slug'];
 			
 			

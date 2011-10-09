@@ -19,7 +19,13 @@ class mf_post extends mf_admin {
    */
   function mf_post_add_metaboxes() {
     global $post,$mf_post_values;
-
+  
+    //if the user are going to add a new link 
+    //the var $post is not defined and we do nothing
+    if(!isset($post)) {
+      return false;
+    }
+ 
     $mf_post_values = $this->mf_get_post_values($post->ID);
 
     //Getting the post types

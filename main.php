@@ -109,6 +109,21 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     add_submenu_page('mf_dispatcher', __('import',$mf_domain), __('Import',$mf_domain), 'edit_pages','mf_dispatcher&mf_section=mf_posttype&mf_action=import_form_post_type', 'mf_dispatcher');
   }
 
+  add_action( 'admin_menu', 'hide_panels' );
+  function hide_panels() {
+    //hidding the post or page panel
+    //accord with the settings
+
+    if( mf_settings::get('hide_post_panel') ) {
+      mf_admin::mf_unregister_post_type('post');
+    }
+
+    if( mf_settings::get('hide_page_panel') ) {
+      mf_admin::mf_unregister_post_type('page');
+    }
+
+  }
+
   //Adding metaboxes into the  pages for create posts 
   //Also adding code for save this data
   add_action( 'add_meta_boxes', 'mf_add_meta_boxes');
@@ -162,7 +177,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js', array( 'jquery' ) );
       wp_enqueue_script( 'mf_admin',MF_BASENAME.'js/mf_admin.js', array( 'jquery.validate', 'jquery.metadata', 'jquery' ) );
       if( isset($_GET['mf_action']) && in_array($_GET['mf_action'],array('add_field','edit_field') )  ){
-        wp_enqueue_script( 'jquery.slug', MF_BASENAME.'js/third_party/jquery.slug.js', array('mf_admin') );
+        wp_enqueue_script( 'jquery.stringToSlug', MF_BASENAME.'js/third_party/jquery.stringToSlug.min.js', array('mf_admin') );
       }
 
       //and this scripts only will be added on the post types section

@@ -60,12 +60,12 @@ function mf_form_text( $data , $max = NULL ){
     $size = ($max)? sprintf('value-size="%s"',$max) : '' ;
     $class = (isset($data['class']))? sprintf('class="%s"',$data['class']) : '';
     $rel = (isset($data['rel'])) ? sprintf('rel="%s"',$data['rel']): '';
-
+    $readonly = (isset($data['readonly']) && $data['readonly']) ? 'readonly="readonly"' : '';
     $is_r = ( isset($data['div_class'] ) && $data['div_class'] == 'form-required'  )? ' <span class="required">*</span>' : '';
 
     ?>
     <label for="<?php echo $id; ?>"><?php echo $label.$is_r; ?></label>
-    <input name="<?php echo $name; ?>" id="<?php echo $id; ?>" type="text" <?php echo $size; ?> <?php echo $value; ?> <?php echo $class; ?> <?php echo $rel; ?> >
+    <input name="<?php echo $name; ?>" id="<?php echo $id; ?>" type="text" <?php echo $size; ?> <?php echo $value; ?> <?php echo $class; ?> <?php echo $rel; ?> <?php print $readonly;?> >
     <p><?php echo $description; ?></p>
     <?php
   }
