@@ -26,6 +26,7 @@ class mf_register{
 
       $option['show_in_menu'] = ($option['show_in_menu']) ? true : false;
       $option['query_var'] = ($option['query_var']) ? true : false;
+      $option['exclude_from_search'] = ($option['exclude_from_search']) ? true : false;
       $option['labels'] = $p['label'];
 
 
