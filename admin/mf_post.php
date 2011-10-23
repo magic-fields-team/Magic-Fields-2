@@ -146,14 +146,14 @@ class mf_post extends mf_admin {
     $name = sprintf('field-%s',$field['name']);
     $tool = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),'%s');
     $help = ($field['description'])? sprintf($tool,$field['description']) : '';
-    $requiered = ($field['requiered_field'])? ' <span class="required">*</span>' : '';
+    $required = ($field['required_field'])? ' <span class="required">*</span>' : '';
     $value =  (!empty($mf_post_values[$field['name']][$group_index][$field_index])) ? $mf_post_values[$field['name']][$group_index][$field_index] : '';
     ?>
       <div class="mf-field-ui <?php print $name;?>" id="<?php print $id;?>">
          <div>
            <?php
          $field_num = sprintf(' <em %s>(<span class="mf-field-count">%d</span>)</em> ',$field_style,$field_index);
-             print sprintf('<div class="mf-field-title"><label><span class="name" >%s%s%s</span>%s</label></div>',$field['label'],$field_num,$requiered,$help);
+             print sprintf('<div class="mf-field-title"><label><span class="name" >%s%s%s</span>%s</label></div>',$field['label'],$field_num,$required,$help);
              $f = $field['type'].'_field';
              $f = new $f();
              print '<div class="clear"></div><div>';
@@ -162,11 +162,11 @@ class mf_post extends mf_admin {
              $field['input_id'] = sprintf("%s_%s_%s",$field['name'],$group_index,$field_index);
              $field['input_value'] = $value;
              $field['options'] = unserialize($field['options']);
-             $field['input_validate'] = ($field['requiered_field']) ? 'validate="required:true"' : '';
+             $field['input_validate'] = ($field['required_field']) ? 'validate="required:true"' : '';
 
              print $f->display_field( $field,$group_index, $field_index);
              print '</div><div class="clear"></div>';
-             if( $field['requiered_field'] ){
+             if( $field['required_field'] ){
                $id_validate = array('image_media','image','audio','file','color_picker','datepicker','markdown_editor','multiline');
                $validate_name = ( in_array($field['type'],$id_validate) )? $field['input_id'] : $field['input_name'];
                if($field['type'] == 'color_picker') $validate_name = 'colorpicker_value_'.$validate_name;

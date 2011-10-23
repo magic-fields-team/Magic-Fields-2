@@ -90,7 +90,7 @@ class related_type_field extends mf_custom_fields {
 
     //If is not required this field be added a None value
     $notype = "";
-    if( !$field['requiered_field'] ) {
+    if( !$field['required_field'] ) {
       $notype = ( !empty($field['options']['notype']) ) ? $field['options']['notype'] : __( "-- None --" , $mf_domain );
     }
 

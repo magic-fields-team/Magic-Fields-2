@@ -65,6 +65,17 @@ spl_autoload_register("mf_autoload");
  */
 register_activation_hook( __FILE__, array('mf_install', 'install' ) ); 
 
+//In wp 3.1 and newer the register_activation_hook is not called
+//when the plugin is updated so we need call the upgrade 
+//function by hand
+function mf_update_db_check() {
+  if ( get_option(MF_DB_VERSION_KEY) != MF_DB_VERSION ) {
+    mf_install::upgrade();  
+  }
+}
+add_action('plugins_loaded','mf_update_db_check');
+
+
 //MF in mode plusing multinetwork
 if( mf_mu2() ){
   mf_install::install();

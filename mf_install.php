@@ -55,7 +55,7 @@ class mf_install {
         post_type varchar(120) NOT NULL,
         custom_group_id int(19) NOT NULL,
         type varchar(100) NOT NULL,
-        requiered_field tinyint(1),
+        required_field tinyint(1),
         display_order mediumint(9) DEFAULT 0, 
         duplicated tinyint(1),
         active tinyint(1) DEFAULT 1,
@@ -104,11 +104,17 @@ class mf_install {
     
   }
   
-  public function upgrade(){
-  
-    //update of DB WHERE
-    // use MF_DB_VERSION
+  public function upgrade(){  
+    global $wpdb;
 
+    $db_version = get_option(MF_DB_VERSION_KEY); 
+
+    if( $db_version < 2 ) {
+      $sql = "ALTER TABLE ".MF_TABLE_CUSTOM_FIELDS. " CHANGE COLUMN requiered_field required_field tinyint(1)";
+      $wpdb->query( $sql );
+    }
+
+    update_option(MF_DB_VERSION_KEY, MF_DB_VERSION);
   }
 
   public function folders(){

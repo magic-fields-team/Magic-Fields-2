@@ -35,7 +35,7 @@ div.options_label input,div.options input{ width: 250px;}
 .ui-sortable-helper  { border: 1px solid #DFDFDF; background: #FFF; }
 .mf-ajax-loading { width: 16px; height: 16px; background-image:url('../images/ajax-loader.gif'); display:none; } 
 
-/** requiered span **/
+/** required span **/
 #wpbody-content span.required { color: red; }
 
 /** anchor delete **/

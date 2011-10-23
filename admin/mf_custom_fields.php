@@ -188,7 +188,7 @@ class mf_custom_fields extends mf_admin {
           </td>
           <td>
             <?php echo $field['label'];?>
-            <?php if($field['requiered_field']): ?><span class="required">*</span> <?php endif; ?>
+            <?php if($field['required_field']): ?><span class="required">*</span> <?php endif; ?>
             <div class="row-actions">
               <span class="edit">
                <a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=edit_field&custom_field_id=<?php echo $field['id'];?>"><?php _e('Edit',$mf_domain); ?></a>
@@ -398,10 +398,10 @@ class mf_custom_fields extends mf_admin {
           'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
           'div_class'   => 'form-requierd'
         ),
-        'requiered_field'    =>  array(
+        'required_field'    =>  array(
           'type'        =>  'checkbox',
           'label'       =>  __('required',$mf_domain),
-          'name'        =>  'mf_field[core][requiered_field]',
+          'name'        =>  'mf_field[core][required_field]',
           'description' =>  __( 'this field is required', $mf_domain ),
           'id'          =>  'customfield-required',
           'value'       =>  0,
