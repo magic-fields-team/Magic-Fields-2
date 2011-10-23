@@ -94,7 +94,7 @@ class mf_install {
       dbDelta($sql);
     }
     
-    if (get_option(MF_DB_VERSION_KEY) == '') update_option(MF_DB_VERSION_KEY, 1);
+    if ( get_option( MF_DB_VERSION_KEY, FALSE ) === FALSE ) update_option(MF_DB_VERSION_KEY, MF_DB_VERSION);
 
     if (get_option(MF_DB_VERSION_KEY) < MF_DB_VERSION){
       self::upgrade();
