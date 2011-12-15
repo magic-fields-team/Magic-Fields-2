@@ -227,13 +227,13 @@ jQuery(document).ready(function($){
   jQuery('.del-link').each(function(){
     id = jQuery(this).next().attr('id');
     check = parent.window.mf_field_id;
-    if(check == ""){}else{
+    if (check){
       set = parent.window.mf_js.mf_image_media_set;
       $(this).before('<a href="#"  class="mf_media_upload button" onclick="mf_set_image_field(\''+id+'\'); return false;">'+set+'</a>');
       $(this).parent().find("input:submit").remove();        
     }
   });
-  
+
   $('.update_field_media_upload').live('click', function(){
     window.mf_field_id = jQuery(this).attr('id');
   });
