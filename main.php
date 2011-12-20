@@ -99,9 +99,12 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
   //add common function
   require_once(MF_PATH.'/mf_common.php');
 
-  // CSS Files
-  wp_register_style( 'mf_admin_css',MF_BASENAME.'css/mf_admin.css' );
-  wp_enqueue_style( 'mf_admin_css' );  
+  add_action( 'admin_enqueue_scripts', 'mf_enqueue_scripts' );
+  function mf_enqueue_scripts() {
+    // CSS Files
+    wp_register_style( 'mf_admin_css',MF_BASENAME.'css/mf_admin.css' );
+    wp_enqueue_style( 'mf_admin_css' );  
+  }
 
   // Settings Page
   add_action( 'admin_menu', 'mf_menu' );
