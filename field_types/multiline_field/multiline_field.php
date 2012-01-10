@@ -101,6 +101,11 @@ class multiline_field extends mf_custom_fields {
         $value = apply_filters('the_editor_content', $value);
       }
     }
+		printf('<div style="display: none" id="wp-%s-media-buttons">',$field['input_id']);
+		require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		media_buttons( $field['input_id'] );
+		printf('</div>');
+
     $output .= sprintf('<textarea %s class="mf_editor %s" id="%s" name="%s" rows="%s" cols="%s" %s >%s</textarea>',$field['input_validate'],$class,$field['input_id'],$field['input_name'],$field['options']['height'],$field['options']['width'],$max,$value);
     $output .= '</div>';
 
