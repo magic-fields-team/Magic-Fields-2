@@ -502,6 +502,11 @@ class mf_admin {
   public function new_posttype($data){
     global $wpdb;
 
+		/*quick fix for ' character*/
+		$data['core']['description'] = stripslashes($data['core']['description']);
+		$data['core']['description'] = preg_replace('/\'/','´',$data['core']['description']);
+		$data['core']['description'] = addslashes($data['core']['description']);
+
     $sql = sprintf(
       "INSERT INTO " . MF_TABLE_POSTTYPES .
       " (type, name, description, arguments, active)" .
@@ -525,6 +530,10 @@ class mf_admin {
   public function update_post_type($data){
     global $wpdb;
 
+		$data['core']['description'] = stripslashes($data['core']['description']);
+		$data['core']['description'] = preg_replace('/\'/','´',$data['core']['description']);
+		$data['core']['description'] = addslashes($data['core']['description']);
+		
     $sql = sprintf(
       "Update " . MF_TABLE_POSTTYPES .
       " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
