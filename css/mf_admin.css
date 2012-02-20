@@ -1,3 +1,11 @@
+/* Screen icon 
+ * embed icons with echo get_screen_icon('magic-fields');
+ * URL is relative to this CSS file 
+*/
+#icon-magic-fields {
+  background: url(../images/wand-hat-32.png) 0 0 no-repeat;
+}
+
 /* Messages boxes 
  * Thanks to: http://www.mattvarone.com/web-design/message-box-with-css/
  * */

@@ -159,22 +159,22 @@ class mf_posttype extends mf_admin {
           'value' => 0,
           'description' => __( 'Whether the post type is hierarchical. Allows Parent to be specified', $mf_domain )
         ),
-				'has_archive' => array(
-					'id' => 'posttype-has-archive',
-					'type' => 'checkbox',
-					'label' => __( 'Has archive', $mf_domain ),
-					'name' => 'mf_posttype[option][has_archive]',
-					'value' => 0,
-					'description' => __( 'Enables post type archives. Will use string as archive slug. Will generate the proper rewrite rules if rewrite is enabled.', $mf_domain )
-					),
-				'has_archive_slug' => array(
-					'id' => 'posttype-has-archive-slug',
-					'type' => 'text',
-					'label' => __( 'Archive slug', $mf_domain ),
-					'name' => 'mf_posttype[option][has_archive_slug]',
-					'value' => '',
-					'description' => __( 'Archive slug. The archive for the post type can be viewed at this slug. Has archives must be checked for this to work.', $mf_domain )
-					),
+        'has_archive' => array(
+            'id' => 'posttype-has-archive',
+            'type' => 'checkbox',
+            'label' => __( 'Has archive', $mf_domain ),
+            'name' => 'mf_posttype[option][has_archive]',
+            'value' => 0,
+            'description' => __( 'Enables post type archives. Will use string as archive slug. Will generate the proper rewrite rules if rewrite is enabled.', $mf_domain )
+        ),
+        'has_archive_slug' => array(
+            'id' => 'posttype-has-archive-slug',
+            'type' => 'text',
+            'label' => __( 'Archive slug', $mf_domain ),
+            'name' => 'mf_posttype[option][has_archive_slug]',
+            'value' => '',
+            'description' => __( 'Archive slug. The archive for the post type can be viewed at this slug. Has archives must be checked for this to work.', $mf_domain )
+        ),
         'rewrite' => array(
           'id' => 'posttype-rewrite',
           'type' => 'checkbox',
@@ -224,7 +224,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][name]',
           'value' => __('Posts',$mf_domain),
           'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
-          'rel' => '%s'
+          'rel' => '$p' // plural, the sign is rather $ than %, because it's more like a variable rather than a sprintf type
         ),
         'singular_name' => array(
           'id' => 'posttype-label-singular-name',
@@ -233,7 +233,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][singular_name]',
           'value' => __('Post',$mf_domain),
           'description' => __( 'Name for one object of this post type. Defaults to value of name.', $mf_domain ),
-          'rel' => '%s' //@todo inflection
+          'rel' => '$s' // singular
         ),
         'add_new' => array(
           'id' => 'posttype-label-add-new',
@@ -242,17 +242,17 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][add_new]',
           'value' => __('Add New',$mf_domain),
           'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
-          'rel' => 'Add %s'
+          'rel' => 'Add $s'
         ),
-			'all_items' => array(
-				'id' => 'posttype-label-all-items',
-				'type' => 'text',
-				'label' => __( 'All', $mf_domain ),
-				'name' => 'mf_posttype[label][all_items]',
-				'value' => __('All',$mf_domain),
-				'description' => __( 'The all items text used in the menu. Default is the Name label.', $mf_domain ),
-				'rel' => 'All %s'
-				),
+        'all_items' => array(
+          'id' => 'posttype-label-all-items',
+          'type' => 'text',
+          'label' => __( 'All', $mf_domain ),
+          'name' => 'mf_posttype[label][all_items]',
+          'value' => __('All',$mf_domain),
+          'description' => __( 'The all items text used in the menu. Default is the Name label.', $mf_domain ),
+          'rel' => 'All $p'
+        ),
         'add_new_item' => array(
           'id' => 'posttype-label-add-new-item',
           'type' => 'text',
@@ -260,7 +260,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][add_new_item]',
           'value' => __('Add New Post',$mf_domain),
           'description' => __( 'The add new item text.', $mf_domain ),
-          'rel' => 'Add New %s'
+          'rel' => 'Add New $s'
         ),
         'edit_item' => array(
           'id' => 'posttype-label-edit-item',
@@ -269,7 +269,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][edit_item]',
           'value' => __('Edit Post',$mf_domain),
           'description' => __( 'General name for the post type, usually plural.', $mf_domain ),
-          'rel' => 'Edit %s'
+          'rel' => 'Edit $s'
         ),
         'new_item' => array(
           'id' => 'posttype-label-new-item',
@@ -278,7 +278,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][new_item]',
           'value' => __('New Post',$mf_domain),
           'description' => __( 'The new item text.', $mf_domain ),
-          'rel' => 'New %s'
+          'rel' => 'New $s'
         ),
         'view_item' => array(
           'id' => 'posttype-label-view-item',
@@ -287,7 +287,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][view_item]',
           'value' => __('View Post',$mf_domain),
           'description' => __( 'The view item text.', $mf_domain ),
-          'rel'   => 'View %s'
+          'rel'   => 'View $s'
         ),
         'search_items' => array(
           'id' => 'posttype-label-search-items',
@@ -296,17 +296,17 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][search_items]',
           'value' => __('Search Posts',$mf_domain),
           'description' => __( 'The search items text.', $mf_domain ),
-          'rel' =>  'No %s found'
+          'rel' =>  'No $s found'
         ),
-				'not_found' => array(
-					'id' => 'posttype-label-not-found',
-					'type' => 'text',
-					'label' => __( 'Not found', $mf_domain ),
-					'name' => 'mf_posttype[label][not_found]',
-					'value' => __('No %s found',$mf_domain),
-					'description' => __( 'The not found text. Default is No posts found/No pages found', $mf_domain ),
-					'rel' =>  'No %s found'
-				),
+        'not_found' => array(
+            'id' => 'posttype-label-not-found',
+            'type' => 'text',
+            'label' => __( 'Not found', $mf_domain ),
+            'name' => 'mf_posttype[label][not_found]',
+            'value' => __('No %s found',$mf_domain),
+            'description' => __( 'The not found text. Default is No posts found/No pages found', $mf_domain ),
+            'rel' =>  'No $p found'
+        ),
         'not_found_in_trash' => array(
           'id' => 'posttype-label-not-found-in-trash',
           'type' => 'text',
@@ -314,25 +314,25 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][not_found_in_trash]',
           'value' => __('No posts found in Trash',$mf_domain),
           'description' => __( 'the not found in trash text.', $mf_domain ),
-          'rel' =>  'No %s found in Trash'
+          'rel' =>  'No $p found in Trash'
         ),
-				'parent_item_colon' => array(
-					'id'          => 'posttype-label-parent-item-colon',
-					'type'        => 'text',
-					'label'       => __( 'Parent item colon', $mf_domain ),
-					'name'        => 'mf_posttype[label][parent_item_colon]',
-					'value'       => __('Parent Item:',$mf_domain),
-					'description' => __( 'The same as parent_item, but with colon:', $mf_domain ),
-					'rel'         => __('Parent',$mf_domain) . ' %s:'
-				),
+        'parent_item_colon' => array(
+            'id'          => 'posttype-label-parent-item-colon',
+            'type'        => 'text',
+            'label'       => __( 'Parent item colon', $mf_domain ),
+            'name'        => 'mf_posttype[label][parent_item_colon]',
+            'value'       => __('Parent Item:',$mf_domain),
+            'description' => __( 'The same as parent_item, but with colon:', $mf_domain ),
+            'rel'         => __('Parent',$mf_domain) . ' $s:'
+        ),
         'menu_name' => array(
           'id' => 'posttype-label-menu_name',
           'type' => 'text',
           'label' => __( 'Menu name', $mf_domain ),
           'name' => 'mf_posttype[label][menu_name]',
           'value' => __('Post',$mf_domain),
-          'description' => __( 'The name of menu.', $mf_domain ),
-          'rel' =>  '%s'
+          'description' => __( 'The name of menu, usually plural.', $mf_domain ),
+          'rel' =>  '$p'
         )
       )
     );
@@ -421,7 +421,7 @@ class mf_posttype extends mf_admin {
 	  </div>
 	<?php endif; ?>
 	<?php endforeach; ?>
-	<! / core -->
+	<!-- / core -->
 
 	<!-- supports -->
 	<div class="form-field mf_label_checkbox mf_form">

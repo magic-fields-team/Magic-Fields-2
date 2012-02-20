@@ -20,6 +20,8 @@ class mf_dashboard extends mf_admin {
     $custom_taxonomies = $this->get_custom_taxonomies();
     
     print '<div class="wrap">';
+    // print screen icon
+    print get_screen_icon('magic-fields');
     print '<h2>'.__( 'Magic Fields',$mf_domain).'</h2>';
     print '<h3>'.__( 'Post Types', $mf_domain ).'<a href="admin.php?page=mf_dispatcher&mf_section=mf_posttype&mf_action=add_post_type" class="add-new-h2 button">'.__( 'Add new Post Type', $mf_domain ).'</a></h3>';
 
