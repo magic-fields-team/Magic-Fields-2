@@ -494,6 +494,19 @@ class mf_admin {
 
   }
 
+  /**
+   * Escape data before serializing
+   */
+  function escape_data(&$value){
+    // quick fix for ' character
+    /** @todo have a proper function escaping all these */
+    if(is_string($value)){
+        $value = stripslashes($value);
+        $value = preg_replace('/\'/','´', $value);
+        $value = addslashes($value);
+    }
+  }
+
   /* function save and update for post type */
 
   /**
@@ -502,16 +515,14 @@ class mf_admin {
   public function new_posttype($data){
     global $wpdb;
 
-		/*quick fix for ' character*/
-		$data['core']['description'] = stripslashes($data['core']['description']);
-		$data['core']['description'] = preg_replace('/\'/','´',$data['core']['description']);
-		$data['core']['description'] = addslashes($data['core']['description']);
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 
-    $sql = sprintf(
+    $sql = $wpdb->prepare(
       "INSERT INTO " . MF_TABLE_POSTTYPES .
       " (type, name, description, arguments, active)" .
       " values" .
-      " ('%s', '%s', '%s', '%s', '%s')",
+      " (%s, %s, %s, %s, %d)",
       $data['core']['type'],
       $data['core']['label'],
       $data['core']['description'],
@@ -530,14 +541,13 @@ class mf_admin {
   public function update_post_type($data){
     global $wpdb;
 
-		$data['core']['description'] = stripslashes($data['core']['description']);
-		$data['core']['description'] = preg_replace('/\'/','´',$data['core']['description']);
-		$data['core']['description'] = addslashes($data['core']['description']);
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 		
-    $sql = sprintf(
+    $sql = $wpdb->prepare(
       "Update " . MF_TABLE_POSTTYPES .
-      " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
-      " WHERE id = %s",
+      " SET type = %s, name = %s, description = %s, arguments = %s " .
+      " WHERE id = %d",
       $data['core']['type'],
       $data['core']['label'],
       $data['core']['description'],
@@ -555,12 +565,14 @@ class mf_admin {
    */
   public function new_custom_group($data){
     global $wpdb;
+    
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
    
-    $sql = sprintf(
-      "INSERT INTO %s ".
-      "(name,label,post_type,duplicated,expanded) ".
-      "VALUES ('%s','%s','%s',%s,%s)",
-      MF_TABLE_CUSTOM_GROUPS,
+    $sql = $wpdb->prepare(
+      "INSERT INTO ". MF_TABLE_CUSTOM_GROUPS .
+      " (name, label, post_type, duplicated, expanded) ".
+      " VALUES (%s, %s, %s, %d, %d)",
       $data['core']['name'],
       $data['core']['label'],
       $data['core']['post_type'],
@@ -582,12 +594,14 @@ class mf_admin {
     //ToDo: falta sanitizar variables
     // podriamos crear un mettodo para hacerlo
     // la funcion podria pasarle como primer parametro los datos y como segundo un array con los campos que se va a sanitizar o si se quiere remplazar espacios por _ o quitar caracteres extraños
+    
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 
-    $sql = sprintf(
-      "UPDATE %s ".
-      "SET name = '%s', label ='%s',duplicated = %s, expanded = %s ".
-      "WHERE id = %s",
-      MF_TABLE_CUSTOM_GROUPS,
+    $sql = $wpdb->prepare(
+      "UPDATE ". MF_TABLE_CUSTOM_GROUPS .
+      " SET name = %s, label =%s, duplicated = %d, expanded = %d ".
+      " WHERE id = %d",
       $data['core']['name'],
       $data['core']['label'],
       $data['core']['duplicate'],
@@ -603,6 +617,9 @@ class mf_admin {
     global $wpdb;
 
     if( !isset($data['option']) ) $data['option'] = array();
+    
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 
     //check group
     if(!$data['core']['custom_group_id']){
@@ -612,11 +629,10 @@ class mf_admin {
 
     $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
 
-    $sql = sprintf(
-      "INSERT INTO %s ".
-      "(name,label,description,post_type,custom_group_id,type,required_field,duplicated,options) ".
-      "VALUES ('%s','%s','%s','%s',%s,'%s',%s,%s,'%s')",
-      MF_TABLE_CUSTOM_FIELDS,
+    $sql = $wpdb->prepare(
+      "INSERT INTO ". MF_TABLE_CUSTOM_FIELDS . 
+      " (name, label, description, post_type, custom_group_id, type, required_field, duplicated, options) ".
+      " VALUES (%s, %s, %s, %s, %d, %s, %d, %d, %s)",
       $data['core']['name'],
       $data['core']['label'],
       $data['core']['description'],
@@ -638,6 +654,9 @@ class mf_admin {
     global $wpdb;
 
     if( !isset($data['option']) ) $data['option'] = array();
+    
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 
     //check group
     if(!$data['core']['custom_group_id']){
@@ -647,12 +666,11 @@ class mf_admin {
 
     $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
 
-    $sql = sprintf(
-     "UPDATE %s ".
-     "SET name = '%s', label = '%s', description = '%s',type = '%s', required_field = %d, ".
-     "duplicated = %d, options = '%s' ".
-     "WHERE id = %d",
-     MF_TABLE_CUSTOM_FIELDS,
+    $sql = $wpdb->prepare(
+     "UPDATE ". MF_TABLE_CUSTOM_FIELDS . 
+     " SET name = %s, label = %s, description = %s, type = %s, required_field = %d, ".
+     " duplicated = %d, options = %s ".
+     " WHERE id = %d",
      $data['core']['name'],
      $data['core']['label'],
      $data['core']['description'],
@@ -672,12 +690,15 @@ class mf_admin {
    */
   public function new_custom_taxonomy($data){
     global $wpdb;
+    
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 
-    $sql = sprintf(
+    $sql = $wpdb->prepare(
       "INSERT INTO " . MF_TABLE_CUSTOM_TAXONOMY .
       " (type, name, description, arguments, active)" .
       " values" .
-      " ('%s', '%s', '%s', '%s', '%s')",
+      " (%s, %s, %s, %s, %d)",
       $data['core']['type'],
       $data['core']['name'],
       $data['core']['description'],
@@ -695,11 +716,14 @@ class mf_admin {
    */
   public function update_custom_taxonomy($data){
     global $wpdb;
+    
+    // escape all the strings
+    array_walk_recursive($data, array($this, 'escape_data'));
 
-    $sql = sprintf(
+    $sql = $wpdb->prepare(
       "Update " . MF_TABLE_CUSTOM_TAXONOMY .
-      " SET type = '%s', name = '%s', description = '%s', arguments = '%s' " .
-      " WHERE id = %s",
+      " SET type = %s, name = %s, description = %s, arguments = %s " .
+      " WHERE id = %d",
       $data['core']['type'],
       $data['core']['name'],
       $data['core']['description'],
