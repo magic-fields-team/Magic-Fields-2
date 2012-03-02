@@ -1,15 +1,17 @@
 # Magic Fields
 
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk"), [David Valdez](http://gnuget.org "Gnuget")
-* Tested up to: Wordpress 3.1.2
+* Tested up to: Wordpress 3.3.1
 * Requires at least: 3.1
 * Stable tag: 2.0
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
+* License: GPLv2
 
 ##Description
 Magic Fields 2 is a WordPress CMS plugin which is focused on improving the way how custom fields, post types and custom taxonomies are created in Wordpress.
 
 There are 15 pre-built custom fields in Magic Fields:
+
 * Audio field
 * Checkbox field
 * Checkbox list field

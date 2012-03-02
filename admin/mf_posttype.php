@@ -296,7 +296,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[label][search_items]',
           'value' => __('Search Posts',$mf_domain),
           'description' => __( 'The search items text.', $mf_domain ),
-          'rel' =>  'No $s found'
+          'rel' =>  'Search $p'
         ),
         'not_found' => array(
             'id' => 'posttype-label-not-found',

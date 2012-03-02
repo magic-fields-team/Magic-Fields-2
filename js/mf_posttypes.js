@@ -6,9 +6,13 @@ jQuery(document).ready(function($) {
       // swap singular value
       var label = $('#posttype-label').val();
       rel = rel.replace('$s',label);
-      // swap plural value
+      // swap plural value (if exists)
       var labels = $('#posttype-labels').val();
-      rel = rel.replace('$p',labels);
+      if(labels.length > 0){
+        rel = rel.replace('$p',labels);
+      }else{
+        rel = rel.replace('$p',label);
+      }
       $(this).val(rel);
     });
   }
