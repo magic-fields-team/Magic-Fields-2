@@ -21,6 +21,18 @@ jQuery(document).ready(function($) {
     }
   });
 
+  // suggest a type name if label is changed
+  $('#custom-taxonomy-name').change(function(){
+    if( $('#custom-taxonomy-type').val().length == 0 ){
+      // only suggest if type is empty
+      jQuery('#custom-taxonomy-name').stringToSlug({
+        space:'_',
+        getPut:'#custom-taxonomy-type', 
+        replace:/\s?\([^\)]*\)/gi
+      });
+    }
+  });
+
   $('#options_label').click(function(){
     $('.options_label').show();
     $('.options').hide();

@@ -104,16 +104,6 @@ class mf_custom_group extends mf_admin {
           'name' => 'mf_group[core][post_type]',
           'value' => $post_type
         ),
-        'name'  => array(
-          'type'        =>  'text',
-          'id'          =>  'custom_group_name',
-          'label'       =>  __('Name',$mf_domain),
-          'name'        =>  'mf_group[core][name]',
-          'description' =>  __( 'The name only accept letters and numbers (lowercar)', $mf_domain),
-          'class'       => "{ validate:{ required:true, maxlength:150, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 150 characters' )."' }}}",
-          'div_class'   =>  'form-required',
-          'value'       =>  ''
-        ),
         'label'  => array(
           'type'        =>  'text',
           'id'          =>  'custom_group_label',
@@ -121,6 +111,16 @@ class mf_custom_group extends mf_admin {
           'name'        =>  'mf_group[core][label]',
           'description' =>  __( 'The label of the group', $mf_domain),
           'class'       => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
+          'div_class'   =>  'form-required',
+          'value'       =>  ''
+        ),
+        'name'  => array(
+          'type'        =>  'text',
+          'id'          =>  'custom_group_name',
+          'label'       =>  __('Name',$mf_domain),
+          'name'        =>  'mf_group[core][name]',
+          'description' =>  __( 'Used by the system, only lowercase alphanumeric characters and underscore is accepted.', $mf_domain),
+          'class'       => "{ validate:{ required:true, maxlength:150, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 150 characters' )."' }}}",
           'div_class'   =>  'form-required',
           'value'       =>  ''
         ),

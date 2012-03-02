@@ -32,6 +32,19 @@ jQuery(document).ready(function($) {
     }
   });
   
+  // suggest a type name if label is changed
+  $('#posttype-label').change(function(){
+    if( $('#posttype-type').val().length == 0 ){
+      // only suggest if type is empty
+      jQuery('#posttype-label').stringToSlug({
+        space:'_',
+        getPut:'#posttype-type', 
+        replace:/\s?\([^\)]*\)/gi
+      });
+    }
+  });
+
+  
   $('#options_label').click(function(){
     $('.options_label').show();
     $('.options').hide();
@@ -39,6 +52,7 @@ jQuery(document).ready(function($) {
     $(this).parent('li').addClass('tabs');
     return false;
   });
+
   $('#options').click(function(){
     $('.options').show();
     $('.options_label').hide();

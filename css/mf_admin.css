@@ -17,7 +17,8 @@
 .errors { background-color: #ffcdd1; border: 2px solid #e10c0c; }
 
 /** Add Posty Type **/
-#add_mf_posttype {
+/* @todo: columns can be added with classes */
+#add_mf_posttype, #add_mf_custom_taxonomy {
   width: 40%;
 }
 

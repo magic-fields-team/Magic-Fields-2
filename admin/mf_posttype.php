@@ -1,9 +1,9 @@
 <?php
 
 /**
- *Dashboard
+ * Dashboard
  *
- * Display, add, edit,delete  post types
+ * Display, add, edit, delete post types
  */
 class mf_posttype extends mf_admin {
 
@@ -48,17 +48,6 @@ class mf_posttype extends mf_admin {
           'value' => NULL,
           'description' => ''
         ),
-        'type' => array(
-          'id' => 'posttype-type',
-          'type' => 'text',
-          'label' => __( 'Type', $mf_domain ),
-          'name' => 'mf_posttype[core][type]',
-          'value' => '',
-          'description' => __( 'The type must have less than 20 characters and only are accepted lowercases letters and undescores. Once created the post type, the type cannot be changed', $mf_domain ),
-          'class' => "{ validate:{ required:true, maxlength:20, lowercase:true, messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'".__( 'This Field is required', $mf_domain )."', maxlength:'".__( 'This Field must have less than 20 characters' )."' }}}",
-          'div_class' => 'form-required',
-          'readonly'   => $type_readonly
-        ),
         'label' => array(
           'id' => 'posttype-label',
           'type' => 'text',
@@ -66,7 +55,7 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[core][label]',
           'value' => '',
           'description' => __( 'Singular label of the post type.', $mf_domain ),
-          'class' => "{validate:{required:true,messages:{required:'". __('This Field is required',$mf_domain)."'}}}",
+          'class' => "{validate:{required:true,messages:{required:'". __('This field is required',$mf_domain)."'}}}",
           'div_class' => 'form-required'
         ),
         'labels' => array(
@@ -78,6 +67,17 @@ class mf_posttype extends mf_admin {
           'description' =>  __( 'Plural label of the post type.', $mf_domain ),
           'class' => '',
           'div_class' => ''
+        ),
+        'type' => array(
+          'id' => 'posttype-type',
+          'type' => 'text',
+          'label' => __( 'Type name', $mf_domain ),
+          'name' => 'mf_posttype[core][type]',
+          'value' => '',
+          'description' => __( 'Used by the system, the type must have less than 20 characters, only lowercase alphanumeric characters and undescore is accepted. Once the post type is created, the type name cannot be changed.', $mf_domain ),
+          'class' => "{ validate:{ required:true, maxlength:20, lowercase:true, messages:{ lowercase:'".__( 'Only lowercase alphanumeric characters and underscore is accepted' )."', required:'".__( 'This field is required', $mf_domain )."', maxlength:'".__( 'This field must have less than 20 characters' )."' }}}",
+          'div_class' => 'form-required',
+          'readonly'   => $type_readonly
         ),
         'description' => array(
           'id' => 'posttype-description',

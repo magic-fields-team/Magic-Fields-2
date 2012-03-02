@@ -190,7 +190,8 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js', array( 'jquery' ) );
       wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js', array( 'jquery' ) );
       wp_enqueue_script( 'mf_admin',MF_BASENAME.'js/mf_admin.js', array( 'jquery.validate', 'jquery.metadata', 'jquery' ) );
-      if( isset($_GET['mf_action']) && in_array($_GET['mf_action'],array('add_field','edit_field') )  ){
+      // add stringToSlug
+      if( isset($_GET['mf_action']) && in_array($_GET['mf_action'],array('add_field','edit_field', 'add_post_type', 'add_group', 'add_custom_taxonomy') )  ){
         wp_enqueue_script( 'jquery.stringToSlug', MF_BASENAME.'js/third_party/jquery.stringToSlug.min.js', array('mf_admin') );
       }
 
@@ -198,7 +199,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_posttype" ) {
         wp_enqueue_script( 'mf_posttype', MF_BASENAME.'js/mf_posttypes.js', array('mf_admin') );
       }
-      //and this scripts only will be added on the post types section
+      //and this scripts only will be added on the custom taxonomy section
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_custom_taxonomy" ) {
         wp_enqueue_script( 'mf_taxonomy', MF_BASENAME.'js/mf_taxonomy.js', array('mf_admin') );
       }
@@ -207,9 +208,12 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       if( ( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == 'mf_custom_fields' ) &&
           ( !empty( $_GET['mf_action'] ) && $_GET['mf_action'] == 'fields_list' ) ) {
         wp_enqueue_script( 'mf_sortable_fields', MF_BASENAME.'js/mf_posttypes_sortable.js', array( 'jquery-ui-sortable' ) );
-  
       }
 
+      // scripts needed for the custom groups
+      if( ( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == 'mf_custom_group' ) ){
+        wp_enqueue_script( 'mf_custom_group', MF_BASENAME.'js/mf_custom_group.js', array('mf_admin') );
+      }
 
       //Adding Css files for the post-new.php section (where is created a new post in wp)
       if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {

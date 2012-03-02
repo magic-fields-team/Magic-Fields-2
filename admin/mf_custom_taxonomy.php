@@ -267,17 +267,6 @@ class mf_custom_taxonomy extends mf_admin{
           'class'       => '',
           'div_class'   => ''
         ),
-        'type' => array(
-          'id'          => 'custom-taxonomy-type',
-          'type'        => 'text',
-          'label'       => __( 'Type', $mf_domain ),
-          'name'        => 'mf_custom_taxonomy[core][type]',
-          'value'       => '',
-          'description' => __( 'Name of the object type for the taxonomy object. <br /><small>Name must not contain capital letters or spaces</small>', $mf_domain ),
-          'class'       => "{validate:{required:true, lowercase:true ,messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'". __('This Field is required',$mf_domain)."'}}}",
-          'div_class'   => 'form-required',
-          'readonly'   => $type_readonly
-        ),
         'name' => array(
           'id'          => 'custom-taxonomy-name',
           'type'        => 'text',
@@ -297,6 +286,17 @@ class mf_custom_taxonomy extends mf_admin{
           'description' =>  __( 'A plural descriptive name for the taxonomy marked for translation.', $mf_domain ),
           'class'       => '',
           'div_class'   => ''
+        ),
+        'type' => array(
+          'id'          => 'custom-taxonomy-type',
+          'type'        => 'text',
+          'label'       => __( 'Type', $mf_domain ),
+          'name'        => 'mf_custom_taxonomy[core][type]',
+          'value'       => '',
+          'description' => __( 'Name of the object type for the taxonomy object. Used by the system, name must not contain capital letters or spaces. Once the taxonomy is created, the type cannot be changed.', $mf_domain ),
+          'class'       => "{validate:{required:true, lowercase:true ,messages:{ lowercase:'".__( 'Only  are accepted lowercase characters,numbers or underscores' )."', required:'". __('This Field is required',$mf_domain)."'}}}",
+          'div_class'   => 'form-required',
+          'readonly'   => $type_readonly
         ),
         'description' => array(
           'id'          => 'custom-taxonomy-description',
