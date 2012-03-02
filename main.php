@@ -3,7 +3,7 @@
 Plugin Name: Magic Fields
 Plugin URI: http://magicfields.org
 Description: Create custom fields for your post types 
-Version: 2.0
+Version: 2.0.1
 Author:  Hunk and Gnuget
 Author URI: http://magicfields.org
 License: GPL2
@@ -223,7 +223,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     }
   }
    
-  add_action('wp_ajax_mf_call','mf_ajax_call');
+  add_action('wp_ajax_mf_call','mf_ajax_call'); // does this have any meaning?
   /* estara sera la funcion principal de llamadas js de MF*/
   function mf_ajax_call(){
     $call = new mf_ajax_call();
@@ -244,4 +244,20 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
 }else{
   /* load front-end functions */
   require_once( 'mf_front_end.php' ); 
+}
+
+
+add_filter('plugin_action_links', 'mf_action_links', 10, 2);
+
+// output a settings a link on the plugins page
+function mf_action_links($links, $file){
+	//Static so we don't call plugin_basename on every plugin row.
+	static $this_plugin;
+	if (!$this_plugin) $this_plugin = plugin_basename(dirname(__FILE__).'/main.php');
+	
+	if ($file == $this_plugin){
+		$settings_link = '<a href="options-general.php?page=mf_settings">' . __('Settings', $mf_domain) . '</a>';
+		array_unshift( $links, $settings_link ); // before other links
+	}
+	return $links;
 }

@@ -7,14 +7,29 @@
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
 
 ##Description
-Magic Fields 2 is a WordPress CMS plugin  who is focused in improved the way how are created the custom fields, post types and custom taxonomies in wordpress.
+Magic Fields 2 is a WordPress CMS plugin which is focused on improving the way how custom fields, post types and custom taxonomies are created in Wordpress.
 
-In Magic Fields existed 15 pre-build types of custom fields
+There are 15 pre-built custom fields in Magic Fields:
+* Audio field
+* Checkbox field
+* Checkbox list field
+* Color picker field
+* Datepicker field
+* Dropdown field
+* File field
+* Image field
+* Image media field
+* Markdown editor field
+* Multiline editor field
+* Radiobutton list field
+* Related type field
+* Slider field
+* Textbox field
 
 **NOTE: Magic Fields 2 IS NOT backward compatible with MF1**
 
-##Instalation
-Follow this steps to install MF2
+##Installation
+Follow these steps to install MF2:
 
 1. Download the plugin into the **/wp-content/plugins/** folder
 2. Activate MF2
@@ -22,8 +37,9 @@ Follow this steps to install MF2
 ## Changelog ##
 
 ###2.0###
- * First release  
+ * First release
 
 ##Thanks To:
-* http://bassistance.de  for his awesome [Jquery Validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/,"jQuery Validate")
-* John Resig  for his [jQuery metadata Plugin](https://github.com/jquery/jquery-metadata,'jQuery metadata')
+* Yusuke Kamiyamane  for the [Fugue Icons](http://p.yusukekamiyamane.com/ "Fugue Icons"), the Wand-Hat icon is his work
+* http://bassistance.de  for his awesome [Jquery Validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/ "jQuery Validate")
+* John Resig  for his [jQuery metadata Plugin](https://github.com/jquery/jquery-metadata "jQuery metadata")

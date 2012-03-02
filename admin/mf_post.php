@@ -392,7 +392,9 @@ class mf_post extends mf_admin {
     if( (in_array('multiline',$fields) || in_array('image_media',$fields) )  && !post_type_supports($post_type,'editor' ) ){
       add_thickbox();
       wp_enqueue_script('media-upload');
-      add_action( 'admin_print_footer_scripts', 'wp_tiny_mce', 25 );
+      wp_enqueue_script('editor'); // add JS functions of the editor
+      //add_action( 'admin_print_footer_scripts', 'wp_tiny_mce', 25 ); // outdated?
+      add_action( 'admin_print_footer_scripts', 'wp_editor'); // add buttons of the editor
       add_action( 'admin_print_footer_scripts', array($this,'media_buttons_add_mf'), 51 );
     }
     

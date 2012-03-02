@@ -13,7 +13,10 @@ class mf_settings extends mf_admin {
 
     global $mf_domain;
     print '<div class="wrap">';
-    //@todo: the title needs a hat icon
+
+    // the title needs a hat icon
+    echo get_screen_icon('magic-fields');
+
     print '<h2>'.__('Magic Fields Settings', $mf_domain ).'</h2>';
     $options = self::fields_form();
     self::form_options($options);
