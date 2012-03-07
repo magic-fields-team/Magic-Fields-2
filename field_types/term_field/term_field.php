@@ -17,20 +17,19 @@ class term_field extends mf_custom_fields {
   public function _options(){
     global $mf_domain;
 	
-	// Get the taxonomie as dropdownoption
-	$select = array();
-	$zahl = 0;
-	$tax = get_taxonomies();
-	foreach($tax as $k => $v){
-		$select[$zahl++] = $v;
-	 }
+    // Get the taxonomie as dropdownoption
+    $select = array();
+    $tax = get_taxonomies();
+    foreach($tax as $k => $v){
+	  $select[] = $v;
+    }
 	
     $data = array(
      'option'  => array(
         'term'  => array(
           'type'        =>  'select',
           'id'          =>  'term',
-          'label'       =>  __('related taxonomie: ',$mf_domain),
+          'label'       =>  __('related taxonomy: ',$mf_domain),
           'name'        =>  'mf_field[option][term]',
           'default'     =>  '',
           'options'     => $select,
@@ -43,10 +42,8 @@ class term_field extends mf_custom_fields {
       )
     );
     return $data;
-	
   }
-
-	
+  
   public function display_field( $field, $group_index = 1, $field_index = 1 ) {
     global $mf_domain;
 
@@ -59,20 +56,17 @@ class term_field extends mf_custom_fields {
     $output = '';
 	
 	// Get the taxonomie as dropdownoption
-	$select = array();
-	$zahl = 0;
-	$tax = get_taxonomies();
-	foreach($tax as $k => $v){
-		$select[$zahl++] = $v;
-	 }
+    $select = array();
+    $tax = get_taxonomies();
+    foreach($tax as $k => $v){
+	  $select[] = $v;
+    }
 	
-	$option_from_term_array = $field['options']['term'];
-	$options = get_terms($select[$option_from_term_array]);
-
+    $option_from_term_array = $field['options']['term'];
+    $options = get_terms($select[$option_from_term_array]);
     $output = '<div class="mf-dropdown-box">';
-
-  	$value = $field['input_value'];
-
+    $value = $field['input_value'];
+	
     $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s" >',$field['input_id'],$field['input_name']);
 
     if( $notype != "" ) {
