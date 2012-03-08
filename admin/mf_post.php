@@ -392,12 +392,11 @@ class mf_post extends mf_admin {
     if( (in_array('multiline',$fields) || in_array('image_media',$fields) )  && !post_type_supports($post_type,'editor' ) ){
       add_thickbox();
       wp_enqueue_script('media-upload');
-      wp_enqueue_script('editor'); // add JS functions of the editor
-      //add_action( 'admin_print_footer_scripts', 'wp_tiny_mce', 25 ); // outdated?
-      add_action( 'admin_print_footer_scripts', 'wp_editor'); // add buttons of the editor
-      add_action( 'admin_print_footer_scripts', array($this,'media_buttons_add_mf'), 51 );
+      wp_enqueue_script('editor'); // load admin/mf_editor.js (switchEditor)
+      mf_autoload('mf_tiny_mce'); // load admin/mf_tiny_mce.php (tinyMCE)
+      add_action( 'admin_print_footer_scripts', 'mf_tiny_mce', 25 ); // embed tinyMCE
+      add_action( 'admin_print_footer_scripts', array($this, 'media_buttons_add_mf'), 51 );
     }
-    
 
     foreach($fields as $field) {
       //todo: Este método debería también de buscar en los paths donde los usuarios ponen sus custom fields
@@ -464,7 +463,7 @@ class mf_post extends mf_admin {
   public function tmce_not_remove_p_and_br(){
     ?>
     <script type="text/javascript">
-      //<![CDATA[                                                                                     
+      //<![CDATA[ 
       jQuery('body').bind('afterPreWpautop', function(e, o){
           o.data = o.unfiltered
             .replace(/caption\]\[caption/g, 'caption] [caption')
@@ -474,7 +473,7 @@ class mf_post extends mf_admin {
         }).bind('afterWpautop', function(e, o){
           o.data = o.unfiltered;
         });
-    //]]>                                                                                           
+    //]]>
     </script>
     <?php
   }
