@@ -313,10 +313,10 @@ tinyMCEPreInit = {
         if ( $ext_plugins )
                 echo "$ext_plugins\n";
 
-        if ( ! $compressed ) {
+        //if ( ! $compressed ) { // the stock language files also need to be marked loaded when compressed scripts are used
 ?>
 (function(){var t=tinyMCEPreInit,sl=tinymce.ScriptLoader,ln=t.mceInit.language,th=t.mceInit.theme,pl=t.mceInit.plugins;sl.markDone(t.base+'/langs/'+ln+'.js');sl.markDone(t.base+'/themes/'+th+'/langs/'+ln+'.js');sl.markDone(t.base+'/themes/'+th+'/langs/'+ln+'_dlg.js');tinymce.each(pl.split(','),function(n){if(n&&n.charAt(0)!='-'){sl.markDone(t.base+'/plugins/'+n+'/langs/'+ln+'.js');sl.markDone(t.base+'/plugins/'+n+'/langs/'+ln+'_dlg.js');}});})();
-<?php } ?>
+<?php //} ?>
 tinyMCE.init(tinyMCEPreInit.mceInit);
 /* ]]> */
 </script>
