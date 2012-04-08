@@ -225,7 +225,39 @@ textarea.mf_editor { width: 99%; padding: 8px;}
     padding:4px 5px 2px;
 }
 
-/* image upload */
+/**
+ * File upload 
+ * @todo put this into the file field css
+ */
+
+.file_layout { padding: 0 10px; }
+.mf-field-ui .file_preview {
+  border: 1px solid #EAEAEA;
+  background: #FFF;
+  margin-top: 2px;
+  max-width: 400px;
+}
+.mf-field-ui .file_wrap {
+  min-width: 158px;
+  min-height: 24px;
+  text-align: center;
+  margin: 4px;
+}
+.mf-field-ui .file_preview {
+  margin-right: 14px;
+  float: left;
+}
+.file_input {
+  float: left;
+  margin-top: 10px;
+  height: 40px;
+  margin-bottom: 10px;
+  /*width: 520px;*/
+}
+
+/**
+ * image uploading
+ */
 .image_layout{ padding-left: 10px; }
 .mf-field-ui .image_photo {
   border: 1px solid #EAEAEA;
@@ -236,19 +268,20 @@ textarea.mf_editor { width: 99%; padding: 8px;}
 .mf-field-ui .image_photo img {
   margin: 4px;
 }
-.image_photo .photo_edit_link {
+/*.image_photo .photo_edit_link*/
+.photo_edit_link {
   line-height: 18px;
   border-top: 1px solid #EAEAEA;
-  width: 158px;
+  width: 100%;
   text-align: center;
 }
 
-.image_photo .photo_edit_link a {
+.photo_edit_link a {
   text-decoration: none;
   font-weight: bold;
   color: #21759B;
 }
-.image_photo .photo_edit_link a.remove{
+.photo_edit_link a.remove{
   color: #BB3939;
 }
 .image_layout .image_photo {
@@ -256,11 +289,10 @@ textarea.mf_editor { width: 99%; padding: 8px;}
   float: left;
   margin-right: 14px;
 }
-.image_layout .file_wrap, .image_layout .image_wrap {
+.image_layout .image_wrap {
   min-height: 78px;
   text-align: center;
 }
-
 .image_layout .image_input {
   float: left;
   margin-top: 10px;
@@ -268,6 +300,7 @@ textarea.mf_editor { width: 99%; padding: 8px;}
   margin-bottom: 10px;
   /*width: 520px;*/
 }
+
 .audio_frame{
   margin-top: 0 !important;
 }

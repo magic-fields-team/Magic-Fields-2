@@ -9,6 +9,13 @@ function mf_file_callback_upload(data){
     //jQuery('#img_thumb_'+data.field_id).attr('src',image_thumb);
     jQuery('#edit-'+data.field_id).attr('href',data.file_url);
     jQuery('#'+data.field_id).val(data.name);
+
+    // display filename
+    jQuery('#filename_'+data.field_id).empty();
+    var p = document.createElement("p");
+    var txt = document.createTextNode(data.name);
+    p.appendChild(txt);
+    jQuery('#filename_'+data.field_id).append(p);
     
     var success_resp = '<span class="mf-upload-success" >'+data.msg+'</span>';
     jQuery('#response-'+data.field_id).html(success_resp).show();
@@ -41,6 +48,9 @@ jQuery('.remove_file').live('click', function(){
     //todo añadir al arreglo de estan los files a borrar
     jQuery('#'+id).val('');
     jQuery('#photo_edit_link_'+id).hide();
+    
+    // remove filename
+    jQuery('#filename_'+id).empty();
     //jQuery("#img_thumb_"+id).attr("src",mf_js.mf_url+"images/noimage.jpg");
   }
 });

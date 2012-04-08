@@ -111,7 +111,17 @@ if( isset($_POST['fileframe']) ){
     iframe.style.display="";
   </script>
 <?php } ?>
-<link rel='stylesheet' href='<?php echo get_bloginfo('wpurl');?>/wp-admin/css/global.css' type='text/css' />
+
+<?php
+// insert global admin stylesheet
+$admin_css = array('global.css', 'wp-admin.css'); // different stylesheets for different WP versions
+foreach($admin_css as $c){
+  if( file_exists(ABSPATH . '/wp-admin/css/' . $c) ){
+    echo '<link rel="stylesheet" href="'. get_bloginfo('wpurl') .'/wp-admin/css/' . $c . '" type="text/css" />';
+    break; // insert only one stylesheet
+  }
+}
+?>
 <style>
   body { padding: 0px; margin: 0px; vertical-align:top; background: transparent;}
 

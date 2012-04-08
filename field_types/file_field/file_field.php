@@ -39,23 +39,23 @@ class file_field extends mf_custom_fields {
  
     $value  = sprintf('<img src="%s" id="%s" />',$value,$imageThumbID);
 
-    $out  = '<div class="image_layout">';
-    $out .= '<div class="image_photo">';
-    $out .= '<div class="file_wrap">';
-    //$out .= $value;
-    $out .= '</div>';
+    $out  = '<div class="file_layout">';
+    $out .= '<div class="file_preview">';
+    $out .= '<div id="filename_'.$field['input_id'].'" class="file_wrap">';
+    $out .= '<p>'.$field['input_value'].'</p>';
+    $out .= '</div>'; // end of file_wrap
     $out .= sprintf('<div id="photo_edit_link_%s"  %s class="photo_edit_link">',$field['input_id'],$field_style);
     $out .= sprintf('<a href="%s" target="_blank" id="edit-%s" class="mf-file-view" >%s</a> | ',MF_FILES_URL.$field['input_value'],$field['input_id'],__('View',$mf_domain));
     $out .= sprintf('<a href="#remove" class="remove remove_file" id="remove-%s" >%s</a>',$field['input_id'],__('Delete',$mf_domain));
     $out .= '</div>';
     $out .='</div>';
-    $out .= '<div class="image_input">';
+    $out .= '<div class="file_input">';
     $out .= '<div class="mf_custom_field">';
     $out .= sprintf('<div id="response-%s" style="display:none;" ></div>',$field['input_id']);
     $out .= sprintf('<input type="hidden" value="%s" name="%s" id="%s" %s >',$field['input_value'],$field['input_name'],$field['input_id'],$field['input_validate']);
     $out .= $this->upload($field['input_id'],'file','mf_file_callback_upload');
     $out .= '</div></div>';
-    $out .= '</div>';
+    $out .= '</div> <!-- /.file_layout -->';
     return $out;
   }
   
