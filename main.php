@@ -292,12 +292,15 @@ function mf_change_template() {
   // Check if the post has a special template
   $template = get_post_meta($post->ID, '_wp_mf_page_template', true);
 
-  if ($template) {
-    $template = TEMPLATEPATH.'/'.$template;
-
-    if ( $template = apply_filters( 'template_include', $template ) )
-      include(TEMPLATEPATH.'/gnuget.php');
-      die();
+  if (!$template || $template == 'default') {
     return;
   }
+
+  $template = TEMPLATEPATH.'/'.$template;
+
+  if ( $template = apply_filters( 'template_include', $template ) ) {
+    include($template);
+    die();
+  }
+  return;
 }

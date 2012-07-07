@@ -513,8 +513,12 @@ class mf_post extends mf_admin {
 
   //MF Meta box for select template
   function mf_metabox_template () {
+    global $post;
+    
     if ( 0 != count( get_page_templates() ) ) {
-      $template = !empty($post->page_template) ? $post->page_template : false;
+
+      $template = get_post_meta($post->ID, '_wp_mf_page_template', TRUE);
+      $template =  ($template != '') ? $template : false;
     ?>
       <label class="screen-reader-text" for="page_template"><?php _e('Page Template') ?></label><select name="page_template" id="page_template">
       <option value='default'><?php _e('Default Template'); ?></option>
