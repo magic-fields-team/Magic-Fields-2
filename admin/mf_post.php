@@ -32,6 +32,21 @@ class mf_post extends mf_admin {
     $post_types = $this->mf_get_post_types( array('public' => true ), 'names'  );
 
     foreach ( $post_types as $post_type ){
+      if ( post_type_supports($post_type, 'page-attributes') && $post_type != 'page' ) {
+        // If the post type has page-attributes we are going to add
+        // the meta box for choice a template by hand
+        // this is because wordpress don't let choice a template
+        // for any non-page post type
+        add_meta_box(
+          'mf_template_attribute',
+          __('Template'),
+          array( &$this, 'mf_metabox_template' ),
+          $post_type,
+          'side',
+          'default'
+        );
+      }
+
       if( !mf_custom_fields::has_fields($post_type) ) {
           continue;
       }
@@ -219,12 +234,18 @@ class mf_post extends mf_admin {
     if ( !current_user_can( 'edit_post', $post_id ) )
       return $post_id;
 
-    if (!empty($_POST['magicfields'])) {
+     //just in case if the post_id is a post revision and not the post inself
+    if ( $the_post = wp_is_post_revision( $post_id ) ) {
+      $post_id = $the_post;
+    }
 
-      //just in case to post_id is a post revision and not the post inself
-      if ( $the_post = wp_is_post_revision( $post_id ) ) {
-                  $post_id = $the_post;
-      }
+    // Check if the post_type has page attributes
+    // if is the case is necessary need save the page_template
+    if ($_POST['post_type'] != 'page' && isset($_POST['page_template'])) {
+      add_post_meta($post_id, '_wp_mf_page_template', $_POST['page_template'], true) or update_post_meta($post_id, '_wp_mf_page_template', $_POST['page_template']);
+    }
+
+    if (!empty($_POST['magicfields'])) {
 
       $customfields = $_POST['magicfields'];
 
@@ -488,5 +509,18 @@ class mf_post extends mf_admin {
     }
     
   }
-  
+ 
+
+  //MF Meta box for select template
+  function mf_metabox_template () {
+    if ( 0 != count( get_page_templates() ) ) {
+      $template = !empty($post->page_template) ? $post->page_template : false;
+    ?>
+      <label class="screen-reader-text" for="page_template"><?php _e('Page Template') ?></label><select name="page_template" id="page_template">
+      <option value='default'><?php _e('Default Template'); ?></option>
+      <?php page_template_dropdown($template); ?>
+      </select>
+    <?php  
+    }
+  }
 }

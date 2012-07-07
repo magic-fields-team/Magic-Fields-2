@@ -95,4 +95,3 @@ function mf_form_hidden($data){
   <input name="<?php echo $name; ?>" id="<?php echo $id; ?>" type="hidden" <?php echo $value;?> >
   <?php
 }
-

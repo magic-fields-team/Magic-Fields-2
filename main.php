@@ -265,3 +265,39 @@ function mf_action_links($links, $file){
 	}
 	return $links;
 }
+
+
+/**
+ *  This hack give a custom post type the hability
+ *  to choose a custom template
+ */
+add_action('template_redirect','mf_change_template');
+function mf_change_template() {
+  global $post;
+
+  // Process feeds and trackbacks even if not using themes.
+  if ( is_robots() ) :
+    do_action('do_robots');
+    return;
+  elseif ( is_feed() ) :
+    do_feed();
+    return;
+  elseif ( is_trackback() ) :
+    include( ABSPATH . 'wp-trackback.php' );
+    return;
+  endif;
+
+ 
+
+  // Check if the post has a special template
+  $template = get_post_meta($post->ID, '_wp_mf_page_template', true);
+
+  if ($template) {
+    $template = TEMPLATEPATH.'/'.$template;
+
+    if ( $template = apply_filters( 'template_include', $template ) )
+      include(TEMPLATEPATH.'/gnuget.php');
+      die();
+    return;
+  }
+}
