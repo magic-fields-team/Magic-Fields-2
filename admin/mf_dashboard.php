@@ -66,6 +66,8 @@ class mf_dashboard extends mf_admin {
                   $link = wp_nonce_url($link,"delete_post_type_mf_posttype");
                 ?> 
                 <a class="mf_confirm" alt="<?php _e("This action can't be undone, are you sure?", $mf_domain )?>"  href="<?php print $link;?>">Delete</a> 
+								<?php else: ?>
+									| <a href="admin.php?page=mf_dispatcher&init=false&mf_section=mf_posttype&mf_action=set_categories&post_type=<?php echo $pt->name;?>&TB_iframe=1&width=640&height=541" title="default categories" class="thickbox" onclick="return false;" >Set default categories</a>
                  <?php endif; ?>
               </span>
             </div>

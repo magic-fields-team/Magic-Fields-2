@@ -461,6 +461,10 @@ class mf_posttype extends mf_admin {
 	      </p>
 	    <?php } ?>
 	  <?php } ?>
+	<p>
+		<?php $cat_post_type = $_GET['post_type']; ?>
+		<a href="admin.php?page=mf_dispatcher&init=false&mf_section=mf_posttype&mf_action=set_categories&post_type=<?php echo $cat_post_type;?>&TB_iframe=1&width=640&height=541" title="default categories" class="thickbox" onclick="return false;" >set default categories</a>
+		</p>
 	</div>
 	<!-- / taxonomies -->
 
@@ -527,6 +531,83 @@ class mf_posttype extends mf_admin {
     <?php
   }
 
+	public function set_categories(){
+		global $wpdb;
+		$post_type = $_GET['post_type'];
+
+		if(!$post_type){
+			echo "<h3>is necessary that the post type is created</h3>";
+		}else{
+			
+		$all_taxonomies = get_object_taxonomies($post_type,'object');
+		$is_type_categorie = array();
+		foreach($all_taxonomies as  $cat){
+			if($cat->hierarchical == '1'){
+				array_push($is_type_categorie,$cat->name);
+			}
+		}
+	//	pr($is_type_categorie);
+		$customCategoryIds = array();
+		
+		$post_type_key = sprintf('_cat_%s',$post_type);
+		$sql ="SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key='".$post_type_key."' ";
+		$check = $wpdb->get_row($sql);
+		
+		if ($check) {
+			$cata = $check->meta_value;
+			$customCategoryIds = maybe_unserialize($cata);
+		}
+		
+		echo '<input type="hidden" id="post_type_name" value="'.$post_type.'"> ';
+		echo '<div id="default-cats">';
+		echo '<div id="resp" style="color: #39A944; display:none;">changes have been saved successfully</div>';
+		foreach($is_type_categorie as $name){
+			echo "<h3>".$name.'</h3>';
+			echo "<div>";
+			$taxonomy = 'category';
+			$term_args=array(
+			  'hide_empty' => false,
+			  'orderby' => 'term_group',
+			  'order' => 'ASC'
+			);
+			$termsOfCategory = get_terms($name,$term_args);
+			$this->PrintNestedCats( $termsOfCategory, 0, 0, $customCategoryIds );
+			echo "</div>";
+		}
+		
+		
+		echo '<p class="submit">';
+		  
+		echo  '<input type="submit" class="button button-primary" name="submit" id="send_set_categories" value="Save categories">';
+		echo '</p>';
+		
+		echo '</div>';
+		
+	}
+	
+			
+
+	}
+	
+	
+	private function PrintNestedCats( $cats, $parent = 0, $depth = 0, $customCategoryIds ) {
+		foreach ($cats as $cat) : 
+			if( $cat->parent == $parent ) {
+				$checked = "";
+				
+				if (@in_array($cat->taxonomy . "-" .$cat->term_id, $customCategoryIds))
+				{
+					$checked = "checked=\"checked\"";
+				}
+				echo str_repeat('&nbsp;', $depth * 4);
+?>					<input type="checkbox" name="custom-write-panel-categories[]" class="dos" value="<?php echo $cat->taxonomy . "-" .$cat->term_id?>" <?php echo $checked?> /> <?php echo $cat->name ?> <br/>
+<?php				
+			$this->PrintNestedCats( $cats, $cat->term_id, $depth+1, $customCategoryIds );
+			}
+		endforeach;
+	}
+	
+	
   /**
    * Save a Post Type
    */

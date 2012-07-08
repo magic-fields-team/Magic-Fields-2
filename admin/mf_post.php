@@ -509,6 +509,47 @@ class mf_post extends mf_admin {
     }
     
   }
+
+	public function categories_of_post_type(){
+		
+		global $wpdb;
+		$assignedCategoryIds =  array();
+		
+		if( count($_GET) == 0){ $_GET['post_type'] = 'post'; }
+		
+		if (isset($_GET['post_type'])) {
+			$post_type_key = sprintf('_cat_%s',$_GET['post_type']);
+				
+			$sql ="SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key='".$post_type_key."' ";
+			$check = $wpdb->get_row($sql);
+			if ($check) {
+				$cata = $check->meta_value;
+				$assignedCategoryIds = maybe_unserialize($cata);
+			}
+		}
+		
+	
+		?>
+		<script type="text/javascript">
+			var mf_categories = new Array(<?php echo '"'.implode('","',$assignedCategoryIds).'"' ?>); 
+			jQuery(document).ready(function($) {
+
+			  if(mf_categories.length == 1 && mf_categories[0] == "" ){
+
+			  }else{
+			    $.each(mf_categories, function(key,value) {
+			      $("#in-"+value).attr('checked','checked');
+			    });
+			  }
+
+			});
+		</script>
+		<?php
+	}
+	public function set_categories(){
+		
+		add_action( 'admin_print_footer_scripts', array($this,'categories_of_post_type'), 50 );
+	}
  
 
   //MF Meta box for select template

@@ -113,4 +113,32 @@ class mf_ajax_call{
     }
   }
 
+	public function set_default_categories($data){
+		sleep(3);
+		global $wpdb;
+		
+		$post_type_key = sprintf('_cat_%s',$data['post_type']);
+		$cats = preg_split('/\|\|\|/', $data['cats']);
+		$cats = maybe_serialize($cats);
+		
+		$check_parent ="SELECT meta_id FROM ".$wpdb->postmeta." WHERE meta_key='".$post_type_key."' ";
+		$query_parent = $wpdb->query($check_parent);
+
+    if($query_parent){
+			$sql = "UPDATE ". $wpdb->postmeta .
+              " SET meta_value = '".$cats."' ".
+              " WHERE meta_key = '".$post_type_key."' AND post_id = '0' ";
+		}else{
+			$sql = "INSERT INTO ". $wpdb->postmeta .
+             " (meta_key, meta_value) ".
+             " VALUES ('".$post_type_key."', '".$cats."')";
+		}
+		$wpdb->query($sql);
+		$resp = array('success' => 1);
+		
+		//update_post_meta(-2, $post_type, $cats);
+		
+		echo json_encode($resp);
+	}
+
 }
