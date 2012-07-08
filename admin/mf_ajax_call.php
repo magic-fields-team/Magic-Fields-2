@@ -114,7 +114,6 @@ class mf_ajax_call{
   }
 
 	public function set_default_categories($data){
-		sleep(3);
 		global $wpdb;
 		
 		$post_type_key = sprintf('_cat_%s',$data['post_type']);
