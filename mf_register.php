@@ -28,6 +28,7 @@ class mf_register{
       $option['query_var'] = ($option['query_var']) ? true : false;
       $option['exclude_from_search'] = ($option['exclude_from_search']) ? true : false;
       $option['labels'] = $p['label'];
+      $option['with_front'] = (isset($option['with_front'])) ? $option['with_front'] : true;
 
 
       if( isset($p['support']) ){
@@ -47,7 +48,7 @@ class mf_register{
 			
 			
       if($option['rewrite'] && $option['rewrite_slug'])
-        $option['rewrite'] = array( 'slug' => $option['rewrite_slug'],'with_front' => $option['with_front'];);
+        $option['rewrite'] = array( 'slug' => $option['rewrite_slug'],'with_front' => $option['with_front']);
 
       unset($option['rewrite_slug']);
       unset($option['with_front']);
