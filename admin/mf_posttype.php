@@ -191,6 +191,14 @@ class mf_posttype extends mf_admin {
           'value' => '',
           'description' => __( 'Prepend posts with this slug - defaults to post type\'s name', $mf_domain )
         ),
+        'with_front' => array(
+          'id'  => 'posttype-with-front',
+          'type' => 'checkbox',
+          'label' => __( 'With front' ),
+          'name' => 'mf_posttype[option][with_front]',
+          'value' => 1,
+          'description' => __( 'Should the permastruct be prepended with the front base. (example: if your permalink structure is /blog/, then your links will be: false->/news/, true->/blog/news/)', $mf_domain )
+        ),
         'query_var' => array(
           'id' => 'posttype-query-var',
           'type' => 'checkbox',
@@ -712,6 +720,7 @@ class mf_posttype extends mf_admin {
           'hierarchical'        => ($tmp->hierarchical)? 1 : 0,
           'rewrite'             => $rewrite,
           'rewrite_slug'        => $rewrite_slug,
+          'with_front'          => ($tmp->with_front)? 1 : 0,
           'query_var'           => ($tmp->query_var)? 1 : 0,
           'can_export'          => ($tmp->can_export)? 1 : 0,
           'show_in_nav_menus'   => ($tmp->show_in_nav_menus)? 1 : 0

@@ -47,10 +47,10 @@ class mf_register{
 			
 			
       if($option['rewrite'] && $option['rewrite_slug'])
-        $option['rewrite'] = array( 'slug' => $option['rewrite_slug'],'with_front' => true );
+        $option['rewrite'] = array( 'slug' => $option['rewrite_slug'],'with_front' => $option['with_front'];);
 
-      
       unset($option['rewrite_slug']);
+      unset($option['with_front']);
       array_push($mf_pt_register,$name);
 
       if($option['menu_position']){
