@@ -190,15 +190,29 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       wp_enqueue_script( 'jquery.validate',MF_BASENAME.'js/third_party/jquery.validate.min.js', array( 'jquery' ) );
       wp_enqueue_script( 'jquery.metadata',MF_BASENAME.'js/third_party/jquery.metadata.js', array( 'jquery' ) );
       wp_enqueue_script( 'mf_admin',MF_BASENAME.'js/mf_admin.js', array( 'jquery.validate', 'jquery.metadata', 'jquery' ) );
+
       // add stringToSlug
       if( isset($_GET['mf_action']) && in_array($_GET['mf_action'],array('add_field','edit_field', 'add_post_type', 'add_group', 'add_custom_taxonomy') )  ){
         wp_enqueue_script( 'jquery.stringToSlug', MF_BASENAME.'js/third_party/jquery.stringToSlug.min.js', array('mf_admin') );
       }
 
+			//and this scripts only will be added on the default categories
+      if( !empty( $_GET['mf_action'] ) && $_GET['mf_action'] == "set_categories" ) {
+        wp_enqueue_script( 'mf_set_categories', MF_BASENAME.'js/mf_set_categories.js', array('mf_admin') );
+      }
+
       //and this scripts only will be added on the post types section
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_posttype" ) {
         wp_enqueue_script( 'mf_posttype', MF_BASENAME.'js/mf_posttypes.js', array('mf_admin') );
+				wp_enqueue_script('thickbox');
+				wp_enqueue_style('thickbox');
       }
+
+			if( !empty( $_GET['page'] ) && $_GET['page'] == "mf_dispatcher" ) {
+				wp_enqueue_script('thickbox');
+				wp_enqueue_style('thickbox');
+      }
+
       //and this scripts only will be added on the custom taxonomy section
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_custom_taxonomy" ) {
         wp_enqueue_script( 'mf_taxonomy', MF_BASENAME.'js/mf_taxonomy.js', array('mf_admin') );
@@ -222,6 +236,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
         $css_js->load_js_css_base();
         $css_js->load_js_css_fields();
         $css_js->general_option_multiline();
+				$css_js->set_categories();
         
       }
     }
