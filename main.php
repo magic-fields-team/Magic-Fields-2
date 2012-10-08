@@ -272,6 +272,7 @@ add_filter('plugin_action_links', 'mf_action_links', 10, 2);
 function mf_action_links($links, $file){
 	//Static so we don't call plugin_basename on every plugin row.
 	static $this_plugin;
+  global $mf_domain;
 	if (!$this_plugin) $this_plugin = plugin_basename(dirname(__FILE__).'/main.php');
 	
 	if ($file == $this_plugin){

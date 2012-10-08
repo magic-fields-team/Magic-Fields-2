@@ -470,7 +470,7 @@ class mf_posttype extends mf_admin {
 	    <?php } ?>
 	  <?php } ?>
 	<p>
-		<?php $cat_post_type = $_GET['post_type']; ?>
+		<?php $cat_post_type = (isset($_GET['post_type'])) ? $_GET['post_type']: ''; ?>
 		<a href="admin.php?page=mf_dispatcher&init=false&mf_section=mf_posttype&mf_action=set_categories&post_type=<?php echo $cat_post_type;?>&TB_iframe=1&width=640&height=541" title="default categories" class="thickbox" onclick="return false;" >set default categories</a>
 		</p>
 	</div>
