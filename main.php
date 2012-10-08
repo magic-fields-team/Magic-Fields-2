@@ -31,6 +31,7 @@ License: GPL2
 global $mf_domain,$mf_pt_register;
 $mf_domain = 'magic_fields';
 $mf_pt_register = array();
+$mf_pt_unique = array();
 
 /**
  * Constants
@@ -105,6 +106,9 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     wp_register_style( 'mf_admin_css',MF_BASENAME.'css/mf_admin.css' );
     wp_enqueue_style( 'mf_admin_css' );  
   }
+
+  //unique post type calll
+  add_action('admin_menu', array('mf_menu', 'unique_post_type'));
 
   // Settings Page
   add_action( 'admin_menu', 'mf_menu' );

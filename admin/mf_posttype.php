@@ -88,6 +88,14 @@ class mf_posttype extends mf_admin {
           'description' => __( 'A short descriptive summary of what the post type is.', $mf_domain ),
           'class' => '',
           'div_class' => ''
+        ),
+        'quantity' => array(
+          'id' => 'posttype-quantity',
+          'type' => 'checkbox',
+          'label' => __( 'Quantity', $mf_domain ),
+          'name' => 'mf_posttype[core][quantity]',
+          'value' => 0,
+          'description' => __( 'mark true if you want your post type only has one element.', $mf_domain )
         )
       ),
       'posttype_support' => array(),
@@ -364,6 +372,7 @@ class mf_posttype extends mf_admin {
     }else{
 
       $data = $this->fields_form();
+      
       $post_type_support = array();
       if( isset($post_type['support']) ){
         foreach($post_type['support'] as $k => $v){
@@ -388,11 +397,13 @@ class mf_posttype extends mf_admin {
           }
         }
       }
+
       $this->form_post_type($data);
     }
   }
 
   function form_post_type($data){
+
     global $mf_domain;
     
     $supports = array(
@@ -427,6 +438,10 @@ class mf_posttype extends mf_admin {
 	  <div class="form-field mf_form <?php echo $core['div_class']; ?>">
 	    <?php mf_form_text($core); ?>
 	  </div>
+  <?php elseif($core['type'] == 'checkbox'): ?>
+    <div class="form-field mf_form <?php echo $core['div_class']; ?>">
+    <?php   mf_form_checkbox($core); ?>
+    </div>
 	<?php endif; ?>
 	<?php endforeach; ?>
 	<!-- / core -->
