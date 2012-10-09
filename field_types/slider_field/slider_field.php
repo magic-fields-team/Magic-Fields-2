@@ -84,7 +84,7 @@ class slider_field extends mf_custom_fields {
 
     $output = '';
     $output .= sprintf(
-      '<div id="slider_%s" class="mf_slider_field" data="{min:\'%s\', max:\'%s\', value:\'%s\', stepping:\'%d\'}"></div>',
+      '<div id="slider_%s" class="mf_slider_field" data="{min:\'%s\', max:\'%s\', value:\'%s\', stepping:\'%s\'}"></div>',
       $field['input_id'], 
       $field['options']['value_min'], 
       $field['options']['value_max'],
