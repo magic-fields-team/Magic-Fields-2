@@ -88,7 +88,8 @@ class mf_install {
         field_count INT NOT NULL,  
         group_count  INT NOT NULL, 
         post_id INT NOT NULL,
-      	PRIMARY KEY meta_id (meta_id) ) $charset_collate
+        PRIMARY KEY meta_id (meta_id),
+        INDEX idx_post_field (post_id, field_id) ) $charset_collate
 				";
 
       dbDelta($sql);
