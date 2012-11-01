@@ -16,7 +16,7 @@ class color_picker_field extends mf_custom_fields {
         'jquery',
         'farbtastic',
       ),
-      'css' => FALSE,
+      'css' => TRUE,
       'css_dependencies'  => array(
         'farbtastic'
       )
