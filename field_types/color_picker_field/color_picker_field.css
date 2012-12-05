@@ -1,0 +1,13 @@
+.mf-field-ui .mf_colorpicker{
+  border: 1px solid #EAEAEA;
+  border-left: none;
+  border-top: none;
+  background: #F8F8F8;
+  display: none;
+  margin-top: 6px;
+  position: absolute;
+  z-index: 1;
+}
+.mf_group .mf-field:hover .mf_colorpicker{
+  background: #F0F7FD;
+}

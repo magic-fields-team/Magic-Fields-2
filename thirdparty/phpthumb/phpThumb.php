@@ -33,7 +33,11 @@ $default = array(
 );
 				
 //getting the name of the image
-preg_match('/\/wp-content\/([0-9\_a-z\/\-\.]+\.(jpg|jpeg|png|gif))/i',$_GET['src'],$match);
+
+$content_dir = str_replace('/', '\/', str_replace( ABSPATH, '', WP_CONTENT_DIR ));
+
+preg_match('/\/' .$content_dir .'\/([0-9\_a-z\/\-\.]+\.(jpg|jpeg|png|gif))/i',$_GET['src'],$match);
+
 $image_name_clean = $match[1];
 $extension = $match[2];
 

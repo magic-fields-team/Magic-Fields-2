@@ -68,7 +68,7 @@ class textbox_field extends mf_custom_fields {
     }
 
     $output .= '<div class="text_field_mf" >';
-    $output .= sprintf('<input %s type="text" name="%s" placeholder="%s" value="%s" %s />',$field['input_validate'], $field['input_name'], $field['label'], $field['input_value'], $max );
+    $output .= sprintf('<input %s type="text" name="%s" placeholder="%s" value="%s" %s />',$field['input_validate'], $field['input_name'], $field['label'], str_replace('"', '&quot;', $field['input_value']), $max );
     $output .= '</div>';
     return $output;
   }
