@@ -89,7 +89,7 @@ class mf_install {
         group_count  INT NOT NULL, 
         post_id INT NOT NULL,
         PRIMARY KEY meta_id (meta_id),
-        INDEX idx_post_field (post_id, field_id) ) $charset_collate
+        INDEX idx_post_field (post_id, meta_id) ) $charset_collate
 				";
 
       dbDelta($sql);
@@ -112,6 +112,11 @@ class mf_install {
 
     if( $db_version < 2 ) {
       $sql = "ALTER TABLE ".MF_TABLE_CUSTOM_FIELDS. " CHANGE COLUMN requiered_field required_field tinyint(1)";
+      $wpdb->query( $sql );
+    }
+    if ($db_version < 3) {
+      //add index for mf post meta
+      $sql = "ALTER TABLE ".MF_TABLE_POST_META. " ADD INDEX idx_post_field (post_id, meta_id)";
       $wpdb->query( $sql );
     }
 

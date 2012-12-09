@@ -46,4 +46,4 @@ define( 'MF_TABLE_POST_META',       $wpdb->prefix.'mf_post_meta' );
 //define name for settings MF
 define('MF_SETTINGS_KEY', 'mf_settings');
 define('MF_DB_VERSION_KEY', 'mf_db_version');
-define('MF_DB_VERSION', 2);
+define('MF_DB_VERSION', 3);
