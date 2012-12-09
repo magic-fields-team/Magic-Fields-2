@@ -5,16 +5,17 @@ jQuery.mf_bind('add',function(){
     div_color = "#"+jQuery(value).attr('id');
     field_id = 'colorpicker_value_'+field_id;
     jQuery(div_color).farbtastic('#'+field_id);
-    jQuery('#'+field_id).bind('focusin focusout dblclick', function(e){
-      var picker = jQuery(this).siblings('.mf_colorpicker');
+  });
+});
+
+jQuery('.clrpckr').live('focusin focusout dblclick', function(e){
+  var picker = jQuery(this).siblings('.mf_colorpicker');
       if ( e.type == 'focusout' ) {
         picker.stop(true, true).slideUp();
       } else {
         picker.stop(true, true).slideToggle();
       }
       jQuery('.mf_colorpicker').not(picker).slideUp();
-    });
-  });
 });
 
 jQuery(document).keyup(function(e){

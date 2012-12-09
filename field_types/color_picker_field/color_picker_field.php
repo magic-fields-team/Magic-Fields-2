@@ -33,7 +33,7 @@ class color_picker_field extends mf_custom_fields {
     if(!trim($field['input_value'])) $field['input_value'] = '#ffffff';
     $output = '';
     $output .= sprintf(
-      '<input name="%s" placeholder="%s" value="%s" id="colorpicker_value_%s" %s /><div class="mf_colorpicker" id="colorpicker_%s" ></div>', 
+      '<input name="%s" placeholder="%s" class="clrpckr" value="%s" id="colorpicker_value_%s" %s /><div class="mf_colorpicker" id="colorpicker_%s" ></div>', 
       $field['input_name'],
       $field['label'],
       $field['input_value'],
