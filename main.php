@@ -255,12 +255,17 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
 
   add_filter('attachment_fields_to_edit', 'charge_link_after_upload_image', 10, 2);
   function charge_link_after_upload_image($fields){
+    if( 
+        ( isset($_REQUEST['fetch']) && $_REQUEST['fetch'] ) || 
+        ( isset($_REQUEST['tab']) && $_REQUEST['tab'] == 'library' ) 
+      ){
     printf("
       <script type=\"text/javascript\">
       //<![CDATA[
         load_link_in_media_upload();
       //]]>
       </script>");
+    }
       return $fields;
   }
   
