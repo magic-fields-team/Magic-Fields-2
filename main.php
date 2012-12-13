@@ -1,18 +1,18 @@
-<?php 
+<?php
 /*
 Plugin Name: Magic Fields
 Plugin URI: http://magicfields.org
-Description: Create custom fields for your post types 
+Description: Create custom fields for your post types
 Version: 2.0.1
 Author:  Hunk and Gnuget
 Author URI: http://magicfields.org
 License: GPL2
 */
 
-/*  Copyright 2011 Magic Fields Team 
+/*  Copyright 2011 Magic Fields Team
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -27,7 +27,7 @@ License: GPL2
 
 /**
  * i18n
- */ 
+ */
 global $mf_domain,$mf_pt_register;
 $mf_domain = 'magic_fields';
 $mf_pt_register = array();
@@ -36,7 +36,7 @@ $mf_pt_unique = array();
 /**
  * Constants
  */
-require_once( 'mf_extra.php' ); 
+require_once( 'mf_extra.php' );
 require_once( 'mf_constants.php' );
 
 //auto loading files
@@ -53,7 +53,7 @@ function mf_autoload( $name ) {
 
   //field types
   if( file_exists( MF_PATH.'/field_types/'.$name.'/'.$name.'.php' ) ) {
-    require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php'); 
+    require_once( MF_PATH.'/field_types/'.$name.'/'.$name.'.php');
   }
 }
 if (function_exists("__autoload")) {
@@ -64,14 +64,14 @@ spl_autoload_register("mf_autoload");
 /**
  * Activation and Deactivation
  */
-register_activation_hook( __FILE__, array('mf_install', 'install' ) ); 
+register_activation_hook( __FILE__, array('mf_install', 'install' ) );
 
 //In wp 3.1 and newer the register_activation_hook is not called
-//when the plugin is updated so we need call the upgrade 
+//when the plugin is updated so we need call the upgrade
 //function by hand
 function mf_update_db_check() {
   if ( get_option(MF_DB_VERSION_KEY) != MF_DB_VERSION ) {
-    mf_install::upgrade();  
+    mf_install::upgrade();
   }
 }
 add_action('plugins_loaded','mf_update_db_check');
@@ -95,8 +95,8 @@ if( is_admin() ) {
   //load_plugin_textdomain($mf_domain    , '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
 load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
   //check folders
-  add_action('admin_notices', array('mf_install', 'folders'));  
-  
+  add_action('admin_notices', array('mf_install', 'folders'));
+
   //add common function
   require_once(MF_PATH.'/mf_common.php');
 
@@ -104,7 +104,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
   function mf_enqueue_scripts() {
     // CSS Files
     wp_register_style( 'mf_admin_css',MF_BASENAME.'css/mf_admin.css' );
-    wp_enqueue_style( 'mf_admin_css' );  
+    wp_enqueue_style( 'mf_admin_css' );
   }
 
   //unique post type calll
@@ -142,16 +142,16 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
 
   }
 
-  //Adding metaboxes into the  pages for create posts 
+  //Adding metaboxes into the  pages for create posts
   //Also adding code for save this data
   add_action( 'add_meta_boxes', 'mf_add_meta_boxes');
   function mf_add_meta_boxes() {
-     
+
   }
 
   /**
    * Magic Fields dispatcher
-   */ 
+   */
   function mf_dispatcher() {
     $section = "mf_dashboard";
     $action = "main";
@@ -165,7 +165,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     if( !empty( $_GET['mf_action'] ) ) {
       $action = urlencode( $_GET['mf_action'] );
     }
-    
+
     $tmp = new $section();
     $tmp->$action();
     //call_user_func( array( $section, $action ) );
@@ -179,12 +179,12 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
   add_action( 'init', 'mf_init' );
   function mf_init() {
     //Sometimes is neccesary execute the mf_dispatcher function in the init hook
-    //because we want use a custom headers or a redirect (wp_safe_redirect for eg) 
+    //because we want use a custom headers or a redirect (wp_safe_redirect for eg)
     if(!empty($_GET['init']) &&  $_GET['init'] == "true" ) {
       mf_dispatcher();
     }
   }
-  
+
   //Including javascripts files
   add_action( 'init', 'mf_add_js');
   function mf_add_js() {
@@ -221,7 +221,7 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       if( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == "mf_custom_taxonomy" ) {
         wp_enqueue_script( 'mf_taxonomy', MF_BASENAME.'js/mf_taxonomy.js', array('mf_admin') );
       }
-    
+
       //Adding the files for the sort feature of the custom fields
       if( ( !empty( $_GET['mf_section'] ) && $_GET['mf_section'] == 'mf_custom_fields' ) &&
           ( !empty( $_GET['mf_action'] ) && $_GET['mf_action'] == 'fields_list' ) ) {
@@ -241,11 +241,11 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
         $css_js->load_js_css_fields();
         $css_js->general_option_multiline();
 				$css_js->set_categories();
-        
+
       }
     }
   }
-   
+
   add_action('wp_ajax_mf_call','mf_ajax_call'); // does this have any meaning?
   /* estara sera la funcion principal de llamadas js de MF*/
   function mf_ajax_call(){
@@ -255,9 +255,13 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
 
   add_filter('attachment_fields_to_edit', 'charge_link_after_upload_image', 10, 2);
   function charge_link_after_upload_image($fields){
-    if( 
-        ( isset($_REQUEST['fetch']) && $_REQUEST['fetch'] ) || 
-        ( isset($_REQUEST['tab']) && $_REQUEST['tab'] == 'library' ) 
+    $wp_version = floatval(get_bloginfo('version'));
+
+
+    if(
+        $wp_version < 3.5 ||
+        (( isset($_REQUEST['fetch']) && $_REQUEST['fetch'] ) ||
+        ( isset($_REQUEST['tab']) && $_REQUEST['tab'] == 'library' ))
       ){
     printf("
       <script type=\"text/javascript\">
@@ -268,10 +272,10 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     }
       return $fields;
   }
-  
+
 }else{
   /* load front-end functions */
-  require_once( 'mf_front_end.php' ); 
+  require_once( 'mf_front_end.php' );
 }
 
 
@@ -283,7 +287,7 @@ function mf_action_links($links, $file){
 	static $this_plugin;
   global $mf_domain;
 	if (!$this_plugin) $this_plugin = plugin_basename(dirname(__FILE__).'/main.php');
-	
+
 	if ($file == $this_plugin){
 		$settings_link = '<a href="options-general.php?page=mf_settings">' . __('Settings', $mf_domain) . '</a>';
 		array_unshift( $links, $settings_link ); // before other links
@@ -312,7 +316,7 @@ function mf_change_template() {
     return;
   endif;
 
- 
+
 
   // Check if the post has a special template
   $template = get_post_meta($post->ID, '_wp_mf_page_template', true);
