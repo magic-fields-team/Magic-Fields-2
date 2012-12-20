@@ -241,7 +241,7 @@ class mf_post extends mf_admin {
 
     // Check if the post_type has page attributes
     // if is the case is necessary need save the page_template
-    if ($_POST['post_type'] != 'page' && isset($_POST['page_template'])) {
+    if ( isset($_REQUEST['post_type']) && $_REQUEST['post_type'] != 'page' && isset($_REQUEST['page_template'])) {
       add_post_meta($post_id, '_wp_mf_page_template', $_POST['page_template'], true) or update_post_meta($post_id, '_wp_mf_page_template', $_POST['page_template']);
     }
 
