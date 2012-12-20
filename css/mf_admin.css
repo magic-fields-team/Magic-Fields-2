@@ -98,7 +98,7 @@ ul.options-tabs li.tabs a { color: #333; }
 div.options,div.options_label{ padding-top: 10px; }
 div.options legend, div.options_label legend{ font-style: italic; color: #5A5A5A; padding-bottom: 2px; }
 form#addCustomGroup,form#addCustomField,form#import_post_type{ padding-top: 10px; }
-div.mf_form_right div.categorydiv div.tabs-panel { height: auto; margin-top: 4px; }
+div.mf_form_right div.categorydiv div.tabs-panel { height: auto; margin-top: 4px; max-height:none; }
 
 .helptext-form textarea{ height: 70px; }
 
