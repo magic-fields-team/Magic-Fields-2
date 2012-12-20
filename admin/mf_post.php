@@ -12,6 +12,15 @@ class mf_post extends mf_admin {
 
     //save data
     add_action( 'save_post', array( &$this, 'mf_save_post_data' ) );
+
+    //
+    add_action( 'admin_footer', array( &$this,'mf_check_wp_gallery_version') );
+  }
+
+  function mf_check_wp_gallery_version() {
+    if( is_wp35() ){
+      echo("<script>jQuery(document).ready(function($){mf_use_new_image_gallery();});</script>");
+    }
   }
 
   /**
