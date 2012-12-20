@@ -98,7 +98,12 @@ if(file_exists(MF_CACHE_DIR.$image_name)){
 }else{
   //generating the image
   $thumb = new mfthumb();
-  $thumb_path = $thumb->image_resize($file,$params['w'],$params['h'],$params['zc'],$params['far'],$params['iar'],MF_CACHE_DIR.$image_name);
+  if (is_wp35()) {
+    $thumb_path = $thumb->image_resize35($file,$params['w'],$params['h'],$params['zc'],$params['far'],$params['iar'],MF_CACHE_DIR.$image_name);  
+  }else{
+    $thumb_path = $thumb->image_resize($file,$params['w'],$params['h'],$params['zc'],$params['far'],$params['iar'],MF_CACHE_DIR.$image_name);  
+  }
+  
   //Displaying the image
   if(file_exists($thumb_path)){
     $size = getimagesize($thumb_path);
