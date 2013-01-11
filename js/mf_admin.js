@@ -256,7 +256,7 @@ jQuery(document).ready(function($){
 
 function mf_use_new_image_gallery(){
 	
-  if (typeof wp === 'undefined') return;
+  if (typeof wp === 'undefined' || typeof wp.media === 'undefined') return; 
 		
   var _custom_media = true;
   _orig_send_attachment = wp.media.editor.send.attachment;
