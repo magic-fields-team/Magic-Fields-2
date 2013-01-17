@@ -46,7 +46,7 @@ class file_field extends mf_custom_fields {
     $out .= '</div>'; // end of file_wrap
     $out .= sprintf('<div id="photo_edit_link_%s"  %s class="photo_edit_link">',$field['input_id'],$field_style);
     $out .= sprintf('<a href="%s" target="_blank" id="edit-%s" class="mf-file-view" >%s</a> | ',MF_FILES_URL.$field['input_value'],$field['input_id'],__('View',$mf_domain));
-    $out .= sprintf('<a href="#remove" class="remove remove_file" id="remove-%s" >%s</a>',$field['input_id'],__('Delete',$mf_domain));
+    $out .= sprintf('<a href="#remove" class="remove remove_file" alt="%s" id="remove-%s" >%s</a>',__('Are you sure?', $mf_domain),$field['input_id'],__('Delete',$mf_domain));
     $out .= '</div>';
     $out .='</div>';
     $out .= '<div class="file_input">';
