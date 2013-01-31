@@ -304,6 +304,12 @@ add_action('template_redirect','mf_change_template');
 function mf_change_template() {
   global $post;
 
+  // Check global post
+  if ( empty( $post ) ) {
+    return;
+  }
+
+
   // Process feeds and trackbacks even if not using themes.
   if ( is_robots() ) :
     do_action('do_robots');
