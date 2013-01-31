@@ -101,7 +101,7 @@ class image_media_field extends mf_custom_fields {
     $out .= '</div>';
     $out .= sprintf('<div id="photo_edit_link_%s"  %s class="photo_edit_link">',$field['input_id'],$field_style);
     $out .= sprintf('<a href="%s" target="_blank" id="edit-%s" >%s</a> | ',$path_image_media,$field['input_id'],__('View',$mf_domain));
-    $out .= sprintf('<a href="#remove" class="remove remove_image_media" id="remove-%s" >%s</a>',$field['input_id'],__('Delete',$mf_domain));
+    $out .= sprintf('<a href="#remove" class="remove remove_image_media" alt="%s" id="remove-%s" >%s</a>',__('Are you sure?', $mf_domain),$field['input_id'],__('Delete',$mf_domain));
     $out .= '</div>';
     $out .='</div>';
     $out .= '<div class="image_input">';

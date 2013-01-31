@@ -95,7 +95,9 @@ class mf_posttype extends mf_admin {
           'label' => __( 'Quantity', $mf_domain ),
           'name' => 'mf_posttype[core][quantity]',
           'value' => 0,
-          'description' => __( 'mark true if you want your post type only has one element.', $mf_domain )
+          'description' => __( 'mark true if you want your post type only has one element.', $mf_domain ),
+          'class' => '',
+          'div_class' => ''
         )
       ),
       'posttype_support' => array(),

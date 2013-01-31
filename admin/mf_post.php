@@ -12,6 +12,15 @@ class mf_post extends mf_admin {
 
     //save data
     add_action( 'save_post', array( &$this, 'mf_save_post_data' ) );
+
+    //
+    add_action( 'admin_footer', array( &$this,'mf_check_wp_gallery_version') );
+  }
+
+  function mf_check_wp_gallery_version() {
+    if( is_wp35() ){
+      echo("<script>jQuery(document).ready(function($){mf_use_new_image_gallery();});</script>");
+    }
   }
 
   /**
@@ -105,7 +114,7 @@ class mf_post extends mf_admin {
   }
 
   public function mf_draw_group($metabox,$extraclass = '',$group_index = 1 ,$custom_fields = array() ,$mf_post_values = array(),$only_group = FALSE){
-    global $post;
+    global $post, $mf_domain;
     $id = sprintf('mf_group_%s_%s',$metabox['args']['group_info']['id'], $group_index);
     $group_id = $metabox['args']['group_info']['id'];
     $delete_id = sprintf('delete_group_repeat-%d_%d',$group_id,$group_index);
@@ -141,8 +150,8 @@ class mf_post extends mf_admin {
              <span class="mf-counter sortable-mf"><?php print $group_index; ?></span>
              <span class="hndle sortable_mf row_mf">&nbsp;</span>
              <span class="mf_toolbox_controls">
-               <a class="duplicate_button" id="<?php print $add_id; ?>" href="javascript:void(0);"><span>Add Another</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
-                                                                                                                                                                                      <a class="delete_duplicate_button"  id="<?php print $delete_id; ?>" href="javascript:void(0);" <?php if($only_group) print $group_style; ?> ><span>Remove</span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+               <a class="duplicate_button" id="<?php print $add_id; ?>" href="javascript:void(0);"><span><?php _e('Add Another', $mf_domain); ?></span> <?php echo $metabox['args']['group_info']['label']; ?></a>
+                                                                                                                                                                                      <a class="delete_duplicate_button"  id="<?php print $delete_id; ?>" href="javascript:void(0);" <?php if($only_group) print $group_style; ?> ><span><?php _e('Remove', $mf_domain); ?></span> <?php echo $metabox['args']['group_info']['label']; ?></a>
              </span>
           </div>
        <?php endif; ?>
@@ -197,8 +206,8 @@ class mf_post extends mf_admin {
          </div>
          <?php if( $field['duplicated'] ) :?>
            <div class="mf-duplicate-controls">
-             <a href="javascript:void(0);" id="<?php print $add_id; ?>" class="duplicate-field"> <span>Add Another</span> <?php echo $field['label']; ?></a>
-             <a href="javascript:void(0);" id="<?php print $delete_id; ?>" <?php if($only) print $field_style; ?> class="delete_duplicate_field"><span>Remove</span> <?php echo $field['label']; ?></a>
+             <a href="javascript:void(0);" id="<?php print $add_id; ?>" class="duplicate-field"> <span><?php _e('Add Another', $mf_domain); ?></span> <?php echo $field['label']; ?></a>
+             <a href="javascript:void(0);" id="<?php print $delete_id; ?>" <?php if($only) print $field_style; ?> class="delete_duplicate_field"><span><?php _e('Remove', $mf_domain); ?></span> <?php echo $field['label']; ?></a>
            </div>
          <?php endif;?>
       </div>
@@ -241,7 +250,7 @@ class mf_post extends mf_admin {
 
     // Check if the post_type has page attributes
     // if is the case is necessary need save the page_template
-    if ($_POST['post_type'] != 'page' && isset($_POST['page_template'])) {
+    if ( isset($_REQUEST['post_type']) && $_REQUEST['post_type'] != 'page' && isset($_REQUEST['page_template'])) {
       add_post_meta($post_id, '_wp_mf_page_template', $_POST['page_template'], true) or update_post_meta($post_id, '_wp_mf_page_template', $_POST['page_template']);
     }
 

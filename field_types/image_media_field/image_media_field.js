@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
   $(".remove_image_media").live('click',function(){
-    if(confirm("Are you sure?")){
+    var message = jQuery(this).attr('alt');
+    if(confirm(message)){
          //get the  name to the image
          pattern =  /remove\-(.+)/i;
          id = jQuery(this).attr('id');

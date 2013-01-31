@@ -54,3 +54,15 @@ if( !function_exists('mf_mu_alone') ){
   }
 
 }
+
+if( !function_exists('is_wp35') ){
+
+  function is_wp35(){
+    $wp_version = floatval(get_bloginfo('version'));
+
+    if( $wp_version >= 3.5 ) return TRUE;
+
+    return FALSE;
+  }
+
+}

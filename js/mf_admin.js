@@ -253,3 +253,33 @@ jQuery(document).ready(function($){
 		
   });
 });
+
+function mf_use_new_image_gallery(){
+	
+  if (typeof wp === 'undefined' || typeof wp.media === 'undefined') return; 
+		
+  var _custom_media = true;
+  _orig_send_attachment = wp.media.editor.send.attachment;
+
+  jQuery('.update_field_media_upload').removeClass('thickbox').live('click', function(e){
+    window.mf_field_id = jQuery(this).attr('id').replace('thumb_', '');
+    _custom_media = true;
+
+    wp.media.editor.send.attachment = function(props, attachment){
+      if ( _custom_media ) {
+        jQuery("#"+window.mf_field_id).val(attachment.url);
+        mf_set_image_field(attachment.id);
+      }else{
+        return _orig_send_attachment.apply( this, [props, attachment] );
+      };
+    }
+
+    wp.media.editor.open(jQuery(this));
+    return false;
+  });
+
+  jQuery('.add_media').on('click', function(){
+    _custom_media = false;
+  });
+
+}
