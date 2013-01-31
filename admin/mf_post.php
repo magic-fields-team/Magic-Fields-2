@@ -38,7 +38,7 @@ class mf_post extends mf_admin {
     $mf_post_values = $this->mf_get_post_values($post->ID);
 
     //Getting the post types
-    $post_types = $this->mf_get_post_types( array('public' => true ), 'names'  );
+    $post_types = $this->mf_get_post_types( array(), 'names'  );
 
     foreach ( $post_types as $post_type ){
       if ( post_type_supports($post_type, 'page-attributes') && $post_type != 'page' ) {

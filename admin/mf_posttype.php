@@ -789,7 +789,7 @@ class mf_posttype extends mf_admin {
       $p = $this->get_post_type($post_type);
     }else{
       global $_wp_post_type_features;
-      $tmp = get_post_types( array('public' => true,'name' => $post_type) , 'onbject', 'and' );
+      $tmp = get_post_types( array('name' => $post_type) , 'onbject', 'and' );
 
       $tmp = $tmp[$post_type];
 

@@ -73,7 +73,7 @@ class mf_admin {
    *
    *  @return array
    */
-  public function mf_get_post_types( $args = array('public' => true), $output = 'object', $operator = 'and' ){
+  public function mf_get_post_types( $args = array(), $output = 'object', $operator = 'and' ){
     global $wpdb;
 
     $post_types = get_post_types( $args, $output, $operator );
