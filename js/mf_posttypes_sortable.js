@@ -1,5 +1,5 @@
 jQuery( document ).ready( function( $ ) {
-  //Thanks to:  http://devblog.foliotek.com/2009/07/23/make-table-rows-sortable-using-jquery-ui-sortable/
+  // Thanks to:  http://devblog.foliotek.com/2009/07/23/make-table-rows-sortable-using-jquery-ui-sortable/
   // Return a helper with preserved width of cells
   var fixHelper = function(e, ui) {
   	ui.children().each(function() {
@@ -22,7 +22,7 @@ jQuery( document ).ready( function( $ ) {
       
       save_fields_order(group_id);
     }
-  }).disableSelection();
+  });
 
 
   save_fields_order = function(group_id) {
