@@ -63,7 +63,7 @@ class term_field extends mf_custom_fields {
     }
 	
     $option_from_term_array = $field['options']['term'];
-    $options = get_terms($select[$option_from_term_array]);
+    $options = get_terms($select[$option_from_term_array], array('hide_empty' => false));
     $output = '<div class="mf-dropdown-box">';
     $value = $field['input_value'];
 	
