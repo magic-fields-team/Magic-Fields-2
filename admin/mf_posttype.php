@@ -940,7 +940,7 @@ class mf_posttype extends mf_admin {
       $file_path = $_FILES['file']['tmp_name'];
       $overwrite = $_POST['mf_post_type']['import']['overwrite'];
       $this->import($file_path,$overwrite);
-      unlink($filePath);
+      unlink($file_path);
       $this->mf_redirect(null,null,array('message' => 'success'));
     }else{
       //mensaje de error

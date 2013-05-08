@@ -106,7 +106,7 @@ class mf_admin {
     $custom_taxonomy = $wpdb->get_row( $query, ARRAY_A );
     if($custom_taxonomy){
       $id = $custom_taxonomy['id'];
-      $custom_taxonomy = unserialize($custom_taxonomy['arguments'],true);
+      $custom_taxonomy = unserialize($custom_taxonomy['arguments']);
       $custom_taxonomy['core']['id'] = $id;
       return $custom_taxonomy;
     }
