@@ -357,7 +357,7 @@ function create_image($options){
     if(count($attr)){
       $add_attr = NULL;
       foreach($attr as $k => $v){
-        $add_attr .= sprintf('%s="%s"',$k,$v);
+        $add_attr .= sprintf('%s="%s" ',$k,$v);
       }
       $finalString = "<img src='".$field_value."' ".$add_attr." />";
     }else{
