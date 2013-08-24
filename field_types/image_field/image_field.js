@@ -31,7 +31,7 @@ function remove_resp(field_id){
   });
 }
 
-jQuery('.remove_photo').live('click', function(){
+jQuery(document).on('click','.remove_photo', function(){
   var message = jQuery(this).attr('alt');
   if(confirm(message)){
     var pattern =  /remove\-(.+)/i;

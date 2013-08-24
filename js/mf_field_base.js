@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
     </div>';
 
   //tooltip
-  $('small.mf_tip').live('mouseenter mouseleave', function(event) {
+  $(document).on('mouseenter mouseleave','small.mf_tip', function(event) {
     if (event.type == 'mouseenter') {
        var ht = $.trim($(this).children('span.mf_helptext').html());
        if (ht && ht != "") {
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
     }
   });
 
-  $('.delete_duplicate_field').live("click", function(event){
+  $(document).on("click", '.delete_duplicate_field',function(event){
    id = jQuery(this).attr("id");
    pattern =  /delete\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
    var item =  pattern.exec(id);
@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
    }
   });
 
-  $('a.delete_duplicate_button').live('click', function(){
+  $(document).on('click', 'a.delete_duplicate_button',function(){
     id = jQuery(this).attr("id");
     pattern =  /delete\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
     var item =  pattern.exec(id);
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
   });
 
   // duplicate field
-  $('a.duplicate-field').live("click",function(){
+  $(document).on("click",'a.duplicate-field',function(){
     id = jQuery(this).attr("id");
     pattern =  /mf\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
     var item =  pattern.exec(id);
@@ -129,12 +129,13 @@ jQuery(document).ready(function($) {
         $(counter_id).val(field_index);
         fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
         $.mf_bind('duplicate');
+        mf_use_new_image_gallery();
       }
     });
   });
 
   //duplicate group
-  $('a.duplicate_button').live('click', function(){
+  $(document).on('click', 'a.duplicate_button',function(){
     id = jQuery(this).attr('id');
     pattern =  /mf\_group\_repeat\-(([0-9]+)\_([0-9]+))/i;
     var item = pattern.exec(id);
@@ -154,6 +155,7 @@ jQuery(document).ready(function($) {
         $(counter_group_id).val(group_index);
         fixCounterGroup('#mf_group-'+group_id);
         $.mf_bind('duplicate');
+        mf_use_new_image_gallery();
       }
     });
   });
@@ -181,12 +183,12 @@ jQuery(document).ready(function($) {
   });
   
   var mf_groups = $('.mf_group');
-  mf_groups.find("input[type=text],textarea").live("keydown", fieldchange);
-  mf_groups.find("input[type=checkbox],input[type=radio]").live("click", fieldchange);
-  mf_groups.find("select").live("change", fieldchange);
+  $(document).on("keydown", mf_groups.find("input[type=text],textarea"),fieldchange);
+  $(document).on("click", mf_groups.find("input[type=checkbox],input[type=radio]"),fieldchange);
+  $(document).on("change",mf_groups.find("select"), fieldchange);
   
   //callback before save
-  $("#publish").live('click',function(){ $.mf_bind('callback_before_save'); });
+  $(document).on('click',"#publish",function(){ $.mf_bind('callback_before_save'); });
 
   //Post saved as Draft don't require validations
   $('#save-post').click(function(){

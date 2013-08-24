@@ -38,7 +38,7 @@ function remove_resp(field_id){
   });
 }
 
-jQuery('.remove_file').live('click', function(){
+jQuery(document).on('click', '.remove_file',function(){
   var message = jQuery(this).attr('alt');
   if(confirm(message)){
     var pattern =  /remove\-(.+)/i;

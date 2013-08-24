@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-        jQuery('.datebotton_mf').live('click',function(){
+        jQuery(document).on('click','.datebotton_mf',function(){
         the_id = jQuery(this).attr('id');
         picker = the_id.replace(/pick_/,'');
         format = jQuery('#format_date_field_'+picker).text();
@@ -24,7 +24,7 @@ jQuery(document).ready(function($){
         });
         
         //TODAY Botton
-	jQuery('.todaybotton_mf').live('click',function(){
+	jQuery(document).on('click','.todaybotton_mf',function(){
 	    the_id = jQuery(this).attr('id');
 	    picker = the_id.replace(/today_/,'');
 	    today = jQuery(this).attr('alt');
@@ -35,7 +35,7 @@ jQuery(document).ready(function($){
 	});
 
         //BLANK Botton
-	jQuery('.blankBotton_mf').live('click',function(){
+	jQuery(document).on('click','.blankBotton_mf',function(){
 	    the_id = jQuery(this).attr('id');
 	    picker = the_id.replace(/blank_/,'');	    
             jQuery('#display_date_field_'+picker).val("");

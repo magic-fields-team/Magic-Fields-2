@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-  $(".remove_image_media").live('click',function(){
+  $(document).on('click',".remove_image_media",function(){
     var message = jQuery(this).attr('alt');
     if(confirm(message)){
          //get the  name to the image

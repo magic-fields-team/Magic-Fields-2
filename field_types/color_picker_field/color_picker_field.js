@@ -8,7 +8,7 @@ jQuery.mf_bind('add',function(){
   });
 });
 
-jQuery('.clrpckr').live('focusin focusout dblclick', function(e){
+jQuery(document).on('focusin focusout dblclick','.clrpckr', function(e){ console.log('dedhjfrgr gh');
   var picker = jQuery(this).siblings('.mf_colorpicker');
       if ( e.type == 'focusout' ) {
         picker.stop(true, true).slideUp();

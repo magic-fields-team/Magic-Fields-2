@@ -38,7 +38,8 @@ function remove_resp(field_id){
   });
 }
 
-jQuery('.remove_audio').live('click', function(){
+jQuery(document).on('click','.remove_audio', function(){
+  
   var message = jQuery(this).attr('alt');
   if(confirm(message)){
     var pattern =  /remove\-(.+)/i;
