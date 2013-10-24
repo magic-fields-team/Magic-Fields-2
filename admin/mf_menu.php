@@ -1,7 +1,7 @@
 <?php
 class mf_menu
 {
-	public function unique_post_type(){
+	public static function unique_post_type(){
 		global $submenu,$menu,$mf_pt_unique,$wpdb;
 
 		if (count($mf_pt_unique)) {

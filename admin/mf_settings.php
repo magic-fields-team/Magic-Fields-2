@@ -152,7 +152,7 @@ class mf_settings extends mf_admin {
     update_option(MF_SETTINGS_KEY, $options);
   }
 
-  function get($key = null) {
+  public static function get($key = null) {
     if (get_option(MF_SETTINGS_KEY) == "") return "";
     if (is_array(get_option(MF_SETTINGS_KEY)))
       $options = get_option(MF_SETTINGS_KEY);

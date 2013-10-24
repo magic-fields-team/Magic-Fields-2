@@ -123,7 +123,7 @@ class mf_install {
     update_option(MF_DB_VERSION_KEY, MF_DB_VERSION);
   }
 
-  public function folders(){
+  public static function folders(){
     global $mf_domain;
     
     $dir_list = "";
