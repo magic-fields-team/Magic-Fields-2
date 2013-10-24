@@ -736,7 +736,7 @@ class mf_admin {
     $wpdb->query($sql);
   }
 
-  function mf_unregister_post_type( $post_type ) {
+  public static function mf_unregister_post_type( $post_type ) {
     /* Ideally we should just unset the post type from the array 
        but wordpress 3.2.1 this doesn't work */
 
