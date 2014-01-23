@@ -751,7 +751,7 @@ class mf_posttype extends mf_admin {
     }
   }
   
-  public function check_post_type($post_type,$id = NULL){
+  static public function check_post_type($post_type,$id = NULL){
     global $wpdb;
   
     $query = sprintf("SELECT COUNT(*) FROM %s WHERE type = '%s'",MF_TABLE_POSTTYPES,$post_type);

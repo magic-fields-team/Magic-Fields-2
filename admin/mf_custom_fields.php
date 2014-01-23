@@ -616,7 +616,7 @@ class mf_custom_fields extends mf_admin {
     );
   }
 
-  public function check_group($name,$post_type,$id = NULL){
+  static public function check_group($name,$post_type,$id = NULL){
     global $wpdb;
 
     $query = sprintf(

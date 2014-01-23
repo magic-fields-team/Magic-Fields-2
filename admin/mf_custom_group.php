@@ -204,7 +204,7 @@ class mf_custom_group extends mf_admin {
   <?php
   }
   
-  public function check_group($name,$post_type,$id = NULL){
+  static public function check_group($name,$post_type,$id = NULL){
     global $wpdb;
   
     $query = sprintf(
