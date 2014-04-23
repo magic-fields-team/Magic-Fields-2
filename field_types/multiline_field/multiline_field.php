@@ -94,14 +94,16 @@ class multiline_field extends mf_custom_fields {
       $output .= sprintf('<div class="tab_multi_mf">');
       $output .= sprintf('<a onclick="del_editor(\'%s\');" class="edButtonHTML_mf">HTML</a>',$field['input_id']);
       $output .= sprintf('<a onclick="add_editor(\'%s\');" class="edButtonHTML_mf current" >Visual</a>',$field['input_id']);
-      $output .= sprintf('</div>');
+      $output .= sprintf('</div><br /><br />');
       $class = 'pre_editor add_editor_mf';
       
       if(mf_settings::get('dont_remove_tags') != '1'){
         $value = apply_filters('the_editor_content', $value);
       }
     }
-		printf('<div style="display: none" id="wp-%s-media-buttons">',$field['input_id']);
+    
+
+		printf('<div style="display: none1" id="wp-%s-media-buttons" class="wp-media-buttons mf_media_button_div" >',$field['input_id']);
 		require_once( ABSPATH . 'wp-admin/includes/media.php' );
 		media_buttons( $field['input_id'] );
 		printf('</div>');

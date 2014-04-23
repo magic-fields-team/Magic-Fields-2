@@ -171,7 +171,7 @@ margin-right: 5px; margin-top: 0px;}
 /* Multiline*/
 .multiline_custom_field iframe{ Background: white !important; }
 textarea.mf_editor { width: 99%; padding: 8px;}
-.mf-field-ui .tab_multi_mf { float: left;}
+.mf-field-ui .tab_multi_mf { float: right;}
 .mf-field-ui .tab_multi_mf a {
   float: right;
   line-height: 18px;

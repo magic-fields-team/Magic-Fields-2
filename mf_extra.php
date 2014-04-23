@@ -66,3 +66,15 @@ if( !function_exists('is_wp35') ){
   }
 
 }
+
+if( !function_exists('is_wp39') ){
+
+  function is_wp39(){
+    $wp_version = floatval(get_bloginfo('version'));
+
+    if( $wp_version >= 3.9 ) return TRUE;
+
+    return FALSE;
+  }
+
+}

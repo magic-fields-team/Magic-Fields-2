@@ -243,14 +243,27 @@ jQuery(document).ready(function($){
   });
 	
   $(document).on('click',".mce_add_image , .mce_add_video , .mce_add_audio , .mce_add_media",function(){
+    console.log('qwerty');
+
+
     window.mf_field_id = '';
-	var a = this;
+	 var a = this;
+
+  
 	// When a mce button is clicked, we have to hotswap the activeEditor instance, else the image will be inserted into the wrong tinyMCE box (current editor)
 	setTimeout( function() {
 		tinyMCE.activeEditor = tinyMCE.EditorManager.getInstanceById( a.id.replace('_add_media', '') );
 		wpActiveEditor = a.id.replace('_add_media', '');
 		}, 500 );
 		
+  });
+
+  //focus for visual editor wp 3.8 
+  $(document).on('click',".mf_media_button_div > .add_media",function(){
+    var idElem = $(this).parent('div.mf_media_button_div').attr('id');
+    idElem = idElem.replace(/wp-/, "");
+    idElem = idElem.replace(/-media-buttons/, "");
+    tinyMCE.get(idElem).focus();
   });
 });
 

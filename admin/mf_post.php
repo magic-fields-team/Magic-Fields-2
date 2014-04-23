@@ -394,12 +394,21 @@ class mf_post extends mf_admin {
     wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js'); 
     wp_enqueue_script( 'mf_sortable_groups', MF_BASENAME.'js/mf_sortable_groups.js', array( 'jquery-ui-sortable' ) );
 
+    $mceAddString = "mceAddControl";
+    $mceRemoveString = "mceRemoveControl";
+    if(is_wp39()){
+      $mceAddString = "mceAddEditor";
+      $mceRemoveString = "mceRemoveEditor";
+    }
+
     //global mf js
     $js_vars = array(
       'mf_url' => MF_BASENAME,
       'mf_player_url' => MF_BASENAME . 'js/singlemp3player.swf',
       'mf_validation_error_msg' => __('Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.',$mf_domain),
-      'mf_image_media_set' => __('Insert into field',$mf_domain)
+      'mf_image_media_set' => __('Insert into field',$mf_domain),
+      'mf_mceAddString' => $mceAddString,
+      'mf_mceRemoveString' => $mceRemoveString
     );
     wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );    
     
