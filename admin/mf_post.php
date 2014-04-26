@@ -429,12 +429,12 @@ class mf_post extends mf_admin {
     /* add tiny_mce script */
     /* only add of editor support no exits for the post type*/
     if( (in_array('multiline',$fields) || in_array('image_media',$fields) )  && !post_type_supports($post_type,'editor' ) ){
-      add_thickbox();
+      /*add_thickbox();
       wp_enqueue_script('media-upload');
       wp_enqueue_script('editor'); // load admin/mf_editor.js (switchEditor)
       mf_autoload('mf_tiny_mce'); // load admin/mf_tiny_mce.php (tinyMCE)
       add_action( 'admin_print_footer_scripts', 'mf_tiny_mce', 25 ); // embed tinyMCE
-      add_action( 'admin_print_footer_scripts', array($this, 'media_buttons_add_mf'), 51 );
+      add_action( 'admin_print_footer_scripts', array($this, 'media_buttons_add_mf'), 51 );*/
     }
 
     foreach($fields as $field) {
@@ -486,7 +486,28 @@ class mf_post extends mf_admin {
       }
     }
   }
-  
+
+  public function check_exist_visual_editor(){
+
+    if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
+      $post_type = get_post_type($_GET['post']);   
+    }else{ //Creating a new post
+      $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
+    }
+
+    $fields = $this->get_unique_custom_fields_by_post_type($post_type);
+
+    /* add tiny_mce script */
+    /* only add of editor support no exits for the post type*/
+    if( (in_array('multiline',$fields) || in_array('image_media',$fields) )  && !post_type_supports($post_type,'editor' ) ){
+      echo "<div style='display:none'>";
+      echo wp_editor('','you_know_nothing');
+      echo "</div>";
+    }
+
+    
+    
+  }
   public function media_buttons_add_mf(){
     
     print '<div style="display:none;">';

@@ -102,11 +102,12 @@ class multiline_field extends mf_custom_fields {
       }
     }
     
-
-		printf('<div style="display: none1" id="wp-%s-media-buttons" class="wp-media-buttons mf_media_button_div" >',$field['input_id']);
-		require_once( ABSPATH . 'wp-admin/includes/media.php' );
-		media_buttons( $field['input_id'] );
-		printf('</div>');
+    if($field['options']['hide_visual'] == 0 && user_can_richedit() ){
+		  printf('<div style="display: none1" id="wp-%s-media-buttons" class="wp-media-buttons mf_media_button_div" >',$field['input_id']);
+		  require_once( ABSPATH . 'wp-admin/includes/media.php' );
+		  media_buttons( $field['input_id'] );
+		  printf('</div>');
+    }
 
     $output .= sprintf('<textarea %s class="mf_editor %s" id="%s" name="%s" rows="%s" cols="%s" %s >%s</textarea>',$field['input_validate'],$class,$field['input_id'],$field['input_name'],$field['options']['height'],$field['options']['width'],$max,$value);
     $output .= '</div>';
