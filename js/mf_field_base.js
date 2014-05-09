@@ -178,6 +178,10 @@ jQuery(document).ready(function($) {
     },
 	  submitHandler: function(form) {
       $('#mf-publish-errors').remove();
+      
+      console.log(wp.autosave);
+      console.log(wp.autosave.server.postChanged());
+      $(window).off( 'beforeunload.edit-post' );
         form.submit();
       }
   });
