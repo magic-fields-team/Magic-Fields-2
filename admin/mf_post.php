@@ -489,6 +489,10 @@ class mf_post extends mf_admin {
 
   public function check_exist_visual_editor(){
 
+    if( isset($_GET['action']) && $_GET['action'] == 'trash' ) {//when the post already exists
+      return;
+    }    
+
     if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
       $post_type = get_post_type($_GET['post']);   
     }else{ //Creating a new post
