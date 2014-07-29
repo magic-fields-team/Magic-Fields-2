@@ -15,6 +15,9 @@ class mf_post extends mf_admin {
 
     //
     add_action( 'admin_footer', array( &$this,'mf_check_wp_gallery_version') );
+
+    add_action( 'admin_head', array( &$this,'check_exist_visual_editor') );
+
   }
 
   function mf_check_wp_gallery_version() {
@@ -489,29 +492,29 @@ class mf_post extends mf_admin {
 
   public function check_exist_visual_editor(){
 
-    if( isset($_GET['action']) && $_GET['action'] == 'trash' ) {//when the post already exists
-      return;
-    }    
+    if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {
 
-    if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
-      $post_type = get_post_type($_GET['post']);   
-    }else{ //Creating a new post
-      $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
-    }
+      if( isset($_GET['action']) && $_GET['action'] == 'trash' ) {//when the post already exists
+        return;
+      }    
 
-    $fields = $this->get_unique_custom_fields_by_post_type($post_type);
+      if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
+        $post_type = get_post_type($_GET['post']);   
+      }else{ //Creating a new post
+        $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
+      }
 
-    /* add tiny_mce script */
-    /* only add of editor support no exits for the post type*/
-    if( (in_array('multiline',$fields) || in_array('image_media',$fields) )  && !post_type_supports($post_type,'editor' ) ){
-      echo "<div style='display:none'>";
-      echo wp_editor('','you_know_nothing');
-      echo "</div>";
-    }
-
+      $mf_posttype = new mf_posttype();
+      $pt = $mf_posttype->get_post_type($post_type);
+        
+      if ($pt && !isset($pt['support']['editor'])) {
+        echo "<style>#postdivrich {display:none; }</style>";
+      }
     
+     }
     
   }
+
   public function media_buttons_add_mf(){
     
     print '<div style="display:none;">';

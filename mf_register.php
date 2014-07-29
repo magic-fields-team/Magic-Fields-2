@@ -37,6 +37,10 @@ class mf_register{
         }
       }
 
+      if (!in_array("editor", $option['supports'])) {
+        $option['supports'][] = 'editor';
+      }
+
       if( isset($p['taxonomy']) ){
         foreach($p['taxonomy'] as $k => $v){
           //register_taxonomy_for_object_type($k, $name);

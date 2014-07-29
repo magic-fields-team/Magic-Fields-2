@@ -78,3 +78,27 @@ if( !function_exists('is_wp39') ){
   }
 
 }
+
+class Debug
+{
+  /**
+   * Writes log info to a file
+   * @param $msg string the message to write out
+   * @param $path string the location to write the messages
+   * @return null
+   */
+  static function log($msg,$path = "") {
+    if(empty($path)){
+      $path = MF_FILES_DIR;
+    }
+
+    if(!is_string($msg)){
+      $msg = print_r($msg,true);
+    }
+
+    $fp = fopen($path.'magic_fields.log', 'a+');
+    $date = gmdate( 'Y-m-d H:i:s' );
+    fwrite($fp, "$date - $msg\n");
+    fclose($fp);
+   }
+}

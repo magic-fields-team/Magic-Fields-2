@@ -237,7 +237,6 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       if( strstr( $_SERVER['REQUEST_URI'], 'post-new.php' ) !== FALSE  || strstr( $_SERVER['REQUEST_URI'],  'wp-admin/post.php') !== FALSE ) {
         /* Load JS and CSS for post page */
         $css_js = new mf_post();
-        $css_js->check_exist_visual_editor();
         $css_js->load_js_css_base();
         $css_js->load_js_css_fields();
         $css_js->general_option_multiline();
