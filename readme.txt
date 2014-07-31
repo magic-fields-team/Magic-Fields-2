@@ -4,7 +4,7 @@ Tags: cms, post types, fields, taxonomies
 Tested up to: Wordpress 3.9
 Requires at least: 3.1
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=edgar%40programador%2ecom&lc=GB&item_name=Donation%20Magic%20Fields&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Stable tag: 2.2.2.1
+Stable tag: 2.2.2.2
 Description:  Magic Fields 2 is a feature rich Wordpress CMS plugin
 
 == Description ==
@@ -25,6 +25,14 @@ Follow this steps to install MF2
 2. List of post types and custom taxonomies
 
 == Changelog ==
+
+= 2.2.2.2 =
+* fix problem with editor, featured image and more
+* fix problem in delete item of custom post type
+
+= 2.2.2.1 =
+* fix problem with quantity in register post type
+* fix alert when update post
 
 = 2.2.2 =
 * fix for visual editor in WP 3.9
