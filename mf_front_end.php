@@ -425,17 +425,12 @@ function aux_image($value,$params,$type = NULL){
     $MFthumb = MF_PATH.'/MF_thumb.php';
     require_once($MFthumb);
     $thumb = new mfthumb();
-    $thumb_path = $thumb->image_resize(
-      $default['src'],
-      $default['w'],
-      $default['h'],
-      $default['zc'],
-      $default['far'],
-      $default['iar'],
-      $output_filename,
-      $default['q']
-    );
-        
+
+    if (is_wp35()) {
+      $thumb_path = $thumb->image_resize35($default['src'], $default['w'], $default['h'], $default['zc'], $default['far'], $default['iar'], $output_filename, $default['q']);  
+    }else{
+        $thumb_path = $thumb->image_resize($default['src'], $default['w'], $default['h'], $default['zc'], $default['far'], $default['iar'], $output_filename, $default['q']);  
+    }   
 	
     if ( is_wp_error($thumb_path) )
       return $thumb_path->get_error_message();
