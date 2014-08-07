@@ -37,9 +37,9 @@ class mf_register{
         }
       }
 
-      if (!in_array("editor", $option['supports'])) {
-        $option['supports'][] = 'editor';
-      }
+      //always add support for the editor
+      $option['supports'][] = 'editor';
+      $option['supports'] = array_unique($option['supports']);
 
       if( isset($p['taxonomy']) ){
         foreach($p['taxonomy'] as $k => $v){
