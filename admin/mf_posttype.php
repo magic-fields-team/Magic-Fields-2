@@ -232,6 +232,14 @@ class mf_posttype extends mf_admin {
           'name' => 'mf_posttype[option][show_in_nav_menus]',
           'value' => 1,
           'description' => __( 'Whether post_type is available for selection in navigation menus.', $mf_domain )
+        ),
+        'menu_icon' => array(
+          'id' => 'posttype-menu-icon',
+          'type' => 'text',
+          'label' => __( 'Menu icon', $mf_domain ),
+          'name' => 'mf_posttype[option][menu_icon]',
+          'value' => "",
+          'description' => __( '(WP 3.8+) If \'dashicons-...\', a Dashicon is shown from the collection at http://melchoyce.github.io/dashicons/. For example, the default "gear" symbol could be explicitly specified with \'dashicons-admin-generic\'.', $mf_domain )
         )
       ),
       'label' => array(
