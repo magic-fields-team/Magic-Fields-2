@@ -285,16 +285,16 @@ class mf_custom_fields extends mf_admin {
 
     // change the name of field?
     if( $mf['core']['name'] != $field['name'] ){
-      $query = sprintf(
-      "UPDATE %s pm, %s p ".
-      "SET pm.field_name = '%s' ".
-      "WHERE pm.field_name = '%s' AND p.post_type = '%s' AND pm.post_id = p.id",
+      $query = $wpdb->prepare(
+      "UPDATE %s pm, $wpdb->posts p ".
+      " SET pm.field_name = '%s' ".
+      " WHERE pm.field_name = '%s' AND p.post_type = '%s' AND pm.post_id = p.id",
       MF_TABLE_POST_META,
-      $wpdb->posts,
       $mf['core']['name'],
       $field['name'],
       $mf['core']['post_type']
-      );
+    );
+
       $wpdb->query($query);
     }
   }
@@ -601,7 +601,7 @@ class mf_custom_fields extends mf_admin {
       $id = (int)$_GET['custom_field_id'];
 
       if( is_int($id) ){
-        $sql = "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE id = ".$id;
+        $sql = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE id = %d",$id );
         $wpdb->query($sql);
       }
     }

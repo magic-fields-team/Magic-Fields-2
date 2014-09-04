@@ -48,10 +48,10 @@ class mf_custom_group extends mf_admin {
       $id = (int)$_GET['custom_group_id'];
       if( is_int($id) ){
         $group = $this->get_group($id);
-        $sql = sprintf("DELETE FROM %s WHERE id = %s",MF_TABLE_CUSTOM_GROUPS,$id);
+        $sql = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_GROUPS." WHERE id = %d",$id );
         $wpdb->query($sql);
         
-        $sql_fields = sprintf("DELETE FROM %s WHERE custom_group_id = %s",MF_TABLE_CUSTOM_FIELDS,$id);
+        $sql_fields = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE custom_group_id = %d",$id );
         $wpdb->query($sql_fields);
 
         //ToDo: poner mensaje de que se borro correctamente

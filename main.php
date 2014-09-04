@@ -153,6 +153,17 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
    * Magic Fields dispatcher
    */
   function mf_dispatcher() {
+
+    //is user loged?
+    if ( !is_user_logged_in() ) {
+      die;
+    }
+
+    //same capabilities for the menu
+    if (!current_user_can('activate_plugins') ) {
+      die;
+    }
+
     $section = "mf_dashboard";
     $action = "main";
 
@@ -165,6 +176,8 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
     if( !empty( $_GET['mf_action'] ) ) {
       $action = urlencode( $_GET['mf_action'] );
     }
+
+    //check only mf_section has prefix mf
 
     $tmp = new $section();
     $tmp->$action();

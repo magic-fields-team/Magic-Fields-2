@@ -107,11 +107,7 @@ class mf_custom_taxonomy extends mf_admin{
       $id = (int)$_GET['custom_taxonomy_id'];
 
       if( is_int($id) ){
-        $sql = sprintf(
-          "DELETE FROM " . MF_TABLE_CUSTOM_TAXONOMY .
-          " WHERE id = %d",
-          $id
-        );
+        $sql = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_TAXONOMY." WHERE id = %d",$id );
         $wpdb->query($sql);
         $this->mf_redirect(null,null,array('message' => 'success'));
       }
@@ -546,7 +542,7 @@ class mf_custom_taxonomy extends mf_admin{
     return $fields;
   }
   
-  public function check_custom_taxonomy($type,$id = NULL){
+  public static function check_custom_taxonomy($type,$id = NULL){
     global $wpdb;
   
     $query = sprintf("SELECT COUNT(*) FROM %s WHERE type = '%s'",MF_TABLE_CUSTOM_TAXONOMY,$type);

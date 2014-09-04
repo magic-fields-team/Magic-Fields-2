@@ -262,7 +262,9 @@ class mf_post extends mf_admin {
       $customfields = $_POST['magicfields'];
 
       /** Deleting the old values **/
-            $wpdb->query( "DELETE FROM ". MF_TABLE_POST_META ." WHERE post_id= {$post_id}" );
+      $sql_delete = $wpdb->prepare( "DELETE FROM ".MF_TABLE_POST_META." WHERE post_id = %s",$post_id );
+      $wpdb->query($sql_delete);
+
       foreach ( $customfields as $field_name => $field ) {
         delete_post_meta($post_id, $field_name);
       }
@@ -284,9 +286,20 @@ class mf_post extends mf_admin {
 
             $meta_id = $wpdb->insert_id;
 
-            $wpdb->query("INSERT INTO ". MF_TABLE_POST_META." ( meta_id, field_name, field_count, group_count, post_id ) ".
-              " VALUES ( {$meta_id}, '{$field_name}' , {$field_count},{$group_count} ,{$post_id} )"
+            $sql_insert = $wpdb->prepare(
+              "INSERT INTO " . MF_TABLE_POST_META .
+              " ( meta_id, field_name, field_count, group_count, post_id ) " .
+              " VALUES " .
+              " (%s,'%s',%s,%s,%s) ",
+              $meta_id,
+              $field_name,
+              $field_count,
+              $group_count,
+              $post_id
             );
+
+            $wpdb->query($sql_insert);
+
             $field_count++;
           }
           $group_count++;
