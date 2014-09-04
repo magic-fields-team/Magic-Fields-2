@@ -1,10 +1,10 @@
 === Magic Fields 2 ===
 Contributors: hunk, Gnuget
-Tags: cms, post types, fields, taxonomies
-Tested up to: Wordpress 3.9
+Tags: cms, post types, fields, taxonomies, custom fields, admin, advanced, edit, magic fields,  more fields, Post, repeater, simple fields, text, textarea, type, advanced custom fields, cck,
+Tested up to: Wordpress 4.0
 Requires at least: 3.1
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=edgar%40programador%2ecom&lc=GB&item_name=Donation%20Magic%20Fields&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
-Stable tag: 2.2.2.2
+Stable tag: 2.3
 Description:  Magic Fields 2 is a feature rich Wordpress CMS plugin
 
 == Description ==
@@ -25,6 +25,13 @@ Follow this steps to install MF2
 2. List of post types and custom taxonomies
 
 == Changelog ==
+
+= 2.3 =
+* Fix #232 mf_register.php Warning on line 40
+* Add support for menu-icon for post type (Dashicons)
+* Update validate plugin (the previous version caused conflict in parts of WP)
+* Fixed for wp_load_image (deprecated funtion) in mf_front-end
+* Little fixes in menu post types
 
 = 2.2.2.2 =
 * fix problem with editor, featured image and more

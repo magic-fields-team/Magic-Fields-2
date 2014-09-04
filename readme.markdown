@@ -1,9 +1,9 @@
 # Magic Fields
 
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk"), [David Valdez](http://gnuget.org "Gnuget")
-* Tested up to: Wordpress 3.8.1
+* Tested up to: Wordpress 4.0
 * Requires at least: 3.1
-* Stable tag: 2.2.1
+* Stable tag: 2.3
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
 * License: GPLv2
 
@@ -37,6 +37,21 @@ Follow these steps to install MF2:
 2. Activate MF2
 
 ## Changelog ##
+
+###2.3###
+* Fix #232 mf_register.php Warning on line 40
+* Add support for menu-icon for post type (Dashicons)
+* Update validate plugin (the previous version caused conflict in parts of WP)
+* Fixed for wp_load_image (deprecated funtion) in mf_front-end
+* Little fixes in menu post types
+
+###2.2.2.2###
+* fix problem with editor, featured image and more
+* fix problem in delete item of custom post type
+
+###2.2.2.2###
+* fix problem with editor, featured image and more
+* fix problem in delete item of custom post type
 
 ###2.2.1###
 * add static to public functions
