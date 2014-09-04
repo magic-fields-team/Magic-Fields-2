@@ -102,6 +102,7 @@ class mfthumb{
 		list($dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h) = $dims;
 
     	$newimage = imagecreatetruecolor( $dst_w, $dst_h );
+
     	imagealphablending($newimage, false);
     	imagesavealpha($newimage, true);
     	$transparent = imagecolorallocatealpha($newimage, 255, 255, 255, 127);
@@ -109,7 +110,6 @@ class mfthumb{
 
 		@ini_set( 'memory_limit', apply_filters( 'image_memory_limit', WP_MAX_MEMORY_LIMIT ) );
     	$imageTmp = imagecreatefromstring( file_get_contents( $file ) );
-
     	imagecopyresampled( $newimage, $imageTmp, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
 
 		// convert from full colors to index colors, like original PNG.
@@ -202,30 +202,30 @@ function mf_image_resize_dimensions($orig_w, $orig_h, $dest_w, $dest_h, $crop = 
 			case 'TL':
 			case 'BL':
 				$s_x = 0;
-				$s_y = round(($dest_h - $origin_h) / 2);
+				$s_y = round(($dest_h - $orig_h) / 2);
 				break;
 			case 'R':
 			case 'TR':
 			case 'BR':
-				$s_x =  round($dest_w  - $origin_w);
-				$s_y = round(($dest_h - $origin_h) / 2);
+				$s_x =  round($dest_w  - $orig_w);
+				$s_y = round(($dest_h - $orig_h) / 2);
 				break;
 			case 'T':
 			case 'TL':
 			case 'TR':
-				$s_x = round(($dest_w  - $origin_w)  / 2);
+				$s_x = round(($dest_w  - $orig_w)  / 2);
 				$s_y = 0;
 				break;
 			case 'B':
 			case 'BL':
 			case 'BR':
-				$s_x = round(($dest_w  - $origin_w)  / 2);
-				$s_y =  round($dest_h - $origin_h);
+				$s_x = round(($dest_w  - $orig_w)  / 2);
+				$s_y =  round($dest_h - $orig_h);
 				break;
 			case 'C':
 			default:
-				$s_x = round(($dest_w  - $origin_w)  / 2);
-				$s_y = round(($dest_h - $origin_h) / 2);
+				$s_x = round(($dest_w  - $orig_w)  / 2);
+				$s_y = round(($dest_h - $orig_h) / 2);
                                 
 		}
                 
