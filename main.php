@@ -177,7 +177,19 @@ load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename
       $action = urlencode( $_GET['mf_action'] );
     }
 
-    //check only mf_section has prefix mf
+    //check only mf_section has prefix mf    
+    if ( !(strpos($section, "mf_") === 0) ) {
+      die;
+    }
+
+    //exist class
+    if (!class_exists($section)) {
+      die;
+    }
+
+    if (!method_exists($section,$action)) {
+      die;
+    }
 
     $tmp = new $section();
     $tmp->$action();
