@@ -1,9 +1,9 @@
 # Magic Fields
 
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk"), [David Valdez](http://gnuget.org "Gnuget")
-* Tested up to: Wordpress 4.0
+* Tested up to: Wordpress 4.2.2
 * Requires at least: 3.1
-* Stable tag: 2.3
+* Stable tag: 2.3.1
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
 * License: GPLv2
 
@@ -37,6 +37,10 @@ Follow these steps to install MF2:
 2. Activate MF2
 
 ## Changelog ##
+
+###2.3.1###
+* add verification in dispacher, add wpdb->prepare
+* add improvements and testing for WP 4.2.2
 
 ###2.3###
 * Fix #232 mf_register.php Warning on line 40

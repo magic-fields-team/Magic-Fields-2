@@ -190,7 +190,6 @@ textarea.mf_editor { width: 99%; padding: 8px;}
 .tab_multi_mf {
  padding-bottom:2px;
  display: block;
- margin-right:10px;
 }
 .multiline_custom_field{ margin-left: 10px; }
 .edButtonHTML_mf {
@@ -223,6 +222,9 @@ textarea.mf_editor { width: 99%; padding: 8px;}
     height:18px;
     margin:5px 5px 0 0;
     padding:4px 5px 2px;
+}
+.mf_media_button_div{
+  margin-left: 10px;
 }
 
 /**
