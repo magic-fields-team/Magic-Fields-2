@@ -336,7 +336,7 @@ function create_image($options){
 
   // check if exist params, if not exist params, return original image
   if ( empty($field_param) ){
-    if($field_type == 'image'){
+    if(in_array($field_type, array('image','image_alt') )){
       $field_value = MF_FILES_URL.$field_value;
     }
   }else{
@@ -452,6 +452,22 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
       if( !empty($value) ) $result = MF_FILES_URL . $value;
       break;
     case 'image': 
+      if($image_array){
+        if( !empty($value) ){
+          unset($options['css_class']);
+          $options = _processed_params($options);
+          $result['original'] = MF_FILES_URL . $value;
+          if( empty($options) ){
+            $result['thumb'] = $result['original'];
+          }else{
+            $result['thumb'] = aux_image($value,$options,$type);
+          }
+        }
+      }else{
+        if( !empty($value) ) $result = MF_FILES_URL . $value;
+      }
+      break;
+    case 'image_alt': 
       if($image_array){
         if( !empty($value) ){
           unset($options['css_class']);

@@ -1,4 +1,7 @@
 <?php
+$MFthumb = MF_PATH.'/mf_front_end.php';
+require_once($MFthumb);
+
 /* all ajax call fo MF */
 class mf_ajax_call{
 
@@ -154,5 +157,93 @@ class mf_ajax_call{
 		
 		echo json_encode($resp);
 	}
+
+  public function upload_ajax($data){
+    global $mf_domain;
+    // pr($data);
+    // pr($_FILES);
+    // $resp = array('ok' => true,$_FILES,$data);
+    // echo json_encode($resp);
+
+    if ( !current_user_can('upload_files') ){
+      $resp = array('success' => false, 'msg' => __('You do not have sufficient permissions to upload images.',$mf_domain) );
+      echo json_encode($resp);
+      die;
+    }
+
+    if( isset($_POST['fileName']) ){
+      $resp = array('success' => false, 'msg' => __("Upload Unsuccessful",$mf_domain) );
+      if (isset($_FILES['file']) && (!empty($_FILES['file']['tmp_name']))){
+
+        if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
+          if(mf_ajax_call::valid_mime($_FILES['file']['type'],'image')){
+
+            // if ( !wp_verify_nonce($_POST['checking'],'nonce_upload_file') ){
+            //   $resp['msg'] = __('Sorry, your nonce did not verify.',$mf_domain);
+            // }else{
+              $special_chars = array(' ','`','"','\'','\\','/'," ","#","$","%","^","&","*","!","~","‘","\"","’","'","=","?","/","[","]","(",")","|","<",">",";","\\",",","+","-");
+              $filename = str_replace($special_chars,'',$_FILES['file']['name']);
+              $filename = time() . $filename;
+            
+              @move_uploaded_file( $_FILES['file']['tmp_name'], MF_FILES_DIR . $filename );
+              @chmod(MF_FILES_DIR . $filename, 0644);
+              $info = pathinfo(MF_FILES_DIR . $filename);
+
+              $thumb =  aux_image($filename,"w=150&h=120&zc=1",'image_alt');
+            
+              $resp = array(
+                'success' => true,
+                'name' => $filename,
+                'ext' => $info['extension'],
+                'thumb' => $thumb,
+                'file_path' => MF_FILES_DIR . $filename,
+                'file_url' => MF_FILES_URL . $filename,
+                'encode_file_url' => urlencode(MF_FILES_URL . $filename),
+                'msg' => __("Successful upload",$mf_domain)
+              );
+            // }
+          }else{
+            $resp['msg'] = __("Failed to upload the file!",$mf_domain);
+          }
+        }elseif( $_FILES['file']['error'] == UPLOAD_ERR_INI_SIZE ){
+          $resp['msg'] = __('The uploaded file exceeds the maximum upload limit!',$mf_domain);
+        }else{
+          $resp['msg'] = __("Upload Unsuccessful",$mf_domain);
+        }
+      }
+    }
+    echo json_encode($resp);
+  }
+
+  public function valid_mime($mime,$file_type){
+    $imagesExts = array(
+      'image/gif',
+      'image/jpeg',
+      'image/pjpeg',
+      'image/png',
+      'image/x-png'
+    );
+    $audioExts = array(
+      'audio/mpeg',
+      'audio/mpg',
+      'audio/x-wav',
+      'audio/mp3'
+    );
+              
+    if($file_type == "image"){
+      if(in_array($mime,$imagesExts)){
+        return true;
+      }
+    }elseif($file_type == "audio"){
+      if(in_array($mime,$audioExts)){
+        return true;
+      }
+    }else{
+      //TODO: here users should be set what mime types
+      //are safety for the "files" type of field
+      return true;
+    }
+    return false; 
+  }
 
 }
