@@ -243,11 +243,9 @@ jQuery(document).ready(function($){
   });
 	
   $(document).on('click',".mce_add_image , .mce_add_video , .mce_add_audio , .mce_add_media",function(){
-    console.log('qwerty');
-
 
     window.mf_field_id = '';
-	 var a = this;
+    var a = this;
 
   
 	// When a mce button is clicked, we have to hotswap the activeEditor instance, else the image will be inserted into the wrong tinyMCE box (current editor)
