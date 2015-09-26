@@ -246,4 +246,25 @@ class mf_ajax_call{
     return false; 
   }
 
+  public function get_thumb($data){
+
+    require_once(ABSPATH."/wp-admin/includes/image.php");
+    require_once(ABSPATH."/wp-includes/media.php");
+
+    // remove text aditional in attachment
+    $image_id = preg_replace('/del_attachment_/','',$data['image_id']);
+    $info = wp_get_attachment_image_src($image_id,'original');
+    $field_value = $info[0];
+    $thumb =  aux_image($field_value,"w=150&h=120&zc=1",'image_media');
+
+    $field_id = preg_replace('/thumb_/','',$data['field_id']);
+
+    if( count($info)){
+      $image_thumb = PHPTHUMB.'?&w=150&h=120&src='.$info[0];
+      $data = array('image' => $image_thumb,'field_id' => $field_id,'image_value' => $image_id,'image_path' => $info[0],'thumb' => $thumb);
+      echo json_encode($data);
+    }
+
+  }
+
 }

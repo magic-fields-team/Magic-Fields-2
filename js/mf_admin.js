@@ -210,16 +210,23 @@ function load_link_in_media_upload(){
 }
 
 function mf_set_image_field(id){
+
   id_element = parent.window.mf_field_id;
-  jQuery.post(parent.window.mf_js.mf_url+"admin/MF_ImageMedia.php", { "image_id": id, 'field_id': id_element },
-     function(data){
-       jQuery('#img_thumb_'+data.field_id, top.document).attr('src',data.image);
-       jQuery('#'+data.field_id, top.document).attr('value',data.image_value);
-       jQuery('#edit-'+data.field_id, top.document).attr('href',data.image_path);
-       jQuery('#photo_edit_link_'+data.field_id, top.document).show();
-       parent.window.mf_field_id = '';
-       parent.window.tb_remove();
-     }, "json");
+
+  jQuery.ajax({
+      url: ajaxurl,
+      type: 'POST',
+      dataType: 'json',
+      data: "action=mf_call&type=get_thumb&image_id="+id+"&field_id="+id_element,
+      success: function(response){
+        jQuery('#img_thumb_'+response.field_id, top.document).attr('src',response.thumb);
+        jQuery('#'+response.field_id, top.document).attr('value',response.image_value);
+        jQuery('#edit-'+response.field_id, top.document).attr('href',response.image_path);
+        jQuery('#photo_edit_link_'+response.field_id, top.document).show();
+        parent.window.mf_field_id = '';
+        parent.window.tb_remove();
+      }
+    });
 }
 
 //load button for image media

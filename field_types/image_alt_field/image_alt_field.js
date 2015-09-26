@@ -65,7 +65,7 @@ jQuery.mf_bind('add',function() {
         }
         inputFile.replaceWith(inputFile.clone(true));
       },
-      error(xhr,status,error){
+      error: function(xhr,status,error){
         alert(error);
         inputFile.replaceWith(inputFile.clone(true));
       }

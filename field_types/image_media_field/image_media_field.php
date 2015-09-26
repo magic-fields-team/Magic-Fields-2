@@ -90,7 +90,7 @@ class image_media_field extends mf_custom_fields {
       $path = PHPTHUMB."?src=";
       $info = wp_get_attachment_image_src($field['input_value'],'original');
       $path_image_media = $info[0];
-      $value = sprintf("%s?src=%s&w=150&h=120&zc=1",PHPTHUMB,$path_image_media);
+      $value =  aux_image($path_image_media,"w=150&h=120&zc=1",'image_media');
     }
  
     $value  = sprintf('<img src="%s" id="%s" />',$value,$imageThumbID);
