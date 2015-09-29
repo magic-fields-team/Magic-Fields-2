@@ -87,7 +87,9 @@ class image_media_field extends mf_custom_fields {
       $value = sprintf('%simages/noimage.jpg',MF_URL);
       $field_style = 'style="display:none;"';
     }else{
-      $path = PHPTHUMB."?src=";
+      $MFFrontEnd = MF_PATH.'/mf_front_end.php';
+      require_once($MFFrontEnd);
+
       $info = wp_get_attachment_image_src($field['input_value'],'original');
       $path_image_media = $info[0];
       $value =  aux_image($path_image_media,"w=150&h=120&zc=1",'image_media');
