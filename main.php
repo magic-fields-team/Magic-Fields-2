@@ -3,8 +3,8 @@
 Plugin Name: Magic Fields
 Plugin URI: http://magicfields.org
 Description: Create custom fields for your post types
-Version: 2.3.1
-Author:  Hunk and Gnuget
+Version: 2.3.2
+Author:  Hunk
 Author URI: http://magicfields.org
 License: GPL2
 */

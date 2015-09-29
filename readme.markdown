@@ -1,9 +1,9 @@
 # Magic Fields
 
-* Authors: [Edgar Garcia](http://hunk.com.mx "Hunk"), [David Valdez](http://gnuget.org "Gnuget")
+* Authors: [Edgar Garcia](http://hunk.com.mx "Hunk")
 * Tested up to: Wordpress 4.2.2
 * Requires at least: 3.1
-* Stable tag: 2.3.1
+* Stable tag: 2.3.2
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
 * License: GPLv2
 
@@ -37,6 +37,11 @@ Follow these steps to install MF2:
 2. Activate MF2
 
 ## Changelog ##
+
+###2.3.2###
+* fix in get data for image media (now use admin-ajax.php for request) , some server has aditional security for wp-content
+* fix warnigs in activate plugin
+* remove console.log, sorry
 
 ###2.3.1###
 * add verification in dispacher, add wpdb->prepare
@@ -108,3 +113,4 @@ Follow these steps to install MF2:
 * Yusuke Kamiyamane  for the [Fugue Icons](http://p.yusukekamiyamane.com/ "Fugue Icons"), the Wand-Hat icon is his work
 * http://bassistance.de  for his awesome [Jquery Validate](http://bassistance.de/jquery-plugins/jquery-plugin-validation/ "jQuery Validate")
 * John Resig  for his [jQuery metadata Plugin](https://github.com/jquery/jquery-metadata "jQuery metadata")
+* [David Valdez](http://gnuget.org "Gnuget") old contributor

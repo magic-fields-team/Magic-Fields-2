@@ -1,5 +1,5 @@
 === Magic Fields 2 ===
-Contributors: hunk, Gnuget
+Contributors: hunk
 Tags: cms, post types, fields, taxonomies, custom fields, admin, advanced, edit, magic fields,  more fields, Post, repeater, simple fields, text, textarea, type, advanced custom fields, cck,
 Tested up to: Wordpress 4.2.2
 Requires at least: 3.1
@@ -14,6 +14,8 @@ In Magic Fields existed 15 pre-build types of custom fields
 
 **NOTE: Magic Fields 2 IS NOT backward compatible with MF1 **
 
+Old contributor: Gnuget
+
 == Installation ==
 Follow this steps to install MF2
 
@@ -25,6 +27,11 @@ Follow this steps to install MF2
 2. List of post types and custom taxonomies
 
 == Changelog ==
+
+= 2.3.2 =
+* fix in get data for image media (now use admin-ajax.php for request) , some server has aditional security for wp-content
+* fix warnigs in activate plugin
+* remove console.log, sorry
 
 = 2.3.1 =
 * add verification in dispacher, add wpdb->prepare
