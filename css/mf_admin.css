@@ -106,3 +106,5 @@ div.mf_form_right div.categorydiv div.tabs-panel { height: auto; margin-top: 4px
   display:block;
   clear:both;
 }
+
+.mf-btn-add { margin-left: 10px !important;}

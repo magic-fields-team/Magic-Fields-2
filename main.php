@@ -1,12 +1,14 @@
 <?php
 /*
-Plugin Name: Magic Fields
-Plugin URI: http://magicfields.org
-Description: Create custom fields for your post types
-Version: 2.3.2
-Author:  Hunk
-Author URI: http://magicfields.org
-License: GPL2
+ * Plugin Name: Magic Fields
+ * Plugin URI: http://magicfields.org
+ * Description: Create custom fields for your post types
+ * Version: 2.3.2.1
+ * Author:  Hunk
+ * Author URI: http://magicfields.org
+ * License: GPL2
+ * Text Domain: magic-fields-2
+ * Domain Path: /languages
 */
 
 /*  Copyright 2011 Magic Fields Team
@@ -29,7 +31,7 @@ License: GPL2
  * i18n
  */
 global $mf_domain,$mf_pt_register;
-$mf_domain = 'magic_fields';
+$mf_domain = 'magic-fields-2';
 $mf_pt_register = array();
 $mf_pt_unique = array();
 
@@ -86,6 +88,12 @@ if( mf_mu2() ){
   mf_install::install();
 }
 
+function mf_load_plugin_textdomain() {
+  global $mf_domain;
+    load_plugin_textdomain( $mf_domain, FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'mf_load_plugin_textdomain' );
+
 
 //Register Post Types and Custom Taxonomies
 $mf_register = new mf_register();
@@ -96,8 +104,6 @@ $mf_post = new mf_post();
 
 if( is_admin() ) {
 
-  //load_plugin_textdomain($mf_domain    , '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
-load_plugin_textdomain('magic_fields', '/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/lang', basename(dirname(__FILE__)).'/lang');
   //check folders
   add_action('admin_notices', array('mf_install', 'folders'));
 

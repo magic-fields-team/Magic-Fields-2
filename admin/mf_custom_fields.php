@@ -121,7 +121,7 @@ class mf_custom_fields extends mf_admin {
 
     print '<p id="post-search" style="margin-top:16px">';
     print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=add_group&post_type='.$post_type->name.'" class="add-new-h2 button">+ '.__( 'Create a Group', $mf_domain ).'</a>';
-    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type->name.'" class="add-new-h2 button">+ '.__( 'Create a Field', $mf_domain ).'</a>';
+    print '<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type='.$post_type->name.'" class="add-new-h2 button mf-btn-add">+ '.__( 'Create a Field', $mf_domain ).'</a>';
     print '</p>';
 
 
