@@ -63,8 +63,7 @@ class textbox_field extends mf_custom_fields {
 
     $output = '';
     $max = '';
-
-    if( isset($field['options']['evalueate']) && ($field['options']['size'] > 0) ){
+    if( isset($field['options']['evalueate']) && $field['options']['evalueate'] == 1 && ($field['options']['size'] > 0) ){
       $max = sprintf('maxlength="%s"',$field['options']['size']);
     }
 
