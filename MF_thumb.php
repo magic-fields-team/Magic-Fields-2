@@ -85,9 +85,8 @@ class mfthumb{
 	 */
 	function image_resize35( $file, $max_w, $max_h, $crop = false, $far = false, $iar = false, $dest_path = null, $jpeg_quality = 90 ) {
 		$image = wp_get_image_editor( $file );
-
 		if ( is_wp_error( $image ) )
-			return new WP_Error('error_loading_image', $image);
+			return $image;
 
 		$size = @getimagesize( $file );
 		if ( !$size )

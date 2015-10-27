@@ -259,9 +259,15 @@ class mf_ajax_call{
 
     $field_id = preg_replace('/thumb_/','',$data['field_id']);
 
+    if ( is_wp_error($thumb) ){
+      $data = array('field_id' => $field_id,"error" => true, "msg" => html_entity_decode($thumb->get_error_message()));
+      echo json_encode($data);
+      return;
+    }
+
     if( count($info)){
       $image_thumb = PHPTHUMB.'?&w=150&h=120&src='.$info[0];
-      $data = array('image' => $image_thumb,'field_id' => $field_id,'image_value' => $image_id,'image_path' => $info[0],'thumb' => $thumb);
+      $data = array('image' => $image_thumb,'field_id' => $field_id,'image_value' => $image_id,'image_path' => $info[0],'thumb' => $thumb,"error" => false);
       echo json_encode($data);
     }
 

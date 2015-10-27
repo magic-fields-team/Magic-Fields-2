@@ -321,6 +321,7 @@ background-repeat: no-repeat;
   padding-left: 20px;
   display: block;
   line-height: 16px;
+  padding-bottom: 10px
 }
 .mf-upload-success {
   color: #11A122;

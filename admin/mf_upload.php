@@ -77,7 +77,8 @@ if( isset($_POST['fileframe']) ){
           @move_uploaded_file( $_FILES['file']['tmp_name'], MF_FILES_DIR . $filename );
           @chmod(MF_FILES_DIR . $filename, 0644);
           $info = pathinfo(MF_FILES_DIR . $filename);
-          
+
+          $thumb =  aux_image($filename,"w=150&h=120&zc=1",'image_alt');
           $resp = array(
             'error' => false, 
             'name' => $filename,
@@ -89,6 +90,11 @@ if( isset($_POST['fileframe']) ){
             'phpthumb' => PHPTHUMB,
             'msg' => __("Successful upload",$mf_domain)
           );
+
+          if ( is_wp_error($thumb) ){
+            $resp['error'] = true;
+            $resp['msg'] = html_entity_decode($thumb->get_error_message());
+          }
         }
       }else{
         $resp['msg'] = __("Failed to upload the file!",$mf_domain);

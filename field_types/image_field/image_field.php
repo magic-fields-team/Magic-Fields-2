@@ -84,11 +84,27 @@ class image_field extends mf_custom_fields {
     
     $field_style = '';
     $imageThumbID = "img_thumb_".$field['input_id']; 
+    $error = '';
     if(!$field['input_value']){
       $value = sprintf('%simages/noimage.jpg',MF_URL);
       $field_style = 'style="display:none;"';
     }else{
-      $value = sprintf("%s?src=%s%s&w=150&h=120&zc=1",PHPTHUMB,MF_FILES_URL,$field['input_value']);
+      // $value = sprintf("%s?src=%s%s&w=150&h=120&zc=1",PHPTHUMB,MF_FILES_URL,$field['input_value']);
+      $MFFrontEnd = MF_PATH.'/mf_front_end.php';
+      require_once($MFFrontEnd);
+      $value =  aux_image($field['input_value'],"w=150&h=120&zc=1",'image');
+      
+      if ( is_wp_error($value) ){
+        $wp_error = $value;
+        $field_style = 'style="display:none;"';
+        $value = sprintf('%simages/noimage.jpg',MF_URL);
+        // $value = $path_image_media;
+        $error = "<script type=\"text/javascript\">
+        jQuery(document).ready(function($){
+          show_error_image_field('".$field['input_id']."','".html_entity_decode($wp_error->get_error_message())."');
+        });
+        </script>";
+      }
     }
  
     $value  = sprintf('<img src="%s" id="%s" />',$value,$imageThumbID);
@@ -109,6 +125,7 @@ class image_field extends mf_custom_fields {
     $out .= $this->upload($field['input_id'],'image','mf_image_callback_upload');
     $out .= '</div></div>';
     $out .= '</div>';
+    $out .= $error;
 
     return $out;
   }

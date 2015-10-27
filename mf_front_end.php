@@ -253,7 +253,7 @@ function get_label($field_name,$post_id=NULL){
  *
  */
 function create_image($options){
-  global $post;
+  global $post,$mf_domain;
 	
   // establish the default values, then override them with 
   // whatever the user has passed in
@@ -342,6 +342,12 @@ function create_image($options){
   }else{
     //generate or check de thumb
     $field_value = aux_image($field_value,$field_param,$field_type);
+    if ( is_wp_error($field_value) && defined('WP_DEBUG') && WP_DEBUG == true ){
+      return sprintf("%s: %s",__('Error generating thumbnail, reason',$mf_domain),$field_value->get_error_message());
+    }
+
+    return "";
+    
   }
 
   if($tag_img){
@@ -432,8 +438,11 @@ function aux_image($value,$params,$type = NULL){
         $thumb_path = $thumb->image_resize($default['src'], $default['w'], $default['h'], $default['zc'], $default['far'], $default['iar'], $output_filename, $default['q']);  
     }   
 	
-    if ( is_wp_error($thumb_path) )
+    if ( is_wp_error($thumb_path) ){
+      return $thumb_path;
       return $thumb_path->get_error_message();
+    }
+    
     $value = $final_filename;
   }
   return $value;
@@ -461,6 +470,10 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
             $result['thumb'] = $result['original'];
           }else{
             $result['thumb'] = aux_image($value,$options,$type);
+            if ( is_wp_error($result['thumb']) ){
+              $result['error'] = $result['thumb']->get_error_message();
+              $result['thumb'] = '';
+            }
           }
         }
       }else{
@@ -477,6 +490,10 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
             $result['thumb'] = $result['original'];
           }else{
             $result['thumb'] = aux_image($value,$options,$type);
+            if ( is_wp_error($result['thumb']) ){
+              $result['error'] = $result['thumb']->get_error_message();
+              $result['thumb'] = '';
+            }
           }
         }
       }else{
@@ -506,6 +523,10 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
             $result['thumb'] = $result['original'];
           }else{
             $result['thumb'] = aux_image($result['original'],$options,$type);
+            if ( is_wp_error($result['thumb']) ){
+              $result['error'] = $result['thumb']->get_error_message();
+              $result['thumb'] = '';
+            }
           }
         }
       }else{

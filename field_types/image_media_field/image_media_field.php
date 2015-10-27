@@ -83,6 +83,7 @@ class image_media_field extends mf_custom_fields {
     $field_style = '';
     $imageThumbID = "img_thumb_".$field['input_id']; 
     $path_image_media = '';
+    $error = '';
     if(!$field['input_value']){
       $value = sprintf('%simages/noimage.jpg',MF_URL);
       $field_style = 'style="display:none;"';
@@ -93,6 +94,18 @@ class image_media_field extends mf_custom_fields {
       $info = wp_get_attachment_image_src($field['input_value'],'original');
       $path_image_media = $info[0];
       $value =  aux_image($path_image_media,"w=150&h=120&zc=1",'image_media');
+      
+      if ( is_wp_error($value) ){
+        $wp_error = $value;
+        $field_style = 'style="display:none;"';
+        $value = sprintf('%simages/noimage.jpg',MF_URL);
+        // $value = $path_image_media;
+        $error = "<script type=\"text/javascript\">
+        jQuery(document).ready(function($){
+          show_error_image_field('".$field['input_id']."','".html_entity_decode($wp_error->get_error_message())."');
+        });
+        </script>";
+      }
     }
  
     $value  = sprintf('<img src="%s" id="%s" />',$value,$imageThumbID);
@@ -114,6 +127,7 @@ class image_media_field extends mf_custom_fields {
     $out .= sprintf('<a class="button thickbox update_field_media_upload"  id="thumb_%s" href="%s">%s</a>',$field['input_id'],$link,__('Set Image',$mf_domain));
     $out .= '</div></div>';
     $out .= '</div>';
+    $out .= $error;
     return $out;
   }
   

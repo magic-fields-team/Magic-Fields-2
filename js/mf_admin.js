@@ -219,6 +219,12 @@ function mf_set_image_field(id){
       dataType: 'json',
       data: "action=mf_call&type=get_thumb&image_id="+id+"&field_id="+id_element,
       success: function(response){
+
+        if (response.error == true) {
+          show_error_image_field(response.field_id,response.msg);
+          return;
+        }
+
         jQuery('#img_thumb_'+response.field_id, top.document).attr('src',response.thumb);
         jQuery('#'+response.field_id, top.document).attr('value',response.image_value);
         jQuery('#edit-'+response.field_id, top.document).attr('href',response.image_path);
@@ -302,3 +308,10 @@ function mf_use_new_image_gallery(){
   });
 
 }
+
+function show_error_image_field(elem,msg){
+    var error_resp = '<span class="mf-upload-error" >'+msg+'</span>';
+    jQuery('#response-'+elem).html(error_resp).show();
+    setTimeout("remove_resp('#response-"+elem+"')",5000);
+
+  }
