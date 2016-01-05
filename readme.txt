@@ -28,6 +28,11 @@ Follow this steps to install MF2
 
 == Changelog ==
 
+= 2.3.2.2 =
+* better way of handle error in image thumbnails
+* fix problem of maxlength in textbox
+* fixes for localization
+
 = 2.3.2.1 =
 * Change text domain for localization ( translate.wordpress.org )
 * minor fixes in css
