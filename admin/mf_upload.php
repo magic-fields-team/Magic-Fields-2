@@ -110,10 +110,10 @@ if( isset($_POST['fileframe']) ){
   <script type="text/javascript" charset="utf-8">
     var mf_par = window.parent;
     var mf_js = <?php echo json_encode($resp); ?>;
-    mf_par.<?php echo $_POST['callback']; ?>(mf_js);
+    mf_par.<?php echo htmlspecialchars($_POST['callback'], ENT_QUOTES, 'UTF-8'); ?>(mf_js);
  
     var par = window.parent.document;
-    var iframe = par.getElementById('iframe_upload_<?php echo $_POST["input_name"]?>');
+    var iframe = par.getElementById('iframe_upload_<?php echo htmlspecialchars($_POST['input_name'], ENT_QUOTES, 'UTF-8');?>');
     iframe.style.display="";
   </script>
 <?php } ?>
@@ -143,11 +143,11 @@ label.label-file { font-size: 12px; padding-left: 2px; }
 function upload(){
   // hide old iframe
   var par = window.parent.document;
-  var iframe = par.getElementById('iframe_upload_<?php echo $_GET["input_name"]?>');
+  var iframe = par.getElementById('iframe_upload_<?php echo htmlspecialchars($_GET['input_name'], ENT_QUOTES, 'UTF-8');?>');
   iframe.style.display="none";
   
-  par.getElementById("response-<?php echo $_GET['input_name'];?>").style.display = "block";
-  par.getElementById("response-<?php echo $_GET['input_name'];?>").innerHTML = "Transferring ";
+  par.getElementById("response-<?php echo htmlspecialchars($_GET['input_name'], ENT_QUOTES, 'UTF-8');?>").style.display = "block";
+  par.getElementById("response-<?php echo htmlspecialchars($_GET['input_name'], ENT_QUOTES, 'UTF-8');?>").innerHTML = "Transferring ";
   setTimeout("transferring(0)",1000);
   // send
   document.iform.submit();
@@ -161,8 +161,8 @@ function transferring(dots){
   
   var par = window.parent.document;
   // update progress
-  if (par.getElementById("response-<?php echo $_GET['input_name'];?>").innerHTML.substring(0,5) != "Trans") return;
-  par.getElementById("response-<?php echo $_GET['input_name'];?>").innerHTML = newString;
+  if (par.getElementById("response-<?php echo htmlspecialchars($_GET['input_name'], ENT_QUOTES, 'UTF-8');?>").innerHTML.substring(0,5) != "Trans") return;
+  par.getElementById("response-<?php echo htmlspecialchars($_GET['input_name'], ENT_QUOTES, 'UTF-8');?>").innerHTML = newString;
   if (dots == 4) dots = 0; else dots = dots + 1;
   setTimeout("transferring("+dots+")",1000) ;
 	
@@ -174,10 +174,10 @@ function transferring(dots){
   <label for="file" class="label-file"><?php _e('File', $mf_domain); ?>:</label><br />
   <input id="file" type="file" name="file" onchange="upload()" class="mf-file" />
   <?php wp_nonce_field('nonce_upload_file','checking'); ?> 
-  <input type="hidden" name="input_name" value="<?php echo $_GET["input_name"]?>" />
-  <input type="hidden" name="callback" value="<?php echo $_GET["callback"]?>" />
+  <input type="hidden" name="input_name" value="<?php echo htmlspecialchars($_GET['input_name'], ENT_QUOTES, 'UTF-8')?>" />
+  <input type="hidden" name="callback" value="<?php echo htmlspecialchars($_GET['callback'], ENT_QUOTES, 'UTF-8')?>" />
   <input type="hidden" name="fileframe" value="true" />
-  <input type="hidden" name="type" value="<?php echo $_GET["type"]?>" />
+  <input type="hidden" name="type" value="<?php echo htmlspecialchars($_GET['type'], ENT_QUOTES, 'UTF-8')?>" />
 </form>
 </body>
 </html>
