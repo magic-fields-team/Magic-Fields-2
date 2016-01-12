@@ -40,7 +40,7 @@ Follow these steps to install MF2:
 
 
 ###2.3.2.3###
-* Patch for mf_upload.php (sanitize input)
+* Patch for mf_upload.php (sanitize input), thanks @robre
 
 ###2.3.2.2###
 * better way of handle error in image thumbnails
