@@ -78,7 +78,7 @@ if( isset($_POST['fileframe']) ){
           @chmod(MF_FILES_DIR . $filename, 0644);
           $info = pathinfo(MF_FILES_DIR . $filename);
 
-          $thumb =  aux_image($filename,"w=150&h=120&zc=1",'image_alt');
+          $thumb =  ($_GET['type'] == 'image') ? aux_image($filename,"w=150&h=120&zc=1",'image_alt') : "";
           $resp = array(
             'error' => false, 
             'name' => $filename,

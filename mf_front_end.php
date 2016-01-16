@@ -342,11 +342,13 @@ function create_image($options){
   }else{
     //generate or check de thumb
     $field_value = aux_image($field_value,$field_param,$field_type);
-    if ( is_wp_error($field_value) && defined('WP_DEBUG') && WP_DEBUG == true ){
-      return sprintf("%s: %s",__('Error generating thumbnail, reason',$mf_domain),$field_value->get_error_message());
+    if ( is_wp_error($field_value)){
+        if (defined('WP_DEBUG') && WP_DEBUG == true) {
+            return sprintf("%s: %s",__('Error generating thumbnail, reason',$mf_domain),$field_value->get_error_message());
+        } else {
+            return "";
+        }
     }
-
-    return "";
     
   }
 
