@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 class mf_custom_group extends mf_admin {
 
-  /** 
+  /**
    *  Page for add a new group
    */
   function add_group() {
@@ -22,7 +22,7 @@ class mf_custom_group extends mf_admin {
 
     $data = $this->group_data();
     $group = $this->get_group($_GET['custom_group_id']);
-    
+
     //check exist group
     if(!$group){
        $this->mf_flash('error');
@@ -34,37 +34,42 @@ class mf_custom_group extends mf_admin {
       $this->form_custom_group($data);
     }
   }
-  
+
   /**
    * Delete a custom group
    */
   public function delete_custom_group(){
     global $wpdb;
-    
+
     //checking the nonce
     check_admin_referer('delete_custom_group');
-    
+
     if( isset($_GET['custom_group_id']) ){
       $id = (int)$_GET['custom_group_id'];
       if( is_int($id) ){
         $group = $this->get_group($id);
         $sql = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_GROUPS." WHERE id = %d",$id );
         $wpdb->query($sql);
-        
+
         $sql_fields = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE custom_group_id = %d",$id );
         $wpdb->query($sql_fields);
 
         //ToDo: poner mensaje de que se borro correctamente
         $this->mf_redirect('mf_custom_fields','fields_list',array('message' => 'success','post_type' => $group['post_type']));
-        
+
       }
     }
   }
 
   function save_custom_group(){
 
+    check_admin_referer('save_custom_group');
     //save custom group
     $mf = $_POST['mf_group'];
+    array_walk_recursive($mf, function (&$value) {
+      $value = htmlentities($value);
+    });
+
     if($mf['core']['id']){
       //update
       $this->update_custom_group($mf);
@@ -72,17 +77,17 @@ class mf_custom_group extends mf_admin {
       //insert
       $this->new_custom_group($mf);
     }
-    
+
     //redirect to dashboard fields
     $this->mf_redirect('mf_custom_fields','fields_list',array('message' => 'success','post_type' => $mf['core']['post_type']));
-  }  
+  }
 
   public function get_custom_fields_post_type($post_type){
     GLOBAL $wpdb;
     $query = sprintf("SELECT * FROM %s WHERE post_type = '%s'", MF_TABLE_CUSTOM_FIELDS,$post_type);
     $fields = $wpdb->get_results($query, ARRAY_A);
     return $fields;
-    
+
   }
 
    public function group_data() {
@@ -142,7 +147,7 @@ class mf_custom_group extends mf_admin {
           'extra'       => __('Note: the group can still be collapsed by the user, this just determines the default state on load', $mf_domain ),
           'value'       =>  1,
           'div_class'   => ''
-        )   
+        )
       )
     );
 
@@ -163,6 +168,7 @@ class mf_custom_group extends mf_admin {
 
 
      <form id="addCustomGroup" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_group&mf_action=save_custom_group" class="validate mf_form_admin">
+       <?php wp_nonce_field('save_custom_group'); ?>
       <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_group">
         <?php foreach( $data['core'] as $core ):?>
           <?php if( $core['type'] == 'hidden' ): ?>
@@ -181,7 +187,7 @@ class mf_custom_group extends mf_admin {
               <?php mf_form_checkbox($core);?>
               </div>
             </fieldset>
-          <?php endif;?> 
+          <?php endif;?>
         <?php endforeach;?>
       	<p class="submit">
       	  <a style="color:black" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=fields_list&post_type=<?php echo $data['core']['post_type']['value'];?>" class="button">Cancel</a>
@@ -203,10 +209,10 @@ class mf_custom_group extends mf_admin {
 </form>
   <?php
   }
-  
+
   static public function check_group($name,$post_type,$id = NULL){
     global $wpdb;
-  
+
     $query = sprintf(
       "SELECT COUNT(*) FROM %s WHERE name = '%s' AND post_type = '%s' ",
       MF_TABLE_CUSTOM_GROUPS,
@@ -215,7 +221,7 @@ class mf_custom_group extends mf_admin {
     );
     if($id)
       $query = sprintf("%s AND id != %s",$query,$id);
-      
+
     $check = $wpdb->get_var($query);
     return $check;
   }

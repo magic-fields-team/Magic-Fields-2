@@ -198,7 +198,7 @@ if( is_admin() ) {
         $action = urlencode( $_GET['mf_action'] );
       }
 
-      //check only mf_section has prefix mf    
+      //check only mf_section has prefix mf
       if ( !(strpos($section, "mf_") === 0) ) {
         die;
       }

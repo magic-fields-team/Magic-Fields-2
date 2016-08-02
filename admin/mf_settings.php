@@ -24,7 +24,9 @@ class mf_settings extends mf_admin {
 
   }
 
-  public function save_settings($data){
+  public static function save_settings($data){
+
+    check_admin_referer('save_settings');
 
     if($data['uninstall_magic_field'] == 'uninstall'){
       mf_install::uninstall();
@@ -35,7 +37,7 @@ class mf_settings extends mf_admin {
         mf_install::clear_cache();
       }
       unset($data['mf_settings']['extra']);
-    
+
       self::update($data['mf_settings']['general']);
       wp_redirect('options-general.php?page=mf_settings');
     }
@@ -46,6 +48,7 @@ class mf_settings extends mf_admin {
     ?>
     <div class="widefat mf_form mf_form_settings">
     <form method="post" action="<?php echo get_option('siteurl'); ?>/wp-admin/options-general.php?page=mf_settings&amp;noheader=true">
+      <?php wp_nonce_field('save_settings'); ?>
        <h3><?php _e('General settings of fields',$mf_domain); ?></h3>
       <?php
       foreach($options['general'] as $option){
@@ -80,7 +83,7 @@ class mf_settings extends mf_admin {
 
   public static function fields_form() {
     global $mf_domain;
-  
+
     $options = get_option(MF_SETTINGS_KEY);
     if( !is_array( $options ) )  {
       $options = unserialize( $options );
@@ -148,6 +151,11 @@ class mf_settings extends mf_admin {
   }
 
   public function update($options) {
+
+    array_walk_recursive($options, function (&$value) {
+      $value = strip_tags($value);
+    });
+
     $options = serialize($options);
     update_option(MF_SETTINGS_KEY, $options);
   }
@@ -158,7 +166,7 @@ class mf_settings extends mf_admin {
       $options = get_option(MF_SETTINGS_KEY);
     else
       $options = unserialize(get_option(MF_SETTINGS_KEY));
-    
+
     if (!empty($key)){
       if( isset($options[$key]) ) return $options[$key];
       return false;

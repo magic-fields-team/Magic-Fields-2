@@ -29,6 +29,7 @@
 .mf_form p { color: #666; font-size: 12px; font-style: italic; font-family: "Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; margin: 2px 0 5px 10px; }
 .mf_form label {color: #222; text-shadow: white 0 1px 0; padding: 2px; font-size: 12px;font-weight: normal;}
 div.mf_form_right { float: left; clear: right; overflow: hidden; margin: 0; width: 50%; padding: 0 !important; }
+div.mf_form_right h3 { padding-left: 10px; }
 div.mf_form_right div.inside { padding: 10px; }
 div.mf_form_right div.inside p, div.mf_form_right div.inside label{ font-size: 11px }
 div.mf_form_right div.inside textarea { height: 100px;}
@@ -96,6 +97,8 @@ ul.options-tabs li{ display: inline;}
 ul.options-tabs li.tabs a { color: #333; }
 
 div.options,div.options_label{ padding-top: 10px; }
+
+div.options_label input[type='checkbox'] { width: auto; }
 div.options legend, div.options_label legend{ font-style: italic; color: #5A5A5A; padding-bottom: 2px; }
 form#addCustomGroup,form#addCustomField,form#import_post_type{ padding-top: 10px; }
 div.mf_form_right div.categorydiv div.tabs-panel { height: auto; margin-top: 4px; max-height:none; }

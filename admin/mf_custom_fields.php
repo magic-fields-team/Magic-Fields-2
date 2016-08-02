@@ -39,7 +39,7 @@ class mf_custom_fields extends mf_admin {
   public function get_options($options = NULL,$name){
     global $mf_domain;
 
-        print '<div class="desc_field">';
+    print '<div class="desc_field">';
     printf('<p>%s</p>',$this->description);
     printf('<p>%s:</p>',__('Preview',$mf_domain));
     printf('<p><img src="%sfield_types/%s/preview.jpg" /></p>',MF_URL,$name);
@@ -53,7 +53,7 @@ class mf_custom_fields extends mf_admin {
           @$this->options['option'][$k]['value'] = $v;
         }
       }
-      $this->form_options();  
+      $this->form_options();
     }
 
 
@@ -94,11 +94,11 @@ class mf_custom_fields extends mf_admin {
     print '<h2>';
     print $post_type->label;
     print '  ';
-    
+
     print '<span style="font-size:small">';
     printf('<a href="admin.php?page=mf_dispatcher&noheader=true&mf_section=mf_posttype&mf_action=export_post_type&post_type=%s ">%s</a>',$post_type->name,__('Export',$mf_domain) );
     print '</span>';
-    
+
     if(in_array($post_type->name,$mf_pt_register)):
       print '<span style="font-size:small">';
     print ' | ';
@@ -142,7 +142,7 @@ class mf_custom_fields extends mf_admin {
     $name = $group['label'];
     if($name != 'Magic Fields'){
       $name = sprintf('<a class="edit-group-h2" href="admin.php?page=mf_dispatcher&mf_section=mf_custom_group&mf_action=edit_group&custom_group_id=%s">%s</a>',$group['id'],$name);
-    
+
       $add = sprintf('admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s&custom_group_id=%s',$post_type->name,$group['id']);
 
       $name .= sprintf('  <span class="mf_add_group_field">(<a href="%s">create field</a>)</span>',$add);
@@ -154,7 +154,7 @@ class mf_custom_fields extends mf_admin {
       $name .= sprintf( '  <span class="mf_delete_group_field mf-delete">(<a  alt="%s" class="mf_confirm" href="%s">delete group</a>)</span>', $delete_msg, $delete_link );
     }
     else {
-      $name .= sprintf( '  <span class="mf_add_group_field">(<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s">create field</a>)</span>',$post_type->name );	
+      $name .= sprintf( '  <span class="mf_add_group_field">(<a href="admin.php?page=mf_dispatcher&mf_section=mf_custom_fields&mf_action=add_field&post_type=%s">create field</a>)</span>',$post_type->name );
     }
     //return all fields for group
     $fields = $this->get_custom_fields_by_group($group['id']);
@@ -231,8 +231,6 @@ class mf_custom_fields extends mf_admin {
 
     $data = $this->fields_form();
     $this->form_custom_field($data);
-    ?>
-    <?php
   }
 
    /**
@@ -242,8 +240,6 @@ class mf_custom_fields extends mf_admin {
     global $mf_domain;
 
     //check param custom_field_id
-
-
     $data = $this->fields_form();
     $field = $this->get_custom_field($_GET['custom_field_id']);
 
@@ -265,9 +261,16 @@ class mf_custom_fields extends mf_admin {
   }
 
   function save_custom_field(){
+    check_admin_referer('save_custom_field');
 
     //save custom field
     $mf = $_POST['mf_field'];
+    // array_walk_recursive($mf, function (&$value) {
+    //   $value = strip_tags($value);
+    // });
+
+    array_walk_recursive($data, array($this, 'escape_data'));
+
     if($mf['core']['id']){
       //update
       $this->update_name_field($mf);
@@ -426,7 +429,7 @@ class mf_custom_fields extends mf_admin {
 
   function form_custom_field( $data ) {
     global $mf_domain;
-    
+
     $name_group = '';
     if($data['core']['custom_group_id']['value']){
       $group = $this->get_group( $data['core']['custom_group_id']['value'] );
@@ -438,14 +441,18 @@ class mf_custom_fields extends mf_admin {
       <div id="message_mf_error" class="error below-h2" style="display:none;"><p></p></div>
       <div id="icon-edit-pages" class="icon32 icon32-posts-page"><br></div>
       <?php if( !$data['core']['id']['value'] ): ?>
-       <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
-    <?php else: ?>
-    <h2><?php _e('Edit Custom Field', $mf_domain); echo ' - '.$data['core']['label']['value'];?></h2>
+        <h2><?php _e('Create Custom Field', $mf_domain);?></h2>
+      <?php else: ?>
+        <h2><?php _e('Edit Custom Field', $mf_domain); echo ' - '.$data['core']['label']['value'];?></h2>
       <?php endif; ?>
 
-     <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate mf_form_admin">
+      <form id="addCustomField" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_custom_fields&mf_action=save_custom_field" class="validate mf_form_admin">
+
+        <?php wp_nonce_field('save_custom_field'); ?>
+
       <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_field">
-        <?php foreach( $data['core'] as $core ):?>
+        <?php foreach( $data['core'] as $core ): ?>
+          <?php $core['value'] = htmlentities($core['value']); ?>
           <?php if( $core['type'] == 'hidden' ): ?>
                   <?php mf_form_hidden($core); ?>
           <?php elseif( $core['type'] == 'text' ):?>
@@ -643,7 +650,7 @@ class mf_custom_fields extends mf_admin {
   public function upload($custom_field_id, $type = 'image',$callback = 'mf_callback_upload'){
     $iframe_src = sprintf('%sadmin/mf_upload.php?input_name=%s&callback=%s&type=%s',MF_BASENAME,$custom_field_id,$callback,$type);
     $out = sprintf('<iframe id="iframe_upload_%s" src="%s" height="45" scrolling="no" ></iframe>',$custom_field_id,$iframe_src);
-    
+
     return $out;
   }
 }

@@ -34,6 +34,7 @@ jQuery.mf_bind('add',function() {
     formData.append("fileName", myFile[0].name);
     formData.append('action','mf_call');
     formData.append('type','upload_ajax');
+    // add token
 
     jQuery.ajax({
       url: ajaxurl,

@@ -260,7 +260,7 @@ class mf_admin {
     $field = $wpdb->get_row( $query, ARRAY_A);
     return $field;
   }
-  
+
   public function mf_resolve_linebreaks($data = NULL){
     $data = preg_replace(array("/\r\n/","/\r/","/\n/"),"\\n",$data);
     return $data;
@@ -375,7 +375,7 @@ class mf_admin {
           $post_type['label']['name'] = $temp_name;
           $post_type['label']['menu_name'] = $temp_name;
         }
-        
+
         $post_type['core']['id'] = NULL;
 
         $this->new_posttype($post_type);
@@ -398,7 +398,7 @@ class mf_admin {
           unset($tmp_group);
           $tmp_group['core'] = $group;
           $this->update_custom_group($tmp_group);
-          
+
           foreach($fields as $field){
             $tmp_field = $this->get_custom_field_by_name($field['name'],$name);
 
@@ -416,7 +416,7 @@ class mf_admin {
               $tmp_field['option'] = unserialize( $field['options'] );
               $this->new_custom_field($tmp_field);
             }
-         
+
           }
 
         }else{
@@ -453,7 +453,7 @@ class mf_admin {
     foreach($taxonomies as $taxonomy){
       if($overwrite){
         $t_type = $taxonomy['core']['type'];
-        
+
         $tmp_taxonomy = $this->get_custom_taxonomy_by_type($t_type);
 
         if($tmp_taxonomy){
@@ -468,9 +468,9 @@ class mf_admin {
 
       }else{
         $t_type = $taxonomy['core']['type'];
-        
+
         $tmp_taxonomy = $this->get_custom_taxonomy_by_type($t_type);
-        
+
         if($tmp_taxonomy){
           $i = 2;
           $temp_name = $t_type . "_1";
@@ -490,7 +490,7 @@ class mf_admin {
           $this->new_custom_taxonomy($taxonomy);
         }
       }
-      
+
     }
     /* end register custom taxonomies */
 
@@ -503,10 +503,45 @@ class mf_admin {
     // quick fix for ' character
     /** @todo have a proper function escaping all these */
     if(is_string($value)){
+        $value = htmlspecialchars_decode($value);
+        $value = self::strip_html_tags($value);
+        $value = htmlentities($value);
         $value = stripslashes($value);
         $value = preg_replace('/\'/','´', $value);
         $value = addslashes($value);
+        pr($value);
     }
+  }
+
+  public static function strip_html_tags( $text ) {
+    $text = preg_replace(
+        array(
+          // Remove invisible content
+            '@<head[^>]*?>.*?</head>@siu',
+            '@<style[^>]*?>.*?</style>@siu',
+            '@<script[^>]*?.*?</script>@siu',
+            '@<object[^>]*?.*?</object>@siu',
+            '@<embed[^>]*?.*?</embed>@siu',
+            '@<applet[^>]*?.*?</applet>@siu',
+            '@<noframes[^>]*?.*?</noframes>@siu',
+            '@<noscript[^>]*?.*?</noscript>@siu',
+            '@<noembed[^>]*?.*?</noembed>@siu',
+          // Add line breaks before and after blocks
+            '@</?((address)|(blockquote)|(center)|(del))@iu',
+            '@</?((div)|(h[1-9])|(ins)|(isindex)|(p)|(pre))@iu',
+            '@</?((dir)|(dl)|(dt)|(dd)|(li)|(menu)|(ol)|(ul))@iu',
+            '@</?((table)|(th)|(td)|(caption))@iu',
+            '@</?((form)|(button)|(fieldset)|(legend)|(input))@iu',
+            '@</?((label)|(select)|(optgroup)|(option)|(textarea))@iu',
+            '@</?((frameset)|(frame)|(iframe))@iu',
+        ),
+        array(
+            ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+            "\n\$0", "\n\$0", "\n\$0", "\n\$0", "\n\$0", "\n\$0",
+            "\n\$0", "\n\$0",
+        ),
+        $text );
+    return strip_tags( $text );
   }
 
   /* function save and update for post type */
@@ -545,7 +580,7 @@ class mf_admin {
 
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
-		
+
     $sql = $wpdb->prepare(
       "Update " . MF_TABLE_POSTTYPES .
       " SET type = %s, name = %s, description = %s, arguments = %s " .
@@ -567,10 +602,10 @@ class mf_admin {
    */
   public function new_custom_group($data){
     global $wpdb;
-    
+
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
-   
+
     $sql = $wpdb->prepare(
       "INSERT INTO ". MF_TABLE_CUSTOM_GROUPS .
       " (name, label, post_type, duplicated, expanded) ".
@@ -582,7 +617,7 @@ class mf_admin {
       1
     );
     $wpdb->query($sql);
-    
+
     $postTypeId = $wpdb->insert_id;
     return $postTypeId;
   }
@@ -596,7 +631,7 @@ class mf_admin {
     //ToDo: falta sanitizar variables
     // podriamos crear un mettodo para hacerlo
     // la funcion podria pasarle como primer parametro los datos y como segundo un array con los campos que se va a sanitizar o si se quiere remplazar espacios por _ o quitar caracteres extraños
-    
+
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
 
@@ -610,7 +645,7 @@ class mf_admin {
       1,
       $data['core']['id']
     );
-    
+
     $wpdb->query($sql);
   }
 
@@ -619,7 +654,7 @@ class mf_admin {
     global $wpdb;
 
     if( !isset($data['option']) ) $data['option'] = array();
-    
+
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
 
@@ -632,7 +667,7 @@ class mf_admin {
     $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
 
     $sql = $wpdb->prepare(
-      "INSERT INTO ". MF_TABLE_CUSTOM_FIELDS . 
+      "INSERT INTO ". MF_TABLE_CUSTOM_FIELDS .
       " (name, label, description, post_type, custom_group_id, type, required_field, duplicated, options) ".
       " VALUES (%s, %s, %s, %s, %d, %s, %d, %d, %s)",
       $data['core']['name'],
@@ -656,7 +691,7 @@ class mf_admin {
     global $wpdb;
 
     if( !isset($data['option']) ) $data['option'] = array();
-    
+
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
 
@@ -669,7 +704,7 @@ class mf_admin {
     $data['core']['name'] = str_replace(" ","_",$data['core']['name']);
 
     $sql = $wpdb->prepare(
-     "UPDATE ". MF_TABLE_CUSTOM_FIELDS . 
+     "UPDATE ". MF_TABLE_CUSTOM_FIELDS .
      " SET name = %s, label = %s, description = %s, type = %s, required_field = %d, ".
      " duplicated = %d, options = %s ".
      " WHERE id = %d",
@@ -686,13 +721,13 @@ class mf_admin {
   }
 
   /* function for save and update custom taxonomies */
-  
+
   /**
    * Save a new custom taxonomy
    */
   public function new_custom_taxonomy($data){
     global $wpdb;
-    
+
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
 
@@ -708,7 +743,7 @@ class mf_admin {
       1
     );
 
-    $wpdb->query($sql); 
+    $wpdb->query($sql);
     $custom_taxonomy_id = $wpdb->insert_id;
     return $custom_taxonomy_id;
   }
@@ -718,7 +753,7 @@ class mf_admin {
    */
   public function update_custom_taxonomy($data){
     global $wpdb;
-    
+
     // escape all the strings
     array_walk_recursive($data, array($this, 'escape_data'));
 
@@ -737,7 +772,7 @@ class mf_admin {
   }
 
   public static function mf_unregister_post_type( $post_type ) {
-    /* Ideally we should just unset the post type from the array 
+    /* Ideally we should just unset the post type from the array
        but wordpress 3.2.1 this doesn't work */
 
     //global $wp_post_types;
@@ -746,8 +781,8 @@ class mf_admin {
     // return true;
     //}
 
-    /* So, we are only remove the item from the menu (this is not a 
-       real unregister post_type but for at least we not will see 
+    /* So, we are only remove the item from the menu (this is not a
+       real unregister post_type but for at least we not will see
        the post or page menu)
      */
     if( $post_type == "post" ) {
