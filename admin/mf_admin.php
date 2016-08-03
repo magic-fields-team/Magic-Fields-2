@@ -320,9 +320,30 @@ class mf_admin {
     }
   }
 
-  public function import($file_path,$overwrite){
+  public function import($file_data,$overwrite){
 
-    $data = unserialize(file_get_contents($file_path));
+    $file_path = $file_data['file']['tmp_name'];
+    $data = "";
+    $content = file_get_contents($file_path);
+    if ( $file_data['file']['type'] == 'application/json') {
+      //json
+      $data = json_decode($content,true);
+      if (!$data) {
+        return;
+      }
+    } elseif ( $file_data['file']['type'] == 'application/octet-stream') {
+      //pnl (serialize)
+      if(!is_serialized($content)){
+        return;
+      }
+      $data = unserialize($content);
+    } else {
+      return;
+    }
+
+    if ( !is_array($data) ) {
+      return;
+    }
 
     $name       = $data['name'];
     $post_type  = $data['post_type'];

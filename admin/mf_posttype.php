@@ -883,9 +883,9 @@ class mf_posttype extends mf_admin {
     //post type
     $data['post_type'] = $p;
 
-    header('Content-type: binary');
-    header('Content-Disposition: attachment; filename="'.$post_type.'.pnl"');
-    print serialize($data);
+    header('Content-type: application/javascript');
+    header('Content-Disposition: attachment; filename="'.$post_type.'.json"');
+    print json_encode($data);
     die;
   }
 
@@ -942,7 +942,7 @@ class mf_posttype extends mf_admin {
     if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
       $file_path = $_FILES['file']['tmp_name'];
       $overwrite = $_POST['mf_post_type']['import']['overwrite'];
-      $this->import($file_path,$overwrite);
+      $this->import($_FILES,$overwrite);
       unlink($file_path);
       $this->mf_redirect(null,null,array('message' => 'success'));
     }else{
