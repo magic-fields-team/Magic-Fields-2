@@ -22,7 +22,7 @@ class mf_ajax_call{
       $order = $data['order'];
       $order = split(',',$order);
       array_walk( $order, create_function( '&$v,$k', '$v =  str_replace("order_","",$v);' ));
-      
+
       if( $thing =  mf_custom_fields::save_order_field( $data['group_id'], $order ) ) {
         print "1";
         die;
@@ -33,7 +33,7 @@ class mf_ajax_call{
 
   public function check_name_post_type($data){
     global $mf_domain;
-    
+
     $type = $data['post_type'];
     $id = $data['post_type_id'];
     $check = mf_posttype::check_post_type($type,$id);
@@ -48,28 +48,28 @@ class mf_ajax_call{
 
   public function check_name_custom_group($data){
     global $mf_domain;
-    
+
     $name = $data['group_name'];
     $post_type = $data['post_type'];
     $id = $data['group_id'];
     $resp = array('success' => 1);
-    
+
     $check = mf_custom_group::check_group($name,$post_type,$id);
     if($check){
       $resp = array('success' => 0, 'msg' => __('The name of Group exist in this post type, Please choose a different name.',$mf_domain) );
     }
-    
+
     echo json_encode($resp);
   }
 
   public function check_name_custom_field($data){
     global $mf_domain;
-    
+
     $name = $data['field_name'];
     $post_type = $data['post_type'];
     $id = $data['field_id'];
     $resp = array('success' => 1);
-    
+
     $check = mf_custom_fields::check_group($name,$post_type,$id);
     if($check){
       $resp = array('success' => 0, 'msg' => __('The name of Field exist in this post type, Please choose a different name.',$mf_domain) );
@@ -79,7 +79,7 @@ class mf_ajax_call{
 
   public function check_type_custom_taxonomy($data){
     global $mf_domain;
-    
+
     $type = $data['taxonomy_type'];
     $id = $data['taxonomy_id'];
     $check = mf_custom_taxonomy::check_custom_taxonomy($type,$id);
@@ -118,13 +118,13 @@ class mf_ajax_call{
 
 	public function set_default_categories($data){
 		global $wpdb;
-		
+
 		$post_type_key = sprintf('_cat_%s',$data['post_type']);
 		$cats = preg_split('/\|\|\|/', $data['cats']);
 		$cats = maybe_serialize($cats);
 
     $table = $wpdb->postmeta;
-		
+
     $check_parent = $wpdb->prepare(
       "SELECT meta_id FROM $wpdb->postmeta ".
       "  WHERE meta_key='%s'",
@@ -152,20 +152,35 @@ class mf_ajax_call{
 		}
 		$wpdb->query($sql);
 		$resp = array('success' => 1);
-		
+
 		//update_post_meta(-2, $post_type, $cats);
-		
+
 		echo json_encode($resp);
 	}
 
+  public static function remove_upload_file() {
+
+    if (isset($_FILES['file']) && (!empty($_FILES['file']['tmp_name']))){
+      if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
+        $file_path = $_FILES['file']['tmp_name'];
+        @unlink($file_path);
+      }
+    }
+
+  }
+
   public function upload_ajax($data){
     global $mf_domain;
-    // pr($data);
-    // pr($_FILES);
-    // $resp = array('ok' => true,$_FILES,$data);
-    // echo json_encode($resp);
+
+    if( !check_ajax_referer( 'mf_nonce_ajax', 'security', false ) ) {
+      mf_ajax_call::remove_upload_file();
+      $resp = array('success' => false, 'msg' => __('Sorry, your nonce did not verify..',$mf_domain) );
+      echo json_encode($resp);
+      die;
+    }
 
     if ( !current_user_can('upload_files') ){
+      mf_ajax_call::remove_upload_file();
       $resp = array('success' => false, 'msg' => __('You do not have sufficient permissions to upload images.',$mf_domain) );
       echo json_encode($resp);
       die;
@@ -184,13 +199,13 @@ class mf_ajax_call{
               $special_chars = array(' ','`','"','\'','\\','/'," ","#","$","%","^","&","*","!","~","‘","\"","’","'","=","?","/","[","]","(",")","|","<",">",";","\\",",","+","-");
               $filename = str_replace($special_chars,'',$_FILES['file']['name']);
               $filename = time() . $filename;
-            
+
               @move_uploaded_file( $_FILES['file']['tmp_name'], MF_FILES_DIR . $filename );
               @chmod(MF_FILES_DIR . $filename, 0644);
               $info = pathinfo(MF_FILES_DIR . $filename);
 
               $thumb =  aux_image($filename,"w=150&h=120&zc=1",'image_alt');
-            
+
               $resp = array(
                 'success' => true,
                 'name' => $filename,
@@ -229,7 +244,7 @@ class mf_ajax_call{
       'audio/x-wav',
       'audio/mp3'
     );
-              
+
     if($file_type == "image"){
       if(in_array($mime,$imagesExts)){
         return true;
@@ -243,7 +258,7 @@ class mf_ajax_call{
       //are safety for the "files" type of field
       return true;
     }
-    return false; 
+    return false;
   }
 
   public function get_thumb($data){

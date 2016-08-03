@@ -31,13 +31,13 @@ class mf_post extends mf_admin {
    */
   function mf_post_add_metaboxes() {
     global $post,$mf_post_values;
-  
-    //if the user are going to add a new link 
+
+    //if the user are going to add a new link
     //the var $post is not defined and we do nothing
     if(!isset($post)) {
       return false;
     }
- 
+
     $mf_post_values = $this->mf_get_post_values($post->ID);
 
     //Getting the post types
@@ -168,7 +168,7 @@ class mf_post extends mf_admin {
     $id = sprintf('mf_field_%d_%d_%d_%d_ui',$group_id,$group_index,$field['id'],$field_index);
     $delete_id = sprintf('delete_field_repeat-%d_%d_%d_%d',$group_id,$group_index,$field['id'],$field_index);
     $add_id = sprintf('mf_field_repeat-%d_%d_%d_%d',$group_id,$group_index,$field['id'],$field_index);
-    $field_style = ($field_index == 1)? 'style="display: none; "' : ''; 
+    $field_style = ($field_index == 1)? 'style="display: none; "' : '';
 
     $name = sprintf('field-%s',$field['name']);
     $tool = sprintf('<small class="mf_tip"><em>%s</em><span class="mf_helptext">%s</span></small>',__( 'What\'s this?', $mf_domain ),'%s');
@@ -406,8 +406,8 @@ class mf_post extends mf_admin {
     global $mf_domain;
 
     wp_enqueue_style( 'mf_field_base', MF_BASENAME.'css/mf_field_base.css' );
-    wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');       
-    wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js'); 
+    wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
+    wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js');
     wp_enqueue_script( 'mf_sortable_groups', MF_BASENAME.'js/mf_sortable_groups.js', array( 'jquery-ui-sortable' ) );
 
     $mceAddString = "mceAddControl";
@@ -424,18 +424,19 @@ class mf_post extends mf_admin {
       'mf_validation_error_msg' => __('Sorry, some required fields are missing. Please provide values for any highlighted fields and try again.',$mf_domain),
       'mf_image_media_set' => __('Insert into field',$mf_domain),
       'mf_mceAddString' => $mceAddString,
-      'mf_mceRemoveString' => $mceRemoveString
+      'mf_mceRemoveString' => $mceRemoveString,
+      'mf_nonce_ajax' => wp_create_nonce( "mf_nonce_ajax" )
     );
-    wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );    
-    
+    wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );
+
   }
 
   /* enqueue css and js of fields */
   public function load_js_css_fields(){
-    
-    //Loading any custom field  if is required 
+
+    //Loading any custom field  if is required
     if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
-      $post_type = get_post_type($_GET['post']);   
+      $post_type = get_post_type($_GET['post']);
     }else{ //Creating a new post
       $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
     }
@@ -458,7 +459,7 @@ class mf_post extends mf_admin {
       $type = $field."_field";
       $type = new $type();
       $properties = $type->get_properties();
-         
+
       if ( $properties['js'] ) {
         wp_enqueue_script(
           'mf_field_'.$field,
@@ -467,7 +468,7 @@ class mf_post extends mf_admin {
           null,
           true
         );
-            
+
         /* idear forma por si se necesita mas de dos js*/
         if( isset($properties['js_internal']) ){
           wp_enqueue_script(
@@ -481,21 +482,21 @@ class mf_post extends mf_admin {
       }
 
       if ( $properties['css'] ) {
-        wp_enqueue_style( 
+        wp_enqueue_style(
           'mf_field_'.$field,
           MF_BASENAME.'field_types/'.$field.'_field/'.$field.'_field.css'
         );
       }
-      
+
       if ( !empty($properties['css_dependencies'] )) {
         foreach($properties['css_dependencies'] as $css_script) {
           wp_enqueue_style($css_script);
         }
       }
-          
+
       /* load css internal */
       if(isset($properties['css_internal'])){
-        wp_enqueue_style( 
+        wp_enqueue_style(
           'mf_field_'.preg_replace('/\./','_',$properties['css_internal']),
           MF_BASENAME.'field_types/'.$field.'_field/'.$properties['css_internal']
         );
@@ -509,41 +510,41 @@ class mf_post extends mf_admin {
 
       if( isset($_GET['action']) && $_GET['action'] == 'trash' ) {//when the post already exists
         return;
-      }    
+      }
 
       if( !empty( $_GET['post']) && is_numeric( $_GET['post'] ) ) {//when the post already exists
-        $post_type = get_post_type($_GET['post']);   
+        $post_type = get_post_type($_GET['post']);
       }else{ //Creating a new post
         $post_type = (!empty($_GET['post_type'])) ? $_GET['post_type'] : 'post';
       }
 
       $mf_posttype = new mf_posttype();
       $pt = $mf_posttype->get_post_type($post_type);
-        
+
       if ($pt && !isset($pt['support']['editor'])) {
         echo "<style>#postdivrich {display:none; }</style>";
       }
-    
+
      }
-    
+
   }
 
   public function media_buttons_add_mf(){
-    
+
     print '<div style="display:none;">';
     do_action( 'media_buttons' );
-    print '</div>'; 
+    print '</div>';
   }
-  
+
   public function register_media_button($buttons) {
     array_push($buttons, "separator","add_image","add_video","add_audio","add_media");
     return $buttons;
   }
-  
+
   public function tmce_not_remove_p_and_br(){
     ?>
     <script type="text/javascript">
-      //<![CDATA[ 
+      //<![CDATA[
       jQuery('body').bind('afterPreWpautop', function(e, o){
           o.data = o.unfiltered
             .replace(/caption\]\[caption/g, 'caption] [caption')
@@ -557,28 +558,28 @@ class mf_post extends mf_admin {
     </script>
     <?php
   }
-  
+
   public function general_option_multiline(){
-    
+
     /* load aditional options for multiline */
     add_filter('mce_buttons', array($this,'register_media_button'));
-    
+
     if( mf_settings::get('dont_remove_tags') == '1'){
        add_action( 'admin_print_footer_scripts', array($this,'tmce_not_remove_p_and_br'), 50 );
     }
-    
+
   }
 
 	public function categories_of_post_type(){
-		
+
 		global $wpdb;
 		$assignedCategoryIds =  array();
-		
+
 		if( count($_GET) == 0){ $_GET['post_type'] = 'post'; }
-		
+
 		if (isset($_GET['post_type'])) {
 			$post_type_key = sprintf('_cat_%s',$_GET['post_type']);
-				
+
 			$sql ="SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key='".$post_type_key."' ";
 			$check = $wpdb->get_row($sql);
 			if ($check) {
@@ -586,11 +587,11 @@ class mf_post extends mf_admin {
 				$assignedCategoryIds = maybe_unserialize($cata);
 			}
 		}
-		
-	
+
+
 		?>
 		<script type="text/javascript">
-			var mf_categories = new Array(<?php echo '"'.implode('","',$assignedCategoryIds).'"' ?>); 
+			var mf_categories = new Array(<?php echo '"'.implode('","',$assignedCategoryIds).'"' ?>);
 			jQuery(document).ready(function($) {
 
 			  if(mf_categories.length == 1 && mf_categories[0] == "" ){
@@ -606,15 +607,15 @@ class mf_post extends mf_admin {
 		<?php
 	}
 	public function set_categories(){
-		
+
 		add_action( 'admin_print_footer_scripts', array($this,'categories_of_post_type'), 50 );
 	}
- 
+
 
   //MF Meta box for select template
   function mf_metabox_template () {
     global $post;
-    
+
     if ( 0 != count( get_page_templates() ) ) {
 
       $template = get_post_meta($post->ID, '_wp_mf_page_template', TRUE);
@@ -624,7 +625,7 @@ class mf_post extends mf_admin {
       <option value='default'><?php _e('Default Template'); ?></option>
       <?php page_template_dropdown($template); ?>
       </select>
-    <?php  
+    <?php
     }
   }
 }

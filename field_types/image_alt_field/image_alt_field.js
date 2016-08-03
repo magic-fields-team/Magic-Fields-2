@@ -19,7 +19,7 @@ jQuery(document).on('click','.remove_photo_alt', function(){
 });
 
 jQuery.mf_bind('add',function() {
-  
+
   var mf_upload_handler = function(){
     var parent = jQuery(this).parent();
     var inputFile = jQuery(this);
@@ -34,6 +34,8 @@ jQuery.mf_bind('add',function() {
     formData.append("fileName", myFile[0].name);
     formData.append('action','mf_call');
     formData.append('type','upload_ajax');
+    formData.append('security',mf_js.mf_nonce_ajax);
+
     // add token
 
     jQuery.ajax({
@@ -47,17 +49,17 @@ jQuery.mf_bind('add',function() {
       data: formData,
       success: function(response){
         if(response.success){
-          var image_thumb = response.thumb;          
+          var image_thumb = response.thumb;
           jQuery('#img_thumb_'+field_id).attr('src',image_thumb);
           jQuery('#edit-'+field_id).attr('href',response.file_url);
           jQuery('#'+field_id).val(response.name);
-          
+
           var success_resp = '<span class="mf-upload-success" >'+response.msg+'</span>';
           jQuery('#response-'+field_id).html(success_resp).show();
           jQuery('#photo_edit_link_'+field_id).show();
 
           setTimeout("remove_resp_alt('#response-"+field_id+"')",5000);
-          
+
         }else{
           //show error
           var error_resp = '<span class="mf-upload-error" >'+response.msg+'</span>';
@@ -76,5 +78,5 @@ jQuery.mf_bind('add',function() {
   // jQuery(".up_ajax").unbind( "change", mf_upload_handler );
   jQuery(".up_ajax").off();
   jQuery(".up_ajax").bind("change",mf_upload_handler);
-  
+
 });
