@@ -96,7 +96,10 @@ class mf_custom_fields extends mf_admin {
     print '  ';
 
     print '<span style="font-size:small">';
-    printf('<a href="admin.php?page=mf_dispatcher&noheader=true&mf_section=mf_posttype&mf_action=export_post_type&post_type=%s ">%s</a>',$post_type->name,__('Export',$mf_domain) );
+
+    $link = sprintf("admin.php?page=mf_dispatcher&noheader=true&mf_section=mf_posttype&mf_action=export_post_type&post_type=%s",$post_type->name);
+    $link = wp_nonce_url($link,"export_post_type");
+    printf('<a href="%s">%s</a>',$link,__('Export',$mf_domain) );
     print '</span>';
 
     if(in_array($post_type->name,$mf_pt_register)):

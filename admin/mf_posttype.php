@@ -29,7 +29,7 @@ class mf_posttype extends mf_admin {
     if( $_GET['mf_action']  == 'edit_post_type' ) {
       $type_readonly = TRUE;
     }
-    
+
     $data = array(
       'suggest_labels'	=> array(
         'id'          =>  'suggest-labels',
@@ -382,7 +382,7 @@ class mf_posttype extends mf_admin {
     }else{
 
       $data = $this->fields_form();
-      
+
       $post_type_support = array();
       if( isset($post_type['support']) ){
         foreach($post_type['support'] as $k => $v){
@@ -415,7 +415,7 @@ class mf_posttype extends mf_admin {
   function form_post_type($data){
 
     global $mf_domain;
-    
+
     $supports = array(
       'title','editor','author',
       'thumbnail','excerpt','trackbacks',
@@ -571,7 +571,7 @@ class mf_posttype extends mf_admin {
 		if(!$post_type){
 			echo "<h3>is necessary that the post type is created</h3>";
 		}else{
-			
+
 		$all_taxonomies = get_object_taxonomies($post_type,'object');
 		$is_type_categorie = array();
 		foreach($all_taxonomies as  $cat){
@@ -581,16 +581,16 @@ class mf_posttype extends mf_admin {
 		}
 	//	pr($is_type_categorie);
 		$customCategoryIds = array();
-		
+
 		$post_type_key = sprintf('_cat_%s',$post_type);
 		$sql ="SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key='".$post_type_key."' ";
 		$check = $wpdb->get_row($sql);
-		
+
 		if ($check) {
 			$cata = $check->meta_value;
 			$customCategoryIds = maybe_unserialize($cata);
 		}
-		
+
 		echo '<input type="hidden" id="post_type_name" value="'.$post_type.'"> ';
 		echo '<div id="default-cats">';
 		echo '<div id="resp" style="color: #39A944; display:none;">changes have been saved successfully</div>';
@@ -607,40 +607,40 @@ class mf_posttype extends mf_admin {
 			$this->PrintNestedCats( $termsOfCategory, 0, 0, $customCategoryIds );
 			echo "</div>";
 		}
-		
-		
+
+
 		echo '<p class="submit">';
-		  
+
 		echo  '<input type="submit" class="button button-primary" name="submit" id="send_set_categories" value="Save categories">';
 		echo '</p>';
-		
+
 		echo '</div>';
-		
-	}
-	
-			
 
 	}
-	
-	
+
+
+
+	}
+
+
 	private function PrintNestedCats( $cats, $parent = 0, $depth = 0, $customCategoryIds ) {
-		foreach ($cats as $cat) : 
+		foreach ($cats as $cat) :
 			if( $cat->parent == $parent ) {
 				$checked = "";
-				
+
 				if (@in_array($cat->taxonomy . "-" .$cat->term_id, $customCategoryIds))
 				{
 					$checked = "checked=\"checked\"";
 				}
 				echo str_repeat('&nbsp;', $depth * 4);
 ?>					<input type="checkbox" name="custom-write-panel-categories[]" class="dos" value="<?php echo $cat->taxonomy . "-" .$cat->term_id?>" <?php echo $checked?> /> <?php echo $cat->name ?> <br/>
-<?php				
+<?php
 			$this->PrintNestedCats( $cats, $cat->term_id, $depth+1, $customCategoryIds );
 			}
 		endforeach;
 	}
-	
-	
+
+
   /**
    * Save a Post Type
    */
@@ -678,7 +678,7 @@ class mf_posttype extends mf_admin {
 		$this->mf_redirect(null,null,array('message' => 'success'));
 		die;
 	}
-	
+
 
   /**
    * Add a news Capabilities for Administrator
@@ -702,8 +702,8 @@ class mf_posttype extends mf_admin {
         $role->add_cap($cap);
       }
     }
-    
-  }  
+
+  }
 
   /**
    * get a specific post type using the post_type_id or the post_type_name
@@ -713,7 +713,7 @@ class mf_posttype extends mf_admin {
    */
   public function get_post_type($post_type){
     global $wpdb;
-    
+
     $query = $wpdb->prepare( "SELECT * FROM ".MF_TABLE_POSTTYPES." WHERE type = %s", array( $post_type ) );
 
     $post_type = $wpdb->get_row( $query, ARRAY_A );
@@ -742,27 +742,27 @@ class mf_posttype extends mf_admin {
 
         $sql = $wpdb->prepare( "DELETE FROM ".MF_TABLE_POSTTYPES." WHERE type = '%s'",$post_type );
         $wpdb->query($sql);
-        
+
         //delete all groups of post_type
         $sql_fields = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_GROUPS." WHERE post_type = '%s'",$post_type );
         $wpdb->query($sql_fields);
-        
+
         //delete field of post_type
         $sql_fields = $wpdb->prepare( "DELETE FROM ".MF_TABLE_CUSTOM_FIELDS." WHERE post_type = '%s'",$post_type );
         $wpdb->query($sql_fields);
-        
+
         $this->mf_redirect(null,null,array('message' => 'success'));
       }
     }
   }
-  
+
   static public function check_post_type($post_type,$id = NULL){
     global $wpdb;
-  
+
     $query = sprintf("SELECT COUNT(*) FROM %s WHERE type = '%s'",MF_TABLE_POSTTYPES,$post_type);
     if($id)
       $query = sprintf("%s AND id != %s",$query,$id);
-      
+
     $check = $wpdb->get_var($query);
 
     if( in_array($post_type,array('post','page') ) )
@@ -772,6 +772,8 @@ class mf_posttype extends mf_admin {
   }
 
   public function export_post_type(){
+    check_admin_referer('export_post_type');
+
     global $mf_pt_register;
 
     if(!isset($_GET['post_type']) ){
@@ -779,7 +781,7 @@ class mf_posttype extends mf_admin {
     }
 
     //post_type_exists
-    
+
     $post_type = $_GET['post_type'];
     $data = array(
       'name'      => $post_type,
@@ -788,7 +790,7 @@ class mf_posttype extends mf_admin {
       'taxonomy'  => array()
     );
 
-    
+
 
     if( in_array($post_type,$mf_pt_register) ){
       $p = $this->get_post_type($post_type);
@@ -856,17 +858,17 @@ class mf_posttype extends mf_admin {
         if( !in_array($tax,array('nav_menu','post_format')) ){
             $p['taxonomy'][$tax] = 1;
         }
-      } 
+      }
     }
-    
-    
+
+
     if( isset($p['taxonomy']) ){
       foreach($p['taxonomy'] as $tax_name => $t){
         if($custom_taxonomy = $this->get_custom_taxonomy_by_type($tax_name)){
           unset($p['taxonomy'][$tax_name]);
           $data['taxonomy'][] = $custom_taxonomy;
         }
-        
+
       }
     }
 
@@ -877,10 +879,10 @@ class mf_posttype extends mf_admin {
       $groups[$group_id]['fields'] = $fields;
     }
     $data['groups'] = $groups;
-    
+
     //post type
     $data['post_type'] = $p;
-    
+
     header('Content-type: binary');
     header('Content-Disposition: attachment; filename="'.$post_type.'.pnl"');
     print serialize($data);
@@ -896,13 +898,13 @@ class mf_posttype extends mf_admin {
       <h2><?php _e('Import a Post Type', $mf_domain);?></h2>
 
       <form id="import_post_type" method="post" action="admin.php?page=mf_dispatcher&init=true&mf_section=mf_posttype&mf_action=upload_import_post_type" enctype="multipart/form-data">
-      <?php wp_nonce_field('nonce_upload_file_import','checking'); ?>
+        <?php wp_nonce_field('nonce_upload_file_import'); ?>
         <div class="alignleft fixed" style="width: 40%;" id="mf_add_custom_group">
           <div class="form-field mf_form">
-    <label for="import-file" ><?php _e('File'); ?>:</label>
-    <input type="file" id="import-file" name="file" >
-    <p><?php _e('File with information about post type',$mf_domain);?></p>
-    <div class="clear"></div>
+            <label for="import-file" ><?php _e('File'); ?>:</label>
+            <input type="file" id="import-file" name="file" >
+            <p><?php _e('File with information about post type',$mf_domain);?></p>
+            <div class="clear"></div>
           </div>
           <div class="form-field mf_form ">
             <label for="import_overwrite"><?php _e('Overwrite',$mf_domain); ?></label>
@@ -911,35 +913,31 @@ class mf_posttype extends mf_admin {
             <div class="clear"></div>
             <p><?php _e('Overwrite existing post type?',$mf_domain); ?> </p>
           </div>
-        
-      	<p class="submit">
-    <a style="color:black" href="admin.php?page=mf_dispatcher" class="button"><?php _e('Cancel',$mf_domain); ?></a>
-    <input type="submit" class="button button-primary" name="submit" id="submit" value="<?php _e('Import',$mf_domain); ?>">
-      	</p>
-      </div>
-      <div class="widefat mf_form_right stuffbox metabox-holder">
-        <h3><?php _e('Import a Post Type',$mf_domain); ?></h3>
-        <div class="inside">
-          <div id="options_field" class="group_side">
-            <p><?php _e('This functionality allows us to import all the information of a post type',$mf_domain); ?></p>
-            <p><?php _e('Also they are imported the groups, custom fields and custom taxonomies that contains the post type',$mf_domain); ?></p>
-            <p><?php _e('For defualt to create a new post type, if it exists a post type with the same name was added with a prefix to be able to differentiate it, if the option  overwrite is checked the system overwrite the information of post type and  It will add the custom groups and custom fields to the already existing ones, If some custom group or custom field already this registered It will be overwrite',$mf_domain); ?></p>
-            <p><img src="<?php echo MF_URL; ?>images/admin/import.jpg"/></p>
+
+          <p class="submit">
+            <a style="color:black" href="admin.php?page=mf_dispatcher" class="button"><?php _e('Cancel',$mf_domain); ?></a>
+            <input type="submit" class="button button-primary" name="submit" id="submit" value="<?php _e('Import',$mf_domain); ?>">
+      	  </p>
+        </div>
+        <div class="widefat mf_form_right stuffbox metabox-holder">
+          <h3><?php _e('Import a Post Type',$mf_domain); ?></h3>
+          <div class="inside">
+            <div id="options_field" class="group_side">
+              <p><?php _e('This functionality allows us to import all the information of a post type',$mf_domain); ?></p>
+              <p><?php _e('Also they are imported the groups, custom fields and custom taxonomies that contains the post type',$mf_domain); ?></p>
+              <p><?php _e('For defualt to create a new post type, if it exists a post type with the same name was added with a prefix to be able to differentiate it, if the option  overwrite is checked the system overwrite the information of post type and  It will add the custom groups and custom fields to the already existing ones, If some custom group or custom field already this registered It will be overwrite',$mf_domain); ?></p>
+              <p><img src="<?php echo MF_URL; ?>images/admin/import.jpg"/></p>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
-</form>
   <?php
   }
 
   public function upload_import_post_type(){
     global $mf_domain;
-
-    if ( empty($_POST) || !wp_verify_nonce($_POST['checking'],'nonce_upload_file_import') ){
-      print 'Sorry, your nonce did not verify.';
-      exit;
-    }
+    check_admin_referer('nonce_upload_file_import');
 
     if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
       $file_path = $_FILES['file']['tmp_name'];
@@ -951,9 +949,7 @@ class mf_posttype extends mf_admin {
       //mensaje de error
       die(__('Error uploading file!', $mf_domain));
     }
-
     die;
-
   }
 
 }
