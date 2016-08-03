@@ -885,7 +885,7 @@ class mf_posttype extends mf_admin {
 
     header('Content-type: application/javascript');
     header('Content-Disposition: attachment; filename="'.$post_type.'.json"');
-    print json_encode($data);
+    print json_encode($data,JSON_PRETTY_PRINT);
     die;
   }
 
