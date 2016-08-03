@@ -19,7 +19,7 @@ jQuery( document ).ready( function( $ ) {
       //getting the group id
       exp = /group\-([0-9]+)/g;
       group_id = exp.exec($(this).attr('rel'))[1];
-      
+
       save_fields_order(group_id);
     }
   });
@@ -30,20 +30,22 @@ jQuery( document ).ready( function( $ ) {
       order     : $('#mf_order_fields').val(),
       action    : 'mf_call',
       type      : 'mf_sort_field',
-      group_id  : group_id
+      group_id  : group_id,
+      security  : mf_js.mf_nonce_ajax
     }
 
     $.ajax({
       type: 'POST',
       url: ajaxurl,
       data: data,
-      success: function (msg) {
-        $('#mf-ajax-loading-'+group_id).hide();
-        
-        if ( msg == "1" ) {
-        }else{
-          alert('somethings wrong!, try again please');
+      dataType: 'json',
+      success: function (response) {
+        if(response.success){
+          $('#mf-ajax-loading-'+group_id).hide();
+        } else {
+            alert(response.msg);
         }
+
       },
       beforeSend: function () {
         $('#mf-ajax-loading-'+group_id).show();

@@ -403,12 +403,21 @@ class mf_post extends mf_admin {
 
   /* enqueue css and js base for post area*/
   public function load_js_css_base(){
-    global $mf_domain;
-
+    
     wp_enqueue_style( 'mf_field_base', MF_BASENAME.'css/mf_field_base.css' );
     wp_enqueue_script( 'tmpl', MF_BASENAME.'js/third_party/jquery.tmpl.js');
     wp_enqueue_script( 'mf_field_base', MF_BASENAME.'js/mf_field_base.js');
     wp_enqueue_script( 'mf_sortable_groups', MF_BASENAME.'js/mf_sortable_groups.js', array( 'jquery-ui-sortable' ) );
+
+    mf_post::load_js_localize();
+
+  }
+
+  public static function load_js_localize() {
+
+    global $mf_domain;
+
+    wp_enqueue_script( 'mf_clean', MF_BASENAME.'js/mf_clean.js');
 
     $mceAddString = "mceAddControl";
     $mceRemoveString = "mceRemoveControl";
@@ -427,8 +436,7 @@ class mf_post extends mf_admin {
       'mf_mceRemoveString' => $mceRemoveString,
       'mf_nonce_ajax' => wp_create_nonce( "mf_nonce_ajax" )
     );
-    wp_localize_script( 'mf_field_base', 'mf_js', $js_vars );
-
+    wp_localize_script( 'mf_clean', 'mf_js', $js_vars );
   }
 
   /* enqueue css and js of fields */

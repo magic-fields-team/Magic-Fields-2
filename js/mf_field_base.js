@@ -118,18 +118,37 @@ jQuery(document).ready(function($) {
     counter_id = '#mf_counter_'+group_id+'_'+group_index+'_'+field_id;
     field_index = parseInt($(counter_id).val()) + 1;
 
+    var data = {
+      action      : 'mf_call',
+      type        : 'field_duplicate',
+      group_id    : group_id,
+      group_index : group_index,
+      field_id    : field_id,
+      field_index : field_index,
+      security    : mf_js.mf_nonce_ajax
+    }
+
     jQuery.ajax({
       url: ajaxurl,
       type: 'POST',
-      data: "action=mf_call&type=field_duplicate&group_id="+group_id+"&group_index="+group_index+"&field_id="+field_id+"&field_index="+field_index,
+      data: data,
       success: function(response){
-        var newel = jQuery(response);
-        $(counter_id).before(newel);
-        newel.find('.mf_message_error .error_magicfields').hide();
-        $(counter_id).val(field_index);
-        fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
-        $.mf_bind('duplicate');
-        mf_use_new_image_gallery();
+
+        try {
+          var response = JSON.parse(response);
+          if (!response.success) {
+            alert(response.msg);
+          }
+        } catch(e) {
+          // this isn's an error
+          var newel = jQuery(response);
+          $(counter_id).before(newel);
+          newel.find('.mf_message_error .error_magicfields').hide();
+          $(counter_id).val(field_index);
+          fixcounter('#mf_group_field_'+group_id+'_'+group_index+'_'+field_id);
+          $.mf_bind('duplicate');
+          mf_use_new_image_gallery();
+        }
       }
     });
   });
@@ -144,18 +163,35 @@ jQuery(document).ready(function($) {
     counter_group_id = '#mf_group_counter_'+group_id;
     group_index = parseInt($(counter_group_id).val()) + 1;
 
+    var data = {
+      action      : 'mf_call',
+      type        : 'group_duplicate',
+      group_id    : group_id,
+      group_index : group_index,
+      security    : mf_js.mf_nonce_ajax
+    }
+
     jQuery.ajax({
       url: ajaxurl,
       type: 'POST',
-      data: "action=mf_call&type=group_duplicate&group_id="+group_id+"&group_index="+group_index,
+      data: data,
       success: function(response){
-        var newel = jQuery(response);
-        $(counter_group_id).before(newel);
-        newel.find('.mf_message_error .error_magicfields').hide();
-        $(counter_group_id).val(group_index);
-        fixCounterGroup('#mf_group-'+group_id);
-        $.mf_bind('duplicate');
-        mf_use_new_image_gallery();
+
+        try {
+          var response = JSON.parse(response);
+          if (!response.success) {
+            alert(response.msg);
+          }
+        } catch(e) {
+          // this isn's an error
+          var newel = jQuery(response);
+          $(counter_group_id).before(newel);
+          newel.find('.mf_message_error .error_magicfields').hide();
+          $(counter_group_id).val(group_index);
+          fixCounterGroup('#mf_group-'+group_id);
+          $.mf_bind('duplicate');
+          mf_use_new_image_gallery();
+        }
       }
     });
   });
@@ -163,17 +199,17 @@ jQuery(document).ready(function($) {
   //add validation for fields
   $('.mf_message_error .error_magicfields').hide();
   $.metadata.setType("attr", "validate");
-  
+
   //Validating the post
   $("#post").validate({
     errorClass: "error_magicfields",
-    invalidHandler: function(form, validator) { 
+    invalidHandler: function(form, validator) {
       var errors = validator.numberOfInvalids();
       if (errors) {
         $('#mf-publish-errors').remove();
         $('#publishing-action #ajax-loading').hide();
         $('#publishing-action #publish').removeClass("button-primary-disabled");
-        $('#major-publishing-actions').append( $('<div id="mf-publish-errors">'+mf_js.mf_validation_error_msg+'</div>') ); 
+        $('#major-publishing-actions').append( $('<div id="mf-publish-errors">'+mf_js.mf_validation_error_msg+'</div>') );
       }
     },
 	  submitHandler: function(form) {
@@ -182,12 +218,12 @@ jQuery(document).ready(function($) {
         form.submit();
       }
   });
-  
+
   var mf_groups = $('.mf_group');
   $(document).on("keydown", mf_groups.find("input[type=text],textarea"),fieldchange);
   $(document).on("click", mf_groups.find("input[type=checkbox],input[type=radio]"),fieldchange);
   $(document).on("change",mf_groups.find("select"), fieldchange);
-  
+
   //callback before save
   $(document).on('click',"#publish",function(){ $.mf_bind('callback_before_save'); });
 

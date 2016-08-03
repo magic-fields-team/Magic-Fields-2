@@ -293,6 +293,23 @@ if( is_admin() ) {
   				$css_js->set_categories();
 
         }
+
+        $actions = array(
+          'fields_list',
+          'add_post_type',
+          'edit_post_type',
+          'add_group',
+          'edit_group',
+          'add_field',
+          'edit_field',
+          'add_custom_taxonomy',
+          'edit_custom_taxonomy',
+          'set_categories'
+        );
+        if ( isset($_GET['page']) && $_GET['page'] == 'mf_dispatcher' && isset($_GET['mf_action']) && in_array($_GET['mf_action'],$actions) ) {
+          mf_post::load_js_localize();
+        }
+
       }
     }
   }

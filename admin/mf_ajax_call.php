@@ -10,6 +10,14 @@ class mf_ajax_call{
   }
 
   public function resolve($data){
+
+    if( !check_ajax_referer( 'mf_nonce_ajax', 'security', false ) ) {
+      mf_ajax_call::remove_upload_file();
+      $resp = array('success' => false, 'msg' => __('Sorry, your nonce did not verify..',$mf_domain) );
+      echo json_encode($resp);
+      die;
+    }
+
     $type = $data['type'];
     if(method_exists($this, $type)){
       $this->$type($data);
@@ -24,10 +32,14 @@ class mf_ajax_call{
       array_walk( $order, create_function( '&$v,$k', '$v =  str_replace("order_","",$v);' ));
 
       if( $thing =  mf_custom_fields::save_order_field( $data['group_id'], $order ) ) {
-        print "1";
+        $resp = array('success' => true);
+        echo json_encode($resp);
         die;
       }
-      print "0"; //error!
+
+      $resp = array('success' => false, 'msg' => __('Ups, something went wrong',$mf_domain) );
+      echo json_encode($resp);
+      die;
     }
   }
 
@@ -39,9 +51,9 @@ class mf_ajax_call{
     $check = mf_posttype::check_post_type($type,$id);
     if($check){
       // exist type(name) in the system
-      $resp = array('success' => 0, 'msg' => __('The Type(name) of Post type exist,Please choose a different type(name).',$mf_domain) );
+      $resp = array('success' => false, 'msg' => __('The Type(name) of Post type exist,Please choose a different type(name).',$mf_domain) );
     }else{
-      $resp = array('success' => 1);
+      $resp = array('success' => true);
     }
     echo json_encode($resp);
   }
@@ -52,11 +64,11 @@ class mf_ajax_call{
     $name = $data['group_name'];
     $post_type = $data['post_type'];
     $id = $data['group_id'];
-    $resp = array('success' => 1);
+    $resp = array('success' => true);
 
     $check = mf_custom_group::check_group($name,$post_type,$id);
     if($check){
-      $resp = array('success' => 0, 'msg' => __('The name of Group exist in this post type, Please choose a different name.',$mf_domain) );
+      $resp = array('success' => false, 'msg' => __('The name of Group exist in this post type, Please choose a different name.',$mf_domain) );
     }
 
     echo json_encode($resp);
@@ -68,11 +80,11 @@ class mf_ajax_call{
     $name = $data['field_name'];
     $post_type = $data['post_type'];
     $id = $data['field_id'];
-    $resp = array('success' => 1);
+    $resp = array('success' => true);
 
     $check = mf_custom_fields::check_group($name,$post_type,$id);
     if($check){
-      $resp = array('success' => 0, 'msg' => __('The name of Field exist in this post type, Please choose a different name.',$mf_domain) );
+      $resp = array('success' => false, 'msg' => __('The name of Field exist in this post type, Please choose a different name.',$mf_domain) );
     }
     echo json_encode($resp);
   }
@@ -151,10 +163,8 @@ class mf_ajax_call{
       );
 		}
 		$wpdb->query($sql);
-		$resp = array('success' => 1);
-
+		$resp = array('success' => true);
 		//update_post_meta(-2, $post_type, $cats);
-
 		echo json_encode($resp);
 	}
 
@@ -171,13 +181,6 @@ class mf_ajax_call{
 
   public function upload_ajax($data){
     global $mf_domain;
-
-    if( !check_ajax_referer( 'mf_nonce_ajax', 'security', false ) ) {
-      mf_ajax_call::remove_upload_file();
-      $resp = array('success' => false, 'msg' => __('Sorry, your nonce did not verify..',$mf_domain) );
-      echo json_encode($resp);
-      die;
-    }
 
     if ( !current_user_can('upload_files') ){
       mf_ajax_call::remove_upload_file();
