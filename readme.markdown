@@ -3,9 +3,13 @@
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk")
 * Tested up to: Wordpress 4.2.2
 * Requires at least: 3.1
-* Stable tag: 2.3.2.4
+* Stable tag: 2.3.3
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
 * License: GPLv2
+
+## Donations
+
+Please consider a donation, I spend part of my free time programming in Magic Fields. [Help this proyect](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=edgar%40programador%2ecom&lc=GB&item_name=Donation%20Magic%20Fields&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest)
 
 ##Description
 Magic Fields 2 is a WordPress CMS plugin which is focused on improving the way how custom fields, post types and custom taxonomies are created in Wordpress.
@@ -37,6 +41,15 @@ Follow these steps to install MF2:
 2. Activate MF2
 
 ## Changelog ##
+
+
+###2.3.3###
+* nonce was added in forms, thanks Burak Kelebek for the report
+* In import post type change wp_verify_nonce for check_admin_referer
+* check_ajax_referer was added in upload image alternative
+* Export Post Type now is json file :-)
+* JSON_PRETTY_PRINT was added in export post type
+* nonce was added all wp ajax calls
 
 ###2.3.2.4###
 * fix problem with upload file field
