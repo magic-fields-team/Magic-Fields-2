@@ -3,19 +3,24 @@ jQuery.mf_bind('add',function(){
 
     if ( typeof tinymce !== 'undefined' ) {
         for ( id in tinyMCEPreInit.mceInit ) {
-          init = tinyMCEPreInit.mceInit[id];
-          $wrap = tinymce.$( '#wp-' + id + '-wrap' );
+          if (tinyMCEPreInit.mceInit.hasOwnProperty(id)) {
+            init = tinyMCEPreInit.mceInit[id];
+            $wrap = tinymce.$( '#wp-' + id + '-wrap' );
 
-          if ( $wrap.hasClass( 'html-active' ) ){
+            if ( $wrap.hasClass( 'html-active' ) ){
               for ( id in tinyMCEPreInit.mceInit ) {
-                init = tinyMCEPreInit.mceInit[id];
-                tinymce.init( init );
+                if (tinyMCEPreInit.mceInit.hasOwnProperty(id)) {
+                  init = tinyMCEPreInit.mceInit[id];
+                  tinymce.init( init );
+                }
               }
 
-            // yeah, I know, this is ugly but works :s
-            setTimeout(function(){
+              // yeah, I know, this is ugly but works :s
+              setTimeout(function(){
                 jQuery("button#content-html").click();
-            }, 1500);
+              }, 1500);
+              
+            }
           }
         }
       }
