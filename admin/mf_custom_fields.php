@@ -182,7 +182,7 @@ class mf_custom_fields extends mf_admin {
           <th scope="col" id="name" class="manage-column column-title" width="35%"><?php _e('Name',$mf_domain); ?> (<?php _e('order',$mf_domain); ?>)</th>
           <th scope="col" id="type" class="manage-column column-title" width="25%"><?php _e('Type',$mf_domain); ?></th>
         </tr>
-      </tfood>
+      </tfoot>
       <tbody rel="group-<?php print $group['id']; ?>" >
       <?php foreach($fields as $field): ?>
         <tr id="order_<?php echo $field['id']; ?>">
