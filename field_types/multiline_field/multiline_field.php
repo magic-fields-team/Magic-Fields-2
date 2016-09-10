@@ -12,7 +12,7 @@ class multiline_field extends mf_custom_fields {
     function get_properties() {
     return  array(
       'js'  => TRUE,
-      'js_dependencies' => array(), 
+      'js_dependencies' => array(),
       'css' => FALSE
     );
   }
@@ -21,10 +21,10 @@ class multiline_field extends mf_custom_fields {
     global $mf_domain;
     $this->description = __("An additional visual editor",$mf_domain);
   }
-  
+
   public function _options() {
     global $mf_domain;
-    
+
     $data = array(
       'option'  => array(
         'height'  => array(
@@ -96,14 +96,14 @@ class multiline_field extends mf_custom_fields {
       $output .= sprintf('<a onclick="add_editor(\'%s\');" class="edButtonHTML_mf current" >Visual</a>',$field['input_id']);
       $output .= sprintf('</div><br /><br />');
       $class = 'pre_editor add_editor_mf';
-      
+
       if(mf_settings::get('dont_remove_tags') != '1'){
         $value = apply_filters('the_editor_content', $value);
       }
     }
-    
+
     if($field['options']['hide_visual'] == 0 && user_can_richedit() ){
-		  printf('<div style="display: none1" id="wp-%s-media-buttons" class="wp-media-buttons mf_media_button_div" >',$field['input_id']);
+		  printf('<div id="wp-%s-media-buttons" class="wp-media-buttons mf_media_button_div" >',$field['input_id']);
 		  require_once( ABSPATH . 'wp-admin/includes/media.php' );
 		  media_buttons( $field['input_id'] );
 		  printf('</div>');
