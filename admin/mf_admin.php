@@ -530,7 +530,6 @@ class mf_admin {
         $value = stripslashes($value);
         $value = preg_replace('/\'/','´', $value);
         $value = addslashes($value);
-        pr($value);
     }
   }
 
