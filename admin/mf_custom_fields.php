@@ -271,8 +271,7 @@ class mf_custom_fields extends mf_admin {
     // array_walk_recursive($mf, function (&$value) {
     //   $value = strip_tags($value);
     // });
-
-    array_walk_recursive($data, array($this, 'escape_data'));
+    array_walk_recursive($mf, array($this, 'escape_data'));
 
     if($mf['core']['id']){
       //update
