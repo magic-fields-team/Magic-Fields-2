@@ -1,12 +1,39 @@
 jQuery.mf_bind('add',function(){
   if('undefined' != typeof tinyMCEPreInit){
+
+    if ( typeof tinymce !== 'undefined' ) {
+        for ( id in tinyMCEPreInit.mceInit ) {
+          if (tinyMCEPreInit.mceInit.hasOwnProperty(id)) {
+            init = tinyMCEPreInit.mceInit[id];
+            $wrap = tinymce.$( '#wp-' + id + '-wrap' );
+
+            if ( $wrap.hasClass( 'html-active' ) ){
+              for ( id in tinyMCEPreInit.mceInit ) {
+                if (tinyMCEPreInit.mceInit.hasOwnProperty(id)) {
+                  init = tinyMCEPreInit.mceInit[id];
+                  tinymce.init( init );
+                }
+              }
+
+              // yeah, I know, this is ugly but works :s
+              setTimeout(function(){
+                jQuery("button#content-html").click();
+              }, 1500);
+              
+            }
+          }
+        }
+      }
+
+
     jQuery(".multiline_custom_field .add_editor_mf").each( function(index,value){
       var editor_text = jQuery(this).attr('id');
-      tinyMCE.execCommand(mf_js.mf_mceAddString, true, editor_text); 
+      tinyMCE.execCommand(mf_js.mf_mceAddString, false, editor_text);
       jQuery(this).removeClass('add_editor_mf');
     });
   }
 });
+
 jQuery.mf_bind('before_sort', function(){
   if('undefined' != typeof tinyMCEPreInit){
     jQuery("#"+sort_group_id+" .multiline_custom_field .pre_editor").each( function(){
@@ -18,6 +45,7 @@ jQuery.mf_bind('before_sort', function(){
     });
   }
 });
+
 jQuery.mf_bind('after_sort', function(){
   if('undefined' != typeof tinyMCEPreInit){
     jQuery("#"+sort_group_id+" .multiline_custom_field .temp_remove_editor").each( function(){
@@ -32,7 +60,9 @@ jQuery.mf_bind('before_save',function(){
   if('undefined' != typeof tinyMCEPreInit){
     jQuery(".multiline_custom_field .pre_editor").each(function(){
       var editor_text = jQuery(this).attr('id');
-      jQuery(jQuery('#'+editor_text)).attr('value', tinyMCE.get(editor_text).getContent());
+      if(tinyMCE.get(editor_text)) {
+        jQuery(jQuery('#'+editor_text)).attr('value', tinyMCE.get(editor_text).getContent());
+      }
     });
   }
 });
@@ -46,6 +76,7 @@ function add_editor(id){
     tinyMCE.execCommand(mf_js.mf_mceAddString, false, id);
   }
 }
+
 // Remove the editor (button)
 function del_editor(id){
   if('undefined' != typeof tinyMCEPreInit){
