@@ -3,7 +3,7 @@
 * Authors: [Edgar Garcia](http://hunk.com.mx "Hunk")
 * Tested up to: Wordpress 4.2.2
 * Requires at least: 3.1
-* Stable tag: 2.3.3
+* Stable tag: 2.3.3.1
 * Description: Magic Fields 2 is a feature rich Wordpress CMS plugin
 * License: GPLv2
 
@@ -42,6 +42,10 @@ Follow these steps to install MF2:
 
 ## Changelog ##
 
+###2.3.3.1###
+* fix Url convert to relative url, Fixes #249
+* fix from tfood to tfoot
+* remove pr in escape_data function, sorry
 
 ###2.3.3###
 * nonce was added in forms, thanks Burak Kelebek for the report
