@@ -465,9 +465,8 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
     case 'image': 
       if($image_array){
         if( !empty($value) ){
-          unset($options['css_class']);
           $options = _processed_params($options);
-          $result['original'] = MF_FILES_URL . $value;
+          $result = array('original' => MF_FILES_URL . $value);
           if( empty($options) ){
             $result['thumb'] = $result['original'];
           }else{
@@ -487,7 +486,7 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
         if( !empty($value) ){
           unset($options['css_class']);
           $options = _processed_params($options);
-          $result['original'] = MF_FILES_URL . $value;
+          $result = array('original' => MF_FILES_URL . $value);
           if( empty($options) ){
             $result['thumb'] = $result['original'];
           }else{
@@ -520,7 +519,7 @@ function _processed_value($value, $type, $options = array(), $image_array = 0 ){
           $options = _processed_params($options);
           
           $data = wp_get_attachment_image_src($value,'original');
-          $result['original'] = $data[0];
+          $result = array('original' => $data[0]);
           if( empty($options) ){
             $result['thumb'] = $result['original'];
           }else{
